@@ -7,23 +7,14 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --color-red-500: oklch(63.7% 0.237 25.331);
-    --color-amber-300: oklch(87.9% 0.169 91.605);
     --color-amber-400: oklch(82.8% 0.189 84.429);
-    --color-green-500: oklch(72.3% 0.219 149.579);
-    --color-blue-500: oklch(62.3% 0.214 259.815);
-    --color-white: #fff;
     --spacing: 0.25rem;
-    --radius-xs: 0.125rem;
     --radius-md: 0.375rem;
-    --radius-xl: 0.75rem;
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
-    --color-fage-300: oklch(0.7671 0.0758 225.1893);
-    --color-fage-400: oklch(0.7087 0.0981 224.8362);
-    --color-fage: oklch(0.6493 0.1214 223.5049);
-    --color-fage-600: oklch(0.5647 0.1004 223.4666);
-    --color-fage-700: oklch(0.4803 0.0799 224.0190);
+    --color-fage-400: oklch(0.716 0.1047 231.1733);
+    --color-fage-500: oklch(0.6599 0.1299 228.9211);
+    --color-fage-600: oklch(0.5722 0.1079 229.7552);
   }
 }
 @layer base {
@@ -175,11 +166,14 @@
   }
 }
 @layer utilities {
-  .top-0 {
-    top: calc(var(--spacing) * 0);
+  .m-2 {
+    margin: calc(var(--spacing) * 2);
   }
-  .left-0 {
-    left: calc(var(--spacing) * 0);
+  .mx-2 {
+    margin-inline: calc(var(--spacing) * 2);
+  }
+  .mr-5 {
+    margin-right: calc(var(--spacing) * 5);
   }
   .flex {
     display: flex;
@@ -187,54 +181,70 @@
   .table {
     display: table;
   }
+  .w-72 {
+    width: calc(var(--spacing) * 72);
+  }
+  .max-w-72 {
+    max-width: calc(var(--spacing) * 72);
+  }
   .border-collapse {
     border-collapse: collapse;
   }
   .resize {
     resize: both;
   }
-  .justify-center {
-    justify-content: center;
+  .list-none {
+    list-style-type: none;
+  }
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
+  .items-center {
+    align-items: center;
+  }
+  .justify-between {
+    justify-content: space-between;
+  }
+  .gap-2 {
+    gap: calc(var(--spacing) * 2);
+  }
+  .rounded {
+    border-radius: 0.25rem;
   }
   .rounded-md {
     border-radius: var(--radius-md);
   }
-  .rounded-xl {
-    border-radius: var(--radius-xl);
-  }
-  .rounded-xs {
-    border-radius: var(--radius-xs);
-  }
   .border {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+  }
+  .border-1 {
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
   .bg-amber-400 {
     background-color: var(--color-amber-400);
   }
-  .bg-fage {
-    background-color: var(--color-fage);
-  }
-  .bg-fage-300 {
-    background-color: var(--color-fage-300);
-  }
   .bg-fage-400 {
     background-color: var(--color-fage-400);
+  }
+  .bg-fage-500 {
+    background-color: var(--color-fage-500);
   }
   .bg-fage-600 {
     background-color: var(--color-fage-600);
   }
-  .bg-fage-700 {
-    background-color: var(--color-fage-700);
-  }
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
   }
-  .text-amber-300 {
-    color: var(--color-amber-300);
+  .px-4 {
+    padding-inline: calc(var(--spacing) * 4);
   }
-  .text-fage {
-    color: var(--color-fage);
+  .py-2 {
+    padding-block: calc(var(--spacing) * 2);
+  }
+  .whitespace-nowrap {
+    white-space: nowrap;
   }
   .underline {
     text-decoration-line: underline;
@@ -243,6 +253,9 @@
     outline-style: var(--tw-outline-style);
     outline-width: 1px;
   }
+}
+a {
+  cursor: pointer;
 }
 @property --tw-border-style {
   syntax: "*";
