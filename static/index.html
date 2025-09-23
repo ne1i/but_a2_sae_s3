@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -12,42 +12,56 @@
 
 <body class="">
     <header class="flex flex-wrap justify-between items-center">
-        <img src="../assets/image/Logo_FAGE.svg" alt="Logo_FAGE" class="max-w-72 m-2">
+        <a href="index.html">
+            <img src="assets/image/Logo_FAGE.svg" alt="Logo_FAGE" class="max-w-72 m-2">
+        </a>
         <nav>
             <ul class="flex flex-wrap gap-2 mx-2">
                 <li class="whitespace-nowrap">
-                    <a class="bg-amber-400 rounded px-4 py-2">La FAGE</a>
+                    <a class="bg-amber-400 hover:bg-amber-500 active:bg-amber-600 rounded px-4 py-2 font-bold">La
+                        FAGE</a>
                 </li>
                 <li class="whitespace-nowrap">
-                    <a class="bg-fage-500 py-2 rounded px-4">Innovations sociales</a>
+                    <a class="bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Innovations
+                        sociales</a>
                 </li>
                 <li class="whitespace-nowrap">
-                    <a class="bg-fage-500 py-2 rounded px-4">Mes droits</a>
+                    <a class="bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Mes
+                        droits</a>
                 </li>
                 <li class="whitespace-nowrap">
-                    <a class="bg-fage-500 py-2 rounded px-4">Événements</a>
+                    <a
+                        class="bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Événements</a>
                 </li>
                 <li class="whitespace-nowrap">
-                    <a class="bg-fage-500 py-2 rounded px-4">Formations</a>
+                    <a
+                        class="bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Formations</a>
                 </li>
                 <li class="whitespace-nowrap">
-                    <a class="bg-fage-500 py-2 rounded px-4">Espace association</a>
+                    <a class="bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Espace
+                        association</a>
                 </li>
             </ul>
         </nav>
 
 
-        <div class="w-72 m-2">
-            <input placeholder="Rechercher" name="" id="" class=" border-1 rounded-md placeholder">
-            <button class="">🔍</button>
+        <div class="m-2 flex w-72 items-stretch rounded-full border-2 justify-between border-blue-400">
+            <input type="search" placeholder="Rechercher" name="search" id="search"
+                class="rounded-s-full p-1 pl-4 text-xl grow" />
+            <button class="hover:bg-black/25 active:bg-black/50 rounded-e-full ">
+                <img class="" src="assets/image/loupe.png" alt="Loupe"></button>
         </div>
     </header>
 
-    <div class="flex">
-        <img src="../assets/image/background.jpg" alt="Image de fond" class="opacity-25 z-0">
-        <h1 class="text-fage-500 text-5xl font-bold z-10">FAGE, l'association
-            <br>pour les étudiants
-        </h1>
+    <div class="flex justify-center relative">
+        <img src="assets/image/background.jpg" alt="Image de fond" class="opacity-25 ">
+        <div class="absolute left-0 top-0 w-full">
+            <h1 class="text-fage-500 text-7xl mx-auto font-bold text-center mb-6">FAGE, l'association
+                <br>pour les étudiants
+            </h1>
+            <h2 class="text-2xl mx-auto text-center text-fage-900">Fédération des associations Générales Étudiantes</h2>
+        </div>
+
     </div>
 </body>
 
