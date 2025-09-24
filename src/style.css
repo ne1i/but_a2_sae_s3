@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-fage-50: oklch(0.944 0.0184 232.4672);
+  --color-fage-100: oklch(0.8878 0.0386 233.5721);
+  --color-fage-200: oklch(0.831 0.0588 232.6864);
+  --color-fage-300: oklch(0.7739 0.0814 232.4341);
+  --color-fage-400: oklch(0.716 0.1047 231.1733);
+  --color-fage-500: oklch(0.6599 0.1299 228.9211);
+  --color-fage-600: oklch(0.5722 0.1079 229.7552);
+  --color-fage-700: oklch(0.4866 0.0851 229.5338);
+  --color-fage-800: oklch(0.3979 0.0632 231.2442);
+  --color-fage-900: oklch(0.3132 0.0411 230.0365);
+  --color-fage-950: oklch(0.2237 0.0208 236.8374);
+}
+
+a {
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+}

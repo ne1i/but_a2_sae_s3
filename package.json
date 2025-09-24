@@ -1,0 +1,23 @@
+{
+  "name": "but_a2_sae_s3",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "tailwind:watch": "tailwindcss --watch  -i ./src/style.css -o ./static/style.css",
+    "live": "live-server static/",
+    "all": "concurrently 'npm:tailwind:watch' 'npm:live'"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.13",
+    "concurrently": "^9.2.1",
+    "live-server": "^1.2.2",
+    "tailwindcss": "^4.1.13"
+  }
+}
