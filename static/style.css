@@ -211,12 +211,6 @@
   .mx-auto {
     margin-inline: auto;
   }
-  .my-70 {
-    margin-block: calc(var(--spacing) * 70);
-  }
-  .mt-10 {
-    margin-top: calc(var(--spacing) * 10);
-  }
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
   }
@@ -232,9 +226,6 @@
   .ml-10 {
     margin-left: calc(var(--spacing) * 10);
   }
-  .ml-16 {
-    margin-left: calc(var(--spacing) * 16);
-  }
   .flex {
     display: flex;
   }
@@ -244,29 +235,17 @@
   .inline-block {
     display: inline-block;
   }
-  .table {
-    display: table;
-  }
   .h-6 {
     height: calc(var(--spacing) * 6);
   }
-  .min-h-16 {
-    min-height: calc(var(--spacing) * 16);
-  }
   .min-h-50 {
     min-height: calc(var(--spacing) * 50);
-  }
-  .w-2 {
-    width: calc(var(--spacing) * 2);
   }
   .w-2\/3 {
     width: calc(2/3 * 100%);
   }
   .w-6 {
     width: calc(var(--spacing) * 6);
-  }
-  .w-100 {
-    width: calc(var(--spacing) * 100);
   }
   .w-full {
     width: 100%;
@@ -282,12 +261,6 @@
   }
   .basis-\[300px\] {
     flex-basis: 300px;
-  }
-  .border-collapse {
-    border-collapse: collapse;
-  }
-  .resize {
-    resize: both;
   }
   .list-disc {
     list-style-type: disc;
@@ -318,10 +291,6 @@
   }
   .rounded-xl {
     border-radius: var(--radius-xl);
-  }
-  .border {
-    border-style: var(--tw-border-style);
-    border-width: 1px;
   }
   .border-2 {
     border-style: var(--tw-border-style);
@@ -375,12 +344,6 @@
   .text-end {
     text-align: end;
   }
-  .text-left {
-    text-align: left;
-  }
-  .text-right {
-    text-align: right;
-  }
   .text-2xl {
     font-size: var(--text-2xl);
     line-height: var(--tw-leading, var(--text-2xl--line-height));
@@ -423,10 +386,6 @@
   .shadow-xl {
     --tw-shadow: 0 20px 25px -5px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 8px 10px -6px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
   }
   .outline-0 {
     outline-style: var(--tw-outline-style);
@@ -483,6 +442,15 @@ a {
 }
 button {
   cursor: pointer;
+}
+@font-face {
+  font-family: "Relative Bold";
+  src: url("/static/assets/fonts/Relative-Bold-subset.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+html, body {
+  font-family: "Relative Bold", sans-serif;
 }
 @property --tw-border-style {
   syntax: "*";
