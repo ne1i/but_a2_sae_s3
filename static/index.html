@@ -11,48 +11,42 @@
 
 
 <body class="">
-    <header class="flex flex-wrap justify-between items-center sticky top-0 left-0 right-0 z-1 px-2 bg-white">
+    <header class="flex items-center justify-between sticky top-0 left-0 right-0 z-10 px-4 bg-white">
+        <!-- Logo -->
         <a class="basis-[300px]" href="index.html">
             <span class="hidden" aria-hidden="true">Retour à l'accueil</span>
             <img src="assets/image/Logo_FAGE.svg" alt="Logo_FAGE" class="max-w-40 m-2" />
         </a>
-        <nav>
+
+        <!-- Navigation centrée -->
+        <nav class="flex-1 flex justify-center">
             <ul class="flex flex-wrap gap-2">
-                <li class="whitespace-nowrap">
+                <li>
                     <p
                         class="inline-block bg-amber-400 hover:bg-amber-500 active:bg-amber-600 rounded px-4 py-2 font-bold">
                         Accueil</p>
                 </li>
-                <li class="whitespace-nowrap">
-                    <a
+                <li><a
                         class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Innovations
-                        sociales</a>
-                </li>
-                <li class="whitespace-nowrap">
-                    <a
+                        sociales</a></li>
+                <li><a
                         class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Mes
-                        droits</a>
-                </li>
-                <li class="whitespace-nowrap">
-                    <a
+                        droits</a></li>
+                <li><a
                         class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Événements</a>
                 </li>
-                <li class="whitespace-nowrap">
-                    <a
+                <li><a
                         class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Formations</a>
                 </li>
-                <li class="whitespace-nowrap">
-                    <a
+                <li><a
                         class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Espace
-                        association</a>
-                </li>
+                        association</a></li>
             </ul>
         </nav>
 
-        <div
-            class="basis-[300px] m-2 flex items-stretch justify-between border-2 border-fage-400 bg-white rounded-full overflow-clip">
+        <div class="basis-[300px] m-2 flex items-center border-2 border-fage-400 bg-white rounded-full overflow-hidden">
             <input type="search" placeholder="Rechercher" name="search" id="search"
-                class="ps-4 text-xl rounded-s-full inline-block rounded-e-none py-1 outline-0" />
+                class="flex-1 ps-4 text-xl py-1 outline-0" />
             <button class="py-1 px-3 bg-fage-400 hover:bg-fage-500 active:bg-fage-600 text-white font-bold">
                 <svg class="w-6 h-6" viewBox="0 0 24 24">
                     <path fill="white"
@@ -61,9 +55,10 @@
             </button>
         </div>
     </header>
+
     <main class="">
         <div class="flex justify-center relative">
-            <img src="assets/image/background.jpg" alt="Image de fond" class="opacity-25 ">
+            <img src="assets/image/background.jpg" alt="Image de fond" class="opacity-25">
             <div class="absolute left-0 top-0 w-full">
                 <h1 class="text-fage-500 sm:text-7xl mx-auto font-bold text-center mb-6 text-shadow-md">FAGE,
                     l'association
@@ -86,14 +81,16 @@
         </div>
 
         <section>
-            <h3 class="text-4xl text-center mb-8">Actualités</h3>
+            <h3 class="text-4xl text-center mb-4">Actualités</h3>
             <div class=" mx-auto w-2/3 flex justify-center bg-gray-200">
-                <ul class="list-disc">
-                    <li class="mb-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates molestias non
-                        voluptas
-                        numquam inventore, expedita blanditiis deleniti? Nesciunt hic minus impedit? Cumque obcaecati
-                        minus excepturi soluta voluptatum. Commodi, fugiat voluptas!</li>
-                    <li class="mb-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates molestias non
+                <ul class="list-disc ">
+                    <li class="mb-4"><a class="">
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cumque adipisci voluptatem in eum
+                            ipsa odit magni dolor amet repellendus at sed consequuntur, iusto saepe modi, placeat
+                            tempora eligendi ullam voluptatum.
+                        </a></li>
+                    <li class="mb-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates molestias
+                        non
                         voluptas
                         numquam inventore, expedita blanditiis deleniti? Nesciunt hic minus impedit? Cumque obcaecati
                         minus excepturi soluta voluptatum. Commodi, fugiat voluptas!</li>
@@ -102,30 +99,19 @@
                         minus excepturi soluta voluptatum. Commodi, fugiat voluptas!</li>
                 </ul>
         </section>
-
-        <div class="text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta mollitia eum quos
-            provident
-            laudantium nisi voluptatibus aperiam sequi enim dicta quae est aliquid accusantium, ipsa nemo modi nesciunt
-            voluptates possimus?</div>
-        <div class="text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta mollitia eum quos
-            provident
-            laudantium nisi voluptatibus aperiam sequi enim dicta quae est aliquid accusantium, ipsa nemo modi
-            nesciunt
-            voluptates possimus?</div>
-        <div class="text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta mollitia eum quos
-            provident
-            laudantium nisi voluptatibus aperiam sequi enim dicta quae est aliquid accusantium, ipsa nemo modi
-            nesciunt
-            voluptates possimus?</div>
-        <div class="text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta mollitia eum quos
-            provident
-            laudantium nisi voluptatibus aperiam sequi enim dicta quae est aliquid accusantium, ipsa nemo modi
-            nesciunt
-            voluptates possimus?</div>
-
-
     </main>
 
+    <footer class="flex bg-fage-100 min-h-50 items-center">
+        <img src="assets/image/Logo_FAGE.svg" alt="Logo FAGE" class="max-w-60">
+        <a class="ml-10 underline text-xl">Nous contacter ✉️</a>
+        <ul>
+            <li>
+                <p class="text-end">
+                    test 1
+                </p>
+            </li>
+        </ul>
+    </footer>
 </body>
 
 </html>
