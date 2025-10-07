@@ -10,7 +10,7 @@
 
     <body class>
         <header
-            class="flex items-center justify-between sticky top-0 left-0 right-0 z-10 px-4 bg-white">
+            class="flex flex-wrap items-center justify-between sticky top-0 left-0 right-0 z-10 px-4 bg-white shadow-sm">
             <a class href="index.html">
                 <span class="hidden" aria-hidden="true">Retour à
                     l'accueil</span>
@@ -54,7 +54,7 @@
         <main>
             <div class="flex justify-center relative mt-16">
                 <img src="assets/image/background.jpg" alt="Image de fond"
-                    class="opacity-25  h-[900px] object-cover">
+                    class="opacity-20 h-[915px] object-cover">
                 <div class="absolute left-0 top-0 w-full">
                     <h1
                         class="text-fage-500 text-7xl mx-auto font-bold text-center mb-6 text-shadow-md">FAGE,
@@ -68,7 +68,7 @@
                     <p class="text-center mb-26">
                         <a
                             href="https://www.helloasso.com/associations/federation-des-associations-generales-etudiantes-fage/formulaires/1"
-                            class="bg-fage-400 text-white p-8 font-bold rounded-full text-3xl hover:bg-fage-500 active:bg-fage-600 shadow-xl"
+                            class="bg-gradient-to-bl from-fage-400 to-fage-700 text-white p-8 font-bold rounded-full text-3xl hover:bg-gradient-to-br active:bg-gradient-to-tr shadow-xl"
                             target="_blank">Faire
                             un don</a>
                     </p>
@@ -81,49 +81,56 @@
                 </div>
             </div>
 
-            <section>
-                <h3 class="text-4xl text-center mb-4">Actualités</h3>
-                <div class=" mx-auto w-2/3 flex justify-center bg-gray-200">
-                    <ul class="list-disc ">
-                        <li class="mb-4"><a class>
-                                Lorem ipsum dolor, sit amet consectetur
-                                adipisicing elit. Cumque adipisci voluptatem in
-                                eum
-                                ipsa odit magni dolor amet repellendus at sed
-                                consequuntur, iusto saepe modi, placeat
-                                tempora eligendi ullam voluptatum.
-                            </a></li>
-                        <li class="mb-4">Lorem ipsum, dolor sit amet consectetur
-                            adipisicing elit. Voluptates molestias
-                            non
-                            voluptas
-                            numquam inventore, expedita blanditiis deleniti?
-                            Nesciunt hic minus impedit? Cumque obcaecati
-                            minus excepturi soluta voluptatum. Commodi, fugiat
-                            voluptas!</li>
-                        <li>Lorem ipsum, dolor sit amet consectetur adipisicing
-                            elit. Voluptates molestias non voluptas
-                            numquam inventore, expedita blanditiis deleniti?
-                            Nesciunt hic minus impedit? Cumque obcaecati
-                            minus excepturi soluta voluptatum. Commodi, fugiat
-                            voluptas!</li>
-                    </ul>
-                </section>
-            </main>
+            <section class="px-2">
+                <h2 class="text-4xl text-center py-10 underline">Actualités</h2>
+                <div class="flex flex-wrap justify-around gap-4 ">
+                    <div>
+                        <h3 class="text-center text-xl">Titre de l'actualité
+                            1</h3>
+                        <a>
+                            <img src="https://picsum.photos/440/280"
+                                alt="Image d'actualité"
+                                class="rounded-xl my-10">
+                        </a>
 
-            <footer
-                class="flex justify-between bg-fage-100 min-h-50 items-center mt-10">
-                <div class="flex items-center">
-                    <img src="assets/image/Logo_FAGE.svg" alt="Logo FAGE"
-                        class="max-w-60">
-                    <a class="ml-10 underline text-xl">Nous contacter ✉️</a>
+                    </div>
+                    <div>
+                        <h3 class="text-center text-xl">Titre de l'actualité
+                            2</h3>
+                        <a>
+                            <img src="https://picsum.photos/440/280"
+                                alt="Image d'actualité"
+                                class="rounded-xl my-10 ">
+                        </a>
+
+                    </div>
+                    <div>
+                        <h3 class="text-center text-xl">Titre de l'actualité
+                            3</h3>
+                        <a>
+                            <img src="https://picsum.photos/440/280"
+                                alt="Image d'actualité"
+                                class="rounded-xl my-10 ">
+                        </a>
+
+                    </div>
                 </div>
-                <ul>
-                    <li>
-                        test 1
-                    </li>
-                </ul>
-            </footer>
-        </body>
+            </section>
+        </main>
 
-    </html>
+        <footer
+            class="flex justify-between bg-fage-100 min-h-50 items-center">
+            <div class="flex items-center">
+                <img src="assets/image/Logo_FAGE.svg" alt="Logo FAGE"
+                    class="max-w-60">
+                <a class="ml-10 underline text-xl">Nous contacter ✉️</a>
+            </div>
+            <ul>
+                <li>
+                    test 1
+                </li>
+            </ul>
+        </footer>
+    </body>
+
+</html>
