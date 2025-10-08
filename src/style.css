@@ -24,7 +24,7 @@ button {
 
 @font-face {
   font-family: "Relative Bold";
-  src: url("/static/assets/fonts/Relative-Bold-subset.ttf") format("truetype");
+  src: url("/assets/fonts/Relative-Bold-subset.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
