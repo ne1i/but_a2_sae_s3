@@ -21,3 +21,15 @@ a {
 button {
   cursor: pointer;
 }
+
+@font-face {
+  font-family: "Relative Bold";
+  src: url("/assets/fonts/Relative-Bold-subset.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+html,
+body {
+  font-family: "Relative Bold", sans-serif;
+}
