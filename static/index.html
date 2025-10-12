@@ -10,66 +10,89 @@
 
 <body>
     <header
-        class="flex flex-wrap items-center justify-between sticky top-0 left-0 right-0 z-10 px-4 bg-white shadow-sm">
-        <a class href="index.html">
-            <span class="hidden" aria-hidden="true">Retour à
-                l'accueil</span>
-            <img src="assets/image/Logo_FAGE.svg" alt="Logo_FAGE" class="max-w-50 m-2" />
-        </a>
+        class="flex flex-wrap lg:items-center items-stretch justify-stretch lg:justify-between lg:flex-row flex-col sticky top-0 left-0 right-0 z-10 px-4 bg-white shadow-sm">
+        <div class="flex items-center justify-between lg:justify-start">
+            <button class="lg:hidden hover:bg-fage-100 active:bg-fage-200 p-2 rounded flex flex-col gap-1"
+                title="Ouvrir/fermer le menu">
+                <span class="sr-only">Menu</span>
+                <span class="block w-8 h-1 bg-fage-400 rounded"></span>
+                <span class="block w-8 h-1 bg-fage-400 rounded"></span>
+                <span class="block w-8 h-1 bg-fage-400 rounded"></span>
+            </button>
 
-        <nav class="flex justify-center">
-            <ul class="flex flex-wrap gap-2">
-                <li><a
-                        class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">La
-                        FAGE</a></li>
+            <script>
+                const button = document.querySelector("button");
+                button.addEventListener("click", () => {
+                    button.classList.toggle("active");
+                    const nav = document.querySelector("nav");
+                    nav.classList.toggle("hidden");
+                });
+            </script>
+
+            <a class="" href="index.html">
+                <span class="hidden" aria-hidden="true">Retour à l'accueil</span>
+                <img src="assets/image/Logo_FAGE.svg" alt="Logo_FAGE" class="lg:max-w-40 max-w-20 m-2" />
+            </a>
+        </div>
+
+        <nav class="justify-center hidden lg:flex active">
+            <ul class="flex flex-wrap gap-2 lg:flex-row flex-col items-stretch lg:items-center w-full lg:w-auto">
+                <li>
+                    <a href="index.html"
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 rounded px-4 text-white py-2 font-bold">
+                        La FAGE
+                    </a>
                 </li>
-                <li><a
-                        class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Innovations
-                        sociales</a></li>
-                <li><a
-                        class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Mes
-                        droits</a></li>
-                <li><a
-                        class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Événements</a>
+                <li>
+                    <a
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Innovations
+                        sociales</a>
                 </li>
-                <li><a
-                        class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Formations</a>
+                <li>
+                    <a
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Mes
+                        droits</a>
                 </li>
-                <li><a
-                        class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Espace
-                        association</a></li>
+                <li>
+                    <a
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Événements</a>
+                </li>
+                <li>
+                    <a
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Formations</a>
+                </li>
+                <li>
+                    <a
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Espace
+                        association</a>
+                </li>
             </ul>
         </nav>
 
-        <div class="max-w-50 m-2 border-2 border-fage-400 bg-white rounded-full overflow-hidden">
-            <input type="search" placeholder="Rechercher" name="search" id="search"
-                class="ps-4 text-xl py-1 outline-0" />
+        <div class="m-2 border-2 border-fage-400 bg-white rounded-full overflow-hidden lg:max-w-60">
+            <input role="search" aria-label="Rechercher" type="search" placeholder="Rechercher" name="search"
+                id="search" class="px-8 text-xl py-1 outline-0 w-full" />
         </div>
     </header>
 
     <main>
-        <div class="flex justify-center relative mt-16">
-            <img src="assets/image/background.jpg" alt="Image de fond" class="opacity-20 h-[900px] w-full object-cover">
-            <div class="absolute left-0 top-0 w-full">
-                <h1 class="text-fage-500 text-7xl mx-auto font-bold text-center mb-6 text-shadow-md">FAGE,
-                    l'association
-                    <br>pour les étudiants
-                </h1>
-                <h2 class="text-2xl mx-auto text-center text-fage-900 mb-22">Fédération
-                    des associations
-                    Générales Étudiantes</h2>
-                <p class="text-center mb-26">
-                    <a href="https://www.helloasso.com/associations/federation-des-associations-generales-etudiantes-fage/formulaires/1"
-                        class="bg-gradient-to-bl from-fage-400 to-fage-700 text-white p-8 font-bold rounded-full text-3xl hover:bg-gradient-to-br active:bg-gradient-to-tr shadow-xl"
-                        target="_blank">Faire
-                        un don</a>
-                </p>
-                <p class="text-center">
-                    <a class="bg-amber-400 p-6 rounded-xl font-bold shadow-md hover:bg-amber-500 active:bg-amber-600">Besoin
-                        de discuter
-                        ?</a>
-                </p>
-            </div>
+        <div class="flex justify-center items-center flex-col relative py-40">
+            <img src="assets/image/background.jpg" alt="Image de fond"
+                class="absolute left-0 top-0 -z-10 opacity-20 h-full object-cover w-full bg-gradient-to-t from-white to-transparent" />
+
+            <h1 class="text-fage-500 text-7xl mx-auto font-bold text-center mb-6 text-shadow-md max-w-[15ch]">
+                FAGE, l'association pour les étudiants
+            </h1>
+            <h2 class="text-2xl mx-auto text-center text-fage-900 mb-14">
+                Fédération des associations Générales Étudiantes
+            </h2>
+
+            <a href="https://www.helloasso.com/associations/federation-des-associations-generales-etudiantes-fage/formulaires/1"
+                class="mb-12 bg-gradient-to-bl from-fage-400 to-fage-700 text-white p-8 font-bold rounded-full text-3xl hover:bg-gradient-to-br active:bg-gradient-to-tr shadow-xl"
+                target="_blank">Faire un don</a>
+
+            <a class="bg-amber-400 p-6 rounded-xl font-bold shadow-md hover:bg-amber-500 active:bg-amber-600">Besoin de
+                discuter ?</a>
         </div>
 
         <section class="flex items-center justify-around mt-10">
