@@ -76,7 +76,7 @@
     </header>
 
     <main>
-        <div class="flex justify-center items-center flex-col relative py-40">
+        <div class="flex justify-center items-center flex-col relative pt-20 pb-40">
             <img src="assets/image/background.jpg" alt="Image de fond"
                 class="absolute left-0 top-0 -z-10 opacity-20 h-full object-cover w-full bg-gradient-to-t from-white to-transparent" />
 
@@ -96,9 +96,9 @@
         </div>
 
         <section class="flex items-center justify-around mt-10">
-            <div class="flex p-4 rounded-2xl">
+            <div class=" flex p-4 rounded-2xl" carousel>
                 <div class="relative w-full max-w-2xl overflow-hidden shadow-lg">
-                    <div id="carousel" class="flex transition-transform duration-700">
+                    <div class="flex transition-transform duration-700" carousel-images>
                         <img src="assets/image/actu1.png" alt="Image carousel 1"
                             class="w-full h-96 object-contain flex-shrink-0">
                         <img src="assets/image/actu2.jpeg" alt="Image carousel 2"
@@ -107,12 +107,12 @@
                         <img src="assets/image/actu3.png" alt="Image carousel 3"
                             class="w-full h-96 object-contain flex-shrink-0">
                     </div>
-                    <button id="previous"
+                    <button carousel-previous
                         class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gray-700 p-2 rounded-full shadow">⬅</button>
-                    <button id="next"
+                    <button carousel-next
                         class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gray-700 p-2 rounded-full shadow">➡</button>
                 </div>
-                <div class="ml-4 flex flex-wrap w-80 h-96" id="carouselTitle">
+                <div class=" ml-4 flex flex-wrap w-80 h-96" carousel-titles>
                     <h4 class="text-2xl hidden">Élections CNESER 2025-2027</h4>
                     <h4 class="text-2xl hidden">États généraux de la démocratie et l'engagement des jeunes - 2025</h4>
                     <h4 class="text-2xl hidden">BOUGE TON CROUS 2024</h4>
@@ -121,50 +121,8 @@
 
         </section>
 
-        <script>
-            const carousel = document.getElementById("carousel");
-            const totalSlides = carousel.children.length;
+        <script src="carousel.js"></script>
 
-            const carouselTitle = document.getElementById("carouselTitle");
-            const titles = Array.from(carouselTitle.children); // Convertit en tableau
-            const totalTitles = titles.length;
-
-            let autoSlideInterval;
-            let index = 0;
-
-            function updateCarousel() {
-                carousel.style.transform = `translateX(-${index * 100}%)`;
-
-                titles.forEach((title, i) => {
-                    title.classList.add('hidden');
-                });
-
-                titles[index].classList.remove('hidden');
-            }
-
-            function startAutoSlide() {
-                clearInterval(autoSlideInterval);
-                autoSlideInterval = setInterval(() => {
-                    index = (index + 1) % totalSlides;
-                    updateCarousel();
-                }, 5000);
-            }
-
-            document.getElementById("previous").addEventListener("click", () => {
-                index = (index - 1 + totalSlides) % totalSlides;
-                updateCarousel();
-                startAutoSlide();
-            });
-
-            document.getElementById("next").addEventListener("click", () => {
-                index = (index + 1) % totalSlides;
-                updateCarousel();
-                startAutoSlide();
-            });
-
-            updateCarousel();
-            startAutoSlide();
-        </script>
 
 
         <section class="px-2">
@@ -199,21 +157,23 @@
         </section>
     </main>
 
-    <footer class="w-11/12 mx-auto">
-        <div class="border-1 opacity-50 "></div>
+    <footer class="w-full bg-fage-500 text-white px-4">
+        <!-- <hr class="border-1 opacity-50">
+        </hr> -->
         <div class="flex justify-between min-h-50 items-center">
             <div class="flex items-center">
-                <img src="assets/image/Logo_FAGE.svg" alt="Logo FAGE" class="max-w-60">
+                <img src="assets/image/Logo_FAGE_blanc.svg" alt="Logo FAGE" class="max-w-60">
             </div>
-            <ul class="items-end">
+            <ul class="items-end font-bold">
                 <li class="text-right">
                     FAGE - Fédération des Associations Générales Etudiantes
                 </li>
-                <li class="text-right">79 rue Périer</li>
+                <li class="text-right ">79 rue Périer</li>
                 <li class="text-right">92120 Montrouge</li>
-                <li class="text-right">Tél. : 01.40.33.70.70</li>
+                <li class="text-right">Tél. : <a class="underline hover:text-fage-900" href="tel:+330140337070">01 40 33
+                        70 70</a></li>
                 <li class="underline text-right ">
-                    <a class="hover:text-fage-600">Nous contacter</a>
+                    <a class="hover:text-fage-900">Nous contacter</a>
                 </li>
             </ul>
         </div>
