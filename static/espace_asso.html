@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAGE - Espace Association</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header
+        class="flex flex-wrap lg:items-center items-stretch justify-stretch lg:justify-between lg:flex-row flex-col sticky top-0 left-0 right-0 z-10 px-4 bg-white shadow-sm">
+        <div class="flex items-center justify-between lg:justify-start">
+            <button class="lg:hidden hover:bg-fage-100 active:bg-fage-200 p-2 rounded flex flex-col gap-1"
+                title="Ouvrir/fermer le menu">
+                <span class="sr-only">Menu</span>
+                <span class="block w-8 h-1 bg-fage-400 rounded"></span>
+                <span class="block w-8 h-1 bg-fage-400 rounded"></span>
+                <span class="block w-8 h-1 bg-fage-400 rounded"></span>
+            </button>
+
+            <script>
+                const button = document.querySelector("button");
+                button.addEventListener("click", () => {
+                    button.classList.toggle("active");
+                    const nav = document.querySelector("nav");
+                    nav.classList.toggle("hidden");
+                });
+            </script>
+
+            <a class href="index.html">
+                <span class="hidden" aria-hidden="true">Retour à
+                    l'accueil</span>
+                <img src="assets/image/Logo_FAGE.svg" alt="Logo_FAGE" class="lg:max-w-40 max-w-20 m-2" />
+            </a>
+        </div>
+
+        <nav class="justify-center hidden lg:flex active">
+            <ul class="flex flex-1 flex-wrap gap-2 lg:flex-row flex-col items-stretch lg:items-center w-full lg:w-auto">
+                <li>
+                    <a
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 rounded-full px-4 text-white py-2 font-bold">
+                        La FAGE
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Nos
+                        actions</a>
+                </li>
+                <li>
+                    <a
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Actualités</a>
+                </li>
+
+                <li>
+                    <a href="espace_asso.html"
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Espace
+                        association</a>
+                </li>
+                <li>
+                    <a href="https://www.helloasso.com/associations/federation-des-associations-generales-etudiantes-fage/formulaires/1"
+                        target="_blank"
+                        class="2xl:ml-120 block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md">Faire
+                        un don</a>
+                </li>
+                <li><a
+                        class="block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md">Contact</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="flex gap-3">
+
+
+        </div>
+
+        <div class="m-2 border-2 border-fage-400 bg-white rounded-full overflow-hidden lg:max-w-60">
+            <input role="search" aria-label="Rechercher" type="search" placeholder="Rechercher" name="search"
+                id="search" class="px-8 text-xl py-1 outline-0 w-full" />
+        </div>
+    </header>
+
+    <main class="flex justify-center">
+        <div class="flex flex-row w-9/12">
+            <div class="m-10 pr-4 border-r">
+                <ul class="">
+                    <li class="mb-4 border-b pb-2">
+                        <a>Créer son association d'anciens</a>
+                    </li>
+                    <li class="mb-4 border-b pb-2 text-fage-600 hover:text-fage-900">
+                        <a>Financer ses projets</a>
+                    </li>
+                    <li class="mb-4 border-b pb-2 text-fage-600 hover:text-fage-900">
+                        <a>Livret Solidaire
+                            Associations</a>
+                    </li>
+                    <li><a></a></li>
+
+                </ul>
+            </div>
+
+            <div class="mt-8 w-9/12 text-lg">
+                <h1 class="text-4xl text-fage-500 font-bold">Votre asso d'anciens : créez-la, rejoignez-la !</h1>
+                <section class=" mt-4">
+                    Les associations d'anciens étudiants se développent activement dans les établissements
+                    d'Enseignement Supérieur. A l'heure où l'insertion professionnelle est une réelle problématique, la
+                    création et le développement de ce type de structure deviennent indispensables.
+                </section>
+                <hr class="my-4">
+                <div class="flex flex-row">
+                    <a href="https://www.fage.org/ressources/documents/1/801,FAGE_Kit-Associations-et-Reseaux-d-a.pdf"
+                        class="mr-8">
+                        <img src="assets/image/kit.png" alt="Kit de mobilisation" width="1000" class="object-cover ">
+                    </a>
+                    <div>
+                        Au-delà de la simple perspective de création d'un réseau d'entraide, cela permet de défendre des
+                        valeurs communes, de défendre, promouvoir, et de s'identifier autour de l'établissement, du
+                        diplôme.
+                        Tout en mettant en relation les anciens et actuels étudiants/élèves, cela assure la promotion et
+                        l'image des diplômes, et cursus préparés, aux yeux des professionnels.
+                        <hr class="border-0 size-4">
+                        Il paraissait essentiel de mettre en place un <a
+                            href="https://www.fage.org/ressources/documents/1/801,FAGE_Kit-Associations-et-Reseaux-d-a.pdf"
+                            class="text-fage-600 hover:text-fage-900 hover:underline">
+                            kit de mobilisation
+                        </a>,
+                        <span class="font-bold">permettant de donner les
+                            clefs de
+                            base pour la création et le fonctionnement de ces associations.</span>
+                        <hr class="border-0 size-4">
+                        L'axe de travail de cette campagne est de faire prendre conscience et de sensibiliser les
+                        associatifs étudiants, mais surtout plus largement les étudiants à l'utilité de ce type de
+                        structure, et de leur donner les bases et les moyens de créer et développer une association
+                        d'anciens étudiants / élèves.
+                    </div>
+                </div>
+                <div class="bg-fage-100 rounded-2xl p-4 my-4">
+                    <h2 class="text-2xl text-fage-600 font-bold">
+                        Ce que comprend le kit de la campagne
+                    </h2>
+                    <ul class="list-disc pl-6 py-2">
+                        <li class="mb-4">
+                            Un <span class="font-bold">kit de mobilisation en téléchargement</span> relatant les moyens
+                            et les éléments de base à
+                            utiliser et
+                            mettre en place pour la création et le développement d'association d'anciens étudiants /
+                            élèves dans
+                            votre établissement.
+                        </li>
+                        <li>
+                            Une affiche (à imprimer) permettant de communiquer et de faire la promotion des associations
+                            d'anciens étudiants.
+                        </li>
+                    </ul>
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="w-full bg-fage-500 text-white px-4">
+        <div class="flex justify-between min-h-50 items-center">
+            <div class="flex items-center">
+                <img src="assets/image/Logo_FAGE_blanc.svg" alt="Logo FAGE" class="max-w-60">
+            </div>
+            <ul class="items-end font-bold">
+                <li class="text-right">
+                    FAGE - Fédération des Associations Générales Etudiantes
+                </li>
+                <li class="text-right ">79 rue Périer</li>
+                <li class="text-right">92120 Montrouge</li>
+                <li class="text-right">Tél. : <a class="underline hover:text-fage-900" href="tel:+330140337070">01 40 33
+                        70 70</a></li>
+                <li class="underline text-right ">
+                    <a class="hover:text-fage-900">Nous contacter</a>
+                </li>
+            </ul>
+        </div>
+
+    </footer>
+</body>
