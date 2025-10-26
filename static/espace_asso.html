@@ -96,7 +96,7 @@
             })
         </script>
         <div id="sidePanel"
-            class="py-10 pt-5 px-5 mr-4  bg-fage-50 rounded-l-none rounded-tr-none  rounded-2xl  mt-10 left-0 top-30 h-fit fixed -translate-x-full transition duration-700 lg:hidden block">
+            class="py-10 pt-5 px-5 mr-4  bg-fage-50 rounded-l-none rounded-tr-none  rounded-2xl  mt-10 left-0 top-30 h-fit fixed -translate-x-full transition  duration-700 lg:hidden block max-w-8/12">
             <button id="sidePanelBtn"
                 class="absolute top-0 left-full bg-fage-100 hover:bg-fage-200 rounded-r-2xl p-2 text-center lg:hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="transition duration-700 w-10">
@@ -199,7 +199,7 @@
     </main>
 
     <footer class="w-full bg-fage-500 text-white px-4">
-        <div class="flex justify-between min-h-50 items-center">
+        <div class="flex flex-col lg:flex-row justify-between min-h-50 items-center">
             <div class="flex items-center">
                 <img src="assets/image/Logo_FAGE_blanc.svg" alt="Logo FAGE" class="max-w-60">
             </div>
@@ -207,11 +207,13 @@
                 <li class="text-right">
                     FAGE - Fédération des Associations Générales Etudiantes
                 </li>
-                <li class="text-right ">79 rue Périer</li>
-                <li class="text-right">92120 Montrouge</li>
-                <li class="text-right">Tél. : <a class="underline hover:text-fage-900" href="tel:+330140337070">01 40 33
+                <li class="text-center lg:text-right ">79 rue Périer</li>
+                <li class="text-center lg:text-right">92120 Montrouge</li>
+                <li class="text-center lg:text-right">Tél. : <a class="underline hover:text-fage-900"
+                        href="tel:+330140337070">01 40
+                        33
                         70 70</a></li>
-                <li class="underline text-right ">
+                <li class="underline text-center lg:text-right ">
                     <a class="hover:text-fage-900">Nous contacter</a>
                 </li>
             </ul>
