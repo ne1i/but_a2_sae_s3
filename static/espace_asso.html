@@ -10,7 +10,7 @@
 
 <body>
     <header
-        class="flex flex-wrap lg:items-center items-stretch justify-stretch lg:justify-between lg:flex-row flex-col sticky top-0 left-0 right-0 z-10 px-4 bg-white shadow-sm">
+        class="flex flex-wrap lg:flex-nowrap lg:items-center items-stretch justify-items-stretch  lg:flex-row flex-col sticky top-0 left-0 right-0 z-10 px-4 bg-white shadow-sm">
         <div class="flex items-center justify-between lg:justify-start">
             <button class="lg:hidden hover:bg-fage-100 active:bg-fage-200 p-2 rounded flex flex-col gap-1"
                 title="Ouvrir/fermer le menu">
@@ -36,8 +36,8 @@
             </a>
         </div>
 
-        <nav class="justify-center hidden lg:flex active">
-            <ul class="flex flex-1 flex-wrap gap-2 lg:flex-row flex-col items-stretch lg:items-center w-full lg:w-auto">
+        <nav class="hidden lg:flex active grow">
+            <ul class="flex flex-wrap  gap-2 lg:flex-row flex-col items-stretch lg:items-center w-full">
                 <li>
                     <a
                         class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 rounded-full px-4 text-white py-2 font-bold">
@@ -59,10 +59,10 @@
                         class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Espace
                         association</a>
                 </li>
-                <li>
+                <li class="lg:ml-auto">
                     <a href="https://www.helloasso.com/associations/federation-des-associations-generales-etudiantes-fage/formulaires/1"
                         target="_blank"
-                        class="2xl:ml-120 block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md">Faire
+                        class=" block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md">Faire
                         un don</a>
                 </li>
                 <li><a
@@ -81,84 +81,120 @@
         </div>
     </header>
 
-    <main class="flex justify-center">
-        <div class="flex flex-row lg:w-9/12">
-            <div class="lg:m-10 lg:pr-4 lg:border-r invisible lg:visible w-0 lg:w-auto">
-                <ul class="">
-                    <li class="mb-4 border-b pb-2">
-                        <a>Créer son association d'anciens</a>
-                    </li>
-                    <li class="mb-4 border-b pb-2 text-fage-600 hover:text-fage-900">
-                        <a>Financer ses projets</a>
-                    </li>
-                    <li class="mb-4 border-b pb-2 text-fage-600 hover:text-fage-900">
-                        <a>Livret Solidaire
-                            Associations</a>
-                    </li>
+    <main class="flex justify-center mb-6  lg:w-9/12 mx-auto">
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                /** @type {HTMLButtonElement}*/
+                const button = document.getElementById("sidePanelBtn");
+                /** @type {HTMLDivElement}*/
+                const sidePanel = document.getElementById("sidePanel");
 
-                </ul>
+                button.addEventListener("click", function () {
+                    sidePanel.classList.toggle("-translate-x-full");
+                    button.children[0].classList.toggle("rotate-180");
+                })
+            })
+        </script>
+        <div id="sidePanel"
+            class="py-10 pt-5 px-5 mr-4  bg-fage-50 rounded-l-none rounded-tr-none  rounded-2xl  mt-10 left-0 top-30 h-fit fixed -translate-x-full transition duration-700 lg:hidden block">
+            <button id="sidePanelBtn"
+                class="absolute top-0 left-full bg-fage-100 hover:bg-fage-200 rounded-r-2xl p-2 text-center lg:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="transition duration-700 w-10">
+                    <path
+                        d="M566.6 342.6C579.1 330.1 579.1 309.8 566.6 297.3L406.6 137.3C394.1 124.8 373.8 124.8 361.3 137.3C348.8 149.8 348.8 170.1 361.3 182.6L466.7 288L96 288C78.3 288 64 302.3 64 320C64 337.7 78.3 352 96 352L466.7 352L361.3 457.4C348.8 469.9 348.8 490.2 361.3 502.7C373.8 515.2 394.1 515.2 406.6 502.7L566.6 342.7z" />
+                </svg>
+            </button>
+            <ul class="">
+                <li class=" border-b">
+                    <a class="p-2 mb-2 inline-block text-xl">Créer son association d'anciens</a>
+                </li>
+                <li class=" border-b text-fage-600 hover:text-fage-900">
+                    <a class="p-2 mb-2 inline-block text-xl">Financer ses projets</a>
+                </li>
+                <li class=" border-b text-fage-600 hover:text-fage-900">
+                    <a class="p-2 mb-2 inline-block text-xl">Livret Solidaire
+                        Associations</a>
+                </li>
+
+            </ul>
+        </div>
+        <!-- Écran large -->
+        <div class="py-10 pt-5 px-5 mr-4  bg-fage-50 rounded-2xl mt-10 lg:block hidden">
+            <ul class="">
+                <li class=" border-b">
+                    <a class="p-2 mb-2 inline-block">Créer son association d'anciens</a>
+                </li>
+                <li class=" border-b text-fage-600 hover:text-fage-900">
+                    <a class="p-2 mb-2 inline-block">Financer ses projets</a>
+                </li>
+                <li class=" border-b text-fage-600 hover:text-fage-900">
+                    <a class="p-2 mb-2 inline-block">Livret Solidaire
+                        Associations</a>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="lg:mt-8 lg:w-9/12 text-lg p-10 lg:p-0 ml-8 lg:ml-0">
+            <h1 class="text-4xl text-fage-500 font-bold">Votre asso d'anciens : créez-la, rejoignez-la !</h1>
+            <section class=" mt-4">
+                Les associations d'anciens étudiants se développent activement dans les établissements
+                d'Enseignement Supérieur. A l'heure où l'insertion professionnelle est une réelle problématique, la
+                création et le développement de ce type de structure deviennent indispensables.
+            </section>
+            <hr class="my-4">
+            <div class="flex flex-col-reverse lg:flex-row items-center">
+                <a href="https://www.fage.org/ressources/documents/1/801,FAGE_Kit-Associations-et-Reseaux-d-a.pdf"
+                    class="lg:mr-8 lg:my-0 my-6">
+                    <img src="assets/image/kit.png" alt="Kit de mobilisation" width="1000"
+                        class="object-cover w-100 lg:w-auto">
+                </a>
+                <div>
+                    Au-delà de la simple perspective de création d'un réseau d'entraide, cela permet de défendre des
+                    valeurs communes, de défendre, promouvoir, et de s'identifier autour de l'établissement, du
+                    diplôme.
+                    Tout en mettant en relation les anciens et actuels étudiants/élèves, cela assure la promotion et
+                    l'image des diplômes, et cursus préparés, aux yeux des professionnels.
+                    <hr class="border-0 size-4">
+                    Il paraissait essentiel de mettre en place un <a
+                        href="https://www.fage.org/ressources/documents/1/801,FAGE_Kit-Associations-et-Reseaux-d-a.pdf"
+                        class="text-fage-600 hover:text-fage-900 hover:underline">
+                        kit de mobilisation
+                    </a>,
+                    <span class="font-bold">permettant de donner les
+                        clefs de
+                        base pour la création et le fonctionnement de ces associations.</span>
+                    <hr class="border-0 size-4">
+                    L'axe de travail de cette campagne est de faire prendre conscience et de sensibiliser les
+                    associatifs étudiants, mais surtout plus largement les étudiants à l'utilité de ce type de
+                    structure, et de leur donner les bases et les moyens de créer et développer une association
+                    d'anciens étudiants / élèves.
+                </div>
             </div>
-
-            <div class="lg:mt-8 lg:w-9/12 text-lg p-10 lg:p-0">
-                <h1 class="text-4xl text-fage-500 font-bold">Votre asso d'anciens : créez-la, rejoignez-la !</h1>
-                <section class=" mt-4">
-                    Les associations d'anciens étudiants se développent activement dans les établissements
-                    d'Enseignement Supérieur. A l'heure où l'insertion professionnelle est une réelle problématique, la
-                    création et le développement de ce type de structure deviennent indispensables.
-                </section>
-                <hr class="my-4">
-                <div class="flex flex-col-reverse lg:flex-row items-center">
-                    <a href="https://www.fage.org/ressources/documents/1/801,FAGE_Kit-Associations-et-Reseaux-d-a.pdf"
-                        class="lg:mr-8 lg:my-0 my-6">
-                        <img src="assets/image/kit.png" alt="Kit de mobilisation" width="1000"
-                            class="object-cover w-100 lg:w-auto">
-                    </a>
-                    <div>
-                        Au-delà de la simple perspective de création d'un réseau d'entraide, cela permet de défendre des
-                        valeurs communes, de défendre, promouvoir, et de s'identifier autour de l'établissement, du
-                        diplôme.
-                        Tout en mettant en relation les anciens et actuels étudiants/élèves, cela assure la promotion et
-                        l'image des diplômes, et cursus préparés, aux yeux des professionnels.
-                        <hr class="border-0 size-4">
-                        Il paraissait essentiel de mettre en place un <a
-                            href="https://www.fage.org/ressources/documents/1/801,FAGE_Kit-Associations-et-Reseaux-d-a.pdf"
-                            class="text-fage-600 hover:text-fage-900 hover:underline">
-                            kit de mobilisation
-                        </a>,
-                        <span class="font-bold">permettant de donner les
-                            clefs de
-                            base pour la création et le fonctionnement de ces associations.</span>
-                        <hr class="border-0 size-4">
-                        L'axe de travail de cette campagne est de faire prendre conscience et de sensibiliser les
-                        associatifs étudiants, mais surtout plus largement les étudiants à l'utilité de ce type de
-                        structure, et de leur donner les bases et les moyens de créer et développer une association
-                        d'anciens étudiants / élèves.
-                    </div>
-                </div>
-                <div class="bg-fage-100 rounded-2xl p-6 my-6">
-                    <h2 class="text-2xl text-fage-600 font-bold">
-                        Ce que comprend le kit de la campagne
-                    </h2>
-                    <ul class="list-disc pl-6 py-2">
-                        <li class="mb-4">
-                            Un <span class="font-bold">kit de mobilisation en téléchargement</span> relatant les moyens
-                            et les éléments de base à
-                            utiliser et
-                            mettre en place pour la création et le développement d'association d'anciens étudiants /
-                            élèves dans
-                            votre établissement.
-                        </li>
-                        <li>
-                            Une affiche (à imprimer) permettant de communiquer et de faire la promotion des associations
-                            d'anciens étudiants.
-                        </li>
-                    </ul>
+            <div class="bg-fage-100 rounded-2xl p-6 mt-6">
+                <h2 class="text-2xl text-fage-600 font-bold">
+                    Ce que comprend le kit de la campagne
+                </h2>
+                <ul class="list-disc pl-6 py-2">
+                    <li class="mb-4">
+                        Un <span class="font-bold">kit de mobilisation en téléchargement</span> relatant les moyens
+                        et les éléments de base à
+                        utiliser et
+                        mettre en place pour la création et le développement d'association d'anciens étudiants /
+                        élèves dans
+                        votre établissement.
+                    </li>
+                    <li>
+                        Une affiche (à imprimer) permettant de communiquer et de faire la promotion des associations
+                        d'anciens étudiants.
+                    </li>
+                </ul>
 
 
 
-                </div>
             </div>
         </div>
+
 
     </main>
 
