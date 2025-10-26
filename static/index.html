@@ -8,189 +8,215 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="bg-fage-50">
     <header
-        class="flex flex-wrap items-center justify-between sticky top-0 left-0 right-0 z-10 px-4 bg-white shadow-sm">
-        <a class href="index.html">
-            <span class="hidden" aria-hidden="true">Retour à
-                l'accueil</span>
-            <img src="assets/image/Logo_FAGE.svg" alt="Logo_FAGE" class="max-w-50 m-2" />
-        </a>
+        class="flex flex-wrap lg:items-center items-stretch justify-stretch lg:justify-between lg:flex-row flex-col sticky top-0 left-0 right-0 z-10 px-4 bg-white shadow-sm">
+        <div class="flex items-center justify-between lg:justify-start">
+            <button class="lg:hidden hover:bg-fage-100 active:bg-fage-200 p-2 rounded flex flex-col gap-1"
+                title="Ouvrir/fermer le menu">
+                <span class="sr-only">Menu</span>
+                <span class="block w-8 h-1 bg-fage-400 rounded"></span>
+                <span class="block w-8 h-1 bg-fage-400 rounded"></span>
+                <span class="block w-8 h-1 bg-fage-400 rounded"></span>
+            </button>
 
-        <nav class="flex justify-center">
-            <ul class="flex flex-wrap gap-2">
-                <li><a
-                        class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">La
-                        FAGE</a></li>
+            <script>
+                const button = document.querySelector("button");
+                button.addEventListener("click", () => {
+                    button.classList.toggle("active");
+                    const nav = document.querySelector("nav");
+                    nav.classList.toggle("hidden");
+                });
+            </script>
+
+            <a class href="index.html">
+                <span class="hidden" aria-hidden="true">Retour à
+                    l'accueil</span>
+                <img src="assets/image/Logo_FAGE.svg" alt="Logo_FAGE" class="lg:max-w-40 max-w-20 m-2" />
+            </a>
+        </div>
+
+        <nav class="justify-center hidden lg:flex active">
+            <ul class="flex flex-1 flex-wrap gap-2 lg:flex-row flex-col items-stretch lg:items-center w-full lg:w-auto">
+                <li>
+                    <a
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 rounded-full px-4 text-white py-2 font-bold">
+                        La FAGE
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Nos
+                        actions</a>
+                </li>
+                <li>
+                    <a
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Actualités</a>
+                </li>
+
+                <li>
+                    <a href="espace_asso.html"
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Espace
+                        association</a>
+                </li>
+                <li>
+                    <a href="https://www.helloasso.com/associations/federation-des-associations-generales-etudiantes-fage/formulaires/1"
+                        target="_blank"
+                        class="2xl:ml-120 block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md">Faire
+                        un don</a>
                 </li>
                 <li><a
-                        class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Innovations
-                        sociales</a></li>
-                <li><a
-                        class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Mes
-                        droits</a></li>
-                <li><a
-                        class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Événements</a>
+                        class="block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md">Contact</a>
                 </li>
-                <li><a
-                        class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Formations</a>
-                </li>
-                <li><a
-                        class="inline-block bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded px-4 text-white font-bold">Espace
-                        association</a></li>
             </ul>
         </nav>
+        <div class="flex gap-3">
 
-        <div class="max-w-50 m-2 border-2 border-fage-400 bg-white rounded-full overflow-hidden">
-            <input type="search" placeholder="Rechercher" name="search" id="search"
-                class="ps-4 text-xl py-1 outline-0" />
+
+        </div>
+
+        <div class="m-2 border-2 border-fage-400 bg-white rounded-full overflow-hidden lg:max-w-60">
+            <input role="search" aria-label="Rechercher" type="search" placeholder="Rechercher" name="search"
+                id="search" class="px-8 text-xl py-1 outline-0 w-full" />
         </div>
     </header>
 
-    <main>
-        <div class="flex justify-center relative mt-16">
-            <img src="assets/image/background.jpg" alt="Image de fond" class="opacity-20 h-[900px] w-full object-cover">
-            <div class="absolute left-0 top-0 w-full">
-                <h1 class="text-fage-500 text-7xl mx-auto font-bold text-center mb-6 text-shadow-md">FAGE,
-                    l'association
-                    <br>pour les étudiants
-                </h1>
-                <h2 class="text-2xl mx-auto text-center text-fage-900 mb-22">Fédération
-                    des associations
-                    Générales Étudiantes</h2>
-                <p class="text-center mb-26">
-                    <a href="https://www.helloasso.com/associations/federation-des-associations-generales-etudiantes-fage/formulaires/1"
-                        class="bg-gradient-to-bl from-fage-400 to-fage-700 text-white p-8 font-bold rounded-full text-3xl hover:bg-gradient-to-br active:bg-gradient-to-tr shadow-xl"
-                        target="_blank">Faire
-                        un don</a>
-                </p>
-                <p class="text-center">
-                    <a class="bg-amber-400 p-6 rounded-xl font-bold shadow-md hover:bg-amber-500 active:bg-amber-600">Besoin
-                        de discuter
-                        ?</a>
-                </p>
-            </div>
+    <main class="mb-6">
+        <div class="flex justify-center items-center flex-col relative pt-20 pb-40">
+            <img src="assets/image/background.jpg" alt="Image de fond"
+                class="absolute left-0 top-0 -z-10 opacity-20 h-full object-cover w-full bg-gradient-to-t from-white to-transparent" />
+
+            <h1 class="text-fage-500 text-7xl mx-auto font-bold text-center mb-6 text-shadow-md max-w-[15ch]">
+                FAGE, l'association pour les étudiants
+            </h1>
+            <h2 class="text-2xl mx-auto text-center text-fage-900 mb-14">
+                Fédération des associations Générales Étudiantes
+            </h2>
+
+            <a href="https://www.helloasso.com/associations/federation-des-associations-generales-etudiantes-fage/formulaires/1"
+                class="mb-12 bg-gradient-to-bl from-fage-400 to-fage-700 text-white p-8 font-bold rounded-full text-3xl hover:bg-gradient-to-br active:bg-gradient-to-tr shadow-xl hover:-translate-y-1 active:translate-y-1 transition-all"
+                target="_blank">Faire un don</a>
+
+            <a class="bg-amber-400 p-6 rounded-xl font-bold shadow-md hover:bg-amber-500 active:bg-amber-600">Besoin
+                de
+                discuter ?</a>
         </div>
 
         <section class="flex items-center justify-around mt-10">
-            <div class="flex p-4 rounded-2xl">
-                <div class="relative w-full max-w-2xl overflow-hidden shadow-lg">
-                    <div id="carousel" class="flex transition-transform duration-700">
+            <div class=" flex p-4 rounded-2xl bg-fage-100" carousel>
+                <div class="relative w-full max-w-2xl overflow-hidden ">
+                    <div class="flex transition-transform duration-700" carousel-images>
                         <img src="assets/image/actu1.png" alt="Image carousel 1"
                             class="w-full h-96 object-contain flex-shrink-0">
                         <img src="assets/image/actu2.jpeg" alt="Image carousel 2"
                             class="w-full h-96 object-contain flex-shrink-0">
-
                         <img src="assets/image/actu3.png" alt="Image carousel 3"
                             class="w-full h-96 object-contain flex-shrink-0">
                     </div>
-                    <button id="previous"
-                        class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gray-700 p-2 rounded-full shadow">⬅</button>
-                    <button id="next"
-                        class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gray-700 p-2 rounded-full shadow">➡</button>
+                    <button carousel-previous
+                        class="absolute left-3 top-1/2 -translate-y-1/2 bg-white hover:bg-white text-gray-700 p-2 w-8 h-8 rounded-full shadow leading-none">⬅</button>
+                    <button carousel-next
+                        class="absolute right-3 top-1/2 -translate-y-1/2 bg-white hover:bg-white text-gray-700 p-2 w-8 h-8 rounded-full shadow leading-none">➡</button>
                 </div>
-                <div class="ml-4 flex flex-wrap w-80 h-96" id="carouselTitle">
-                    <h4 class="text-2xl hidden">Élections CNESER 2025-2027</h4>
-                    <h4 class="text-2xl hidden">États généraux de la démocratie et l'engagement des jeunes - 2025</h4>
+                <div class=" ml-8 flex flex-wrap w-80 h-96 bg-fage-200 rounded-xl p-6" carousel-titles>
+                    <h4 class="text-2xl hidden">Élections CNESER
+                        2025-2027</h4>
+                    <h4 class="text-2xl hidden">États généraux de la
+                        démocratie et l'engagement des jeunes - 2025</h4>
                     <h4 class="text-2xl hidden">BOUGE TON CROUS 2024</h4>
                 </div>
             </div>
 
         </section>
 
-        <script>
-            const carousel = document.getElementById("carousel");
-            const totalSlides = carousel.children.length;
+        <script src="carousel.js"></script>
 
-            const carouselTitle = document.getElementById("carouselTitle");
-            const titles = Array.from(carouselTitle.children); // Convertit en tableau
-            const totalTitles = titles.length;
+        <section class="px-2 my-10">
+            <h2 class="text-center text-4xl text-fage-500 font-bold">Les aides mises
+                en place par la FAGE</h2>
 
-            let autoSlideInterval;
-            let index = 0;
+            <div class="flex flex-wrap justify-around gap-4 mt-12">
+                <div
+                    class="max-w-sm rounded overflow-hidden shadow-lg transition-all hover:shadow-xl hover:-translate-y-2 bg-white">
+                    <a href><img class="w-full" src="assets/image/aide1.png" alt="Sunset in the mountains"></a>
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2"><a href
+                                class="underline text-fage-600 hover:text-fage-900">Une question
+                                ?
+                                Connaitre et défendre tes
+                                droits</a></div>
+                        <p class="text-gray-700 text-base">
+                            Parcoursup, Master, bourses, logement, santé...
+                            Nous avons des droits, défendons-les ! Toute
+                            l'année, la FAGE t'accompagne et répond à tes
+                            questions.
 
-            function updateCarousel() {
-                carousel.style.transform = `translateX(-${index * 100}%)`;
-
-                titles.forEach((title, i) => {
-                    title.classList.add('hidden');
-                });
-
-                titles[index].classList.remove('hidden');
-            }
-
-            function startAutoSlide() {
-                clearInterval(autoSlideInterval);
-                autoSlideInterval = setInterval(() => {
-                    index = (index + 1) % totalSlides;
-                    updateCarousel();
-                }, 5000);
-            }
-
-            document.getElementById("previous").addEventListener("click", () => {
-                index = (index - 1 + totalSlides) % totalSlides;
-                updateCarousel();
-                startAutoSlide();
-            });
-
-            document.getElementById("next").addEventListener("click", () => {
-                index = (index + 1) % totalSlides;
-                updateCarousel();
-                startAutoSlide();
-            });
-
-            updateCarousel();
-            startAutoSlide();
-        </script>
-
-
-        <section class="px-2">
-            <h2 class="text-4xl text-center py-10 underline">Nos
-                missions</h2>
-            <div class="flex flex-wrap justify-around gap-4 ">
-                <div>
-                    <h3 class="text-center text-xl">Titre de la mission
-                        1</h3>
-                    <a>
-                        <img src="https://picsum.photos/440/280" alt="Image de mission" class="rounded-xl my-10">
-                    </a>
+                            Parcours la foire aux questions ou contacte-nous
+                            via <a href="mailto:mesdroits@fage.org"
+                                class="text-fage-600 underline hover:text-fage-900">mesdroits@fage.org</a>.
+                        </p>
+                    </div>
 
                 </div>
-                <div>
-                    <h3 class="text-center text-xl">Titre de la mission
-                        2</h3>
-                    <a>
-                        <img src="https://picsum.photos/440/280" alt="Image de mission" class="rounded-xl my-10 ">
-                    </a>
+                <div
+                    class="max-w-sm rounded overflow-hidden shadow-lg transition-all hover:shadow-xl hover:-translate-y-2 bg-white">
+                    <a href><img class="w-full" src="assets/image/aide2.jpeg" alt="Sunset in the mountains"></a>
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2"><a href
+                                class="underline text-fage-600 hover:text-fage-900">SOS-Parcoursup</a>
+                        </div>
+                        <p class="text-gray-700 text-base">
+                            Afin que tu puisses avoir toutes les cartes en
+                            main pour choisir ton affectation et
+                            connaître tes droits, nous avons créé la
+                            plateforme SOS-Parcoursup !
+
+                            Si tu rencontres un problème avec Parcoursup,
+                            contacte-nous !
+                        </p>
+                    </div>
 
                 </div>
-                <div>
-                    <h3 class="text-center text-xl">Titre de la mission
-                        3</h3>
-                    <a>
-                        <img src="https://picsum.photos/440/280" alt="Image de mission" class="rounded-xl my-10 ">
-                    </a>
+                <div
+                    class="max-w-sm rounded overflow-hidden shadow-lg transition-all hover:shadow-xl hover:-translate-y-2 bg-white">
+                    <a href><img class="w-full" src="assets/image/aide3.png" alt="Sunset in the mountains"></a>
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2"><a href
+                                class="underline text-fage-600 hover:text-fage-900">SOS-MonMaster</a>
+                        </div>
+                        <p class="text-gray-700 text-base">
+                            Afin que tu puisses avoir toutes les
+                            informations pour choisir ton master et
+                            connaître tes
+                            droits, nous avons créé la plateforme
+                            SOS-MonMaster !
+
+                            Si tu rencontres un problème avec Mon Master,
+                            contacte-nous !
+                        </p>
+                    </div>
 
                 </div>
+
             </div>
         </section>
     </main>
 
-    <footer class="w-11/12 mx-auto">
-        <div class="border-1 opacity-50 "></div>
+    <footer class="w-full bg-fage-500 text-white px-4">
         <div class="flex justify-between min-h-50 items-center">
             <div class="flex items-center">
-                <img src="assets/image/Logo_FAGE.svg" alt="Logo FAGE" class="max-w-60">
+                <img src="assets/image/Logo_FAGE_blanc.svg" alt="Logo FAGE" class="max-w-60">
             </div>
-            <ul class="items-end">
+            <ul class="items-end font-bold">
                 <li class="text-right">
                     FAGE - Fédération des Associations Générales Etudiantes
                 </li>
-                <li class="text-right">79 rue Périer</li>
+                <li class="text-right ">79 rue Périer</li>
                 <li class="text-right">92120 Montrouge</li>
-                <li class="text-right">Tél. : 01.40.33.70.70</li>
+                <li class="text-right">Tél. : <a class="underline hover:text-fage-900" href="tel:+330140337070">01 40 33
+                        70 70</a></li>
                 <li class="underline text-right ">
-                    <a class="hover:text-fage-600">Nous contacter</a>
+                    <a class="hover:text-fage-900">Nous contacter</a>
                 </li>
             </ul>
         </div>
