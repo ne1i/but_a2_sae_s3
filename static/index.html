@@ -86,7 +86,7 @@
             <img src="assets/image/background.jpg" alt="Image de fond"
                 class="absolute left-0 top-0 -z-10 opacity-20 h-full object-cover w-full bg-gradient-to-t from-white to-transparent" />
 
-            <h1 class="text-fage-500 text-7xl mx-auto font-bold text-center mb-6 text-shadow-md max-w-[15ch]">
+            <h1 class="text-fage-500 lg:text-7xl text-6xl font-bold text-center mb-6 text-shadow-md max-w-11/12">
                 FAGE, l'association pour les étudiants
             </h1>
             <h2 class="text-2xl mx-auto text-center text-fage-900 mb-14">
@@ -97,13 +97,13 @@
                 class="mb-12 bg-gradient-to-bl from-fage-400 to-fage-700 text-white p-8 font-bold rounded-full text-3xl hover:bg-gradient-to-br active:bg-gradient-to-tr shadow-xl hover:-translate-y-1 active:translate-y-1 transition-all"
                 target="_blank">Faire un don</a>
 
-            <a class="bg-amber-400 p-6 rounded-xl font-bold shadow-md hover:bg-amber-500 active:bg-amber-600">Besoin
+            <a class="bg-amber-400 p-6 rounded-xl font-bold shadow-md hover:bg-amber-500 active:bg-amber-600 text-xl">Besoin
                 de
                 discuter ?</a>
         </div>
 
-        <section class="flex items-center justify-around mt-10">
-            <div class=" flex p-4 rounded-2xl bg-fage-100" carousel>
+        <section class="flex items-center justify-around mt-10 m-4">
+            <div class=" flex flex-col lg:flex-row p-4 rounded-2xl bg-fage-100" carousel>
                 <div class="relative w-full max-w-2xl overflow-hidden ">
                     <div class="flex transition-transform duration-700" carousel-images>
                         <img src="assets/image/actu1.png" alt="Image carousel 1"
@@ -114,11 +114,20 @@
                             class="w-full h-96 object-contain flex-shrink-0">
                     </div>
                     <button carousel-previous
-                        class="absolute left-3 top-1/2 -translate-y-1/2 bg-white hover:bg-white text-gray-700 p-2 w-8 h-8 rounded-full shadow leading-none">⬅</button>
+                        class="absolute left-3 top-1/2 -translate-y-1/2 bg-white hover:bg-white text-gray-700 p-2 w-8 h-8 rounded-full shadow leading-none"><svg
+                            class="rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                            <path
+                                d="M566.6 342.6C579.1 330.1 579.1 309.8 566.6 297.3L406.6 137.3C394.1 124.8 373.8 124.8 361.3 137.3C348.8 149.8 348.8 170.1 361.3 182.6L466.7 288L96 288C78.3 288 64 302.3 64 320C64 337.7 78.3 352 96 352L466.7 352L361.3 457.4C348.8 469.9 348.8 490.2 361.3 502.7C373.8 515.2 394.1 515.2 406.6 502.7L566.6 342.7z" />
+                        </svg></button>
                     <button carousel-next
-                        class="absolute right-3 top-1/2 -translate-y-1/2 bg-white hover:bg-white text-gray-700 p-2 w-8 h-8 rounded-full shadow leading-none">➡</button>
+                        class="absolute right-3 top-1/2 -translate-y-1/2 bg-white hover:bg-white text-gray-700 p-2 w-8 h-8 rounded-full shadow leading-none"><svg
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                            <path
+                                d="M566.6 342.6C579.1 330.1 579.1 309.8 566.6 297.3L406.6 137.3C394.1 124.8 373.8 124.8 361.3 137.3C348.8 149.8 348.8 170.1 361.3 182.6L466.7 288L96 288C78.3 288 64 302.3 64 320C64 337.7 78.3 352 96 352L466.7 352L361.3 457.4C348.8 469.9 348.8 490.2 361.3 502.7C373.8 515.2 394.1 515.2 406.6 502.7L566.6 342.7z" />
+                        </svg></button>
                 </div>
-                <div class=" ml-8 flex flex-wrap w-80 h-96 bg-fage-200 rounded-xl p-6" carousel-titles>
+                <div class=" lg:ml-8 flex flex-wrap w-auto lg:w-80 h-96 bg-fage-200 rounded-xl p-6 lg:mt-0 mt-6"
+                    carousel-titles>
                     <h4 class="text-2xl hidden">Élections CNESER
                         2025-2027</h4>
                     <h4 class="text-2xl hidden">États généraux de la
@@ -132,16 +141,16 @@
         <script src="carousel.js"></script>
 
         <section class="px-2 my-10">
-            <h2 class="text-center text-4xl text-fage-500 font-bold">Les aides mises
+            <h2 class="text-center text-4xl text-fage-500 font-bold text-shadow-md">Les aides mises
                 en place par la FAGE</h2>
 
             <div class="flex flex-wrap justify-around gap-4 mt-12">
                 <div
                     class="max-w-sm rounded overflow-hidden shadow-lg transition-all hover:shadow-xl hover:-translate-y-2 bg-white">
-                    <a href><img class="w-full" src="assets/image/aide1.png" alt="Sunset in the mountains"></a>
+                    <a><img class="w-full" src="assets/image/aide1.png" alt="Sunset in the mountains"></a>
                     <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2"><a href
-                                class="underline text-fage-600 hover:text-fage-900">Une question
+                        <div class="font-bold text-xl mb-2"><a class="underline text-fage-600 hover:text-fage-900">Une
+                                question
                                 ?
                                 Connaitre et défendre tes
                                 droits</a></div>
@@ -160,9 +169,10 @@
                 </div>
                 <div
                     class="max-w-sm rounded overflow-hidden shadow-lg transition-all hover:shadow-xl hover:-translate-y-2 bg-white">
-                    <a href><img class="w-full" src="assets/image/aide2.jpeg" alt="Sunset in the mountains"></a>
+                    <a href="https://sos-parcoursup.fr/" target="_blank"><img class="w-full"
+                            src="assets/image/aide2.jpeg" alt="Sunset in the mountains"></a>
                     <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2"><a href
+                        <div class="font-bold text-xl mb-2"><a href="https://sos-parcoursup.fr/" target="_blank"
                                 class="underline text-fage-600 hover:text-fage-900">SOS-Parcoursup</a>
                         </div>
                         <p class="text-gray-700 text-base">
@@ -179,9 +189,10 @@
                 </div>
                 <div
                     class="max-w-sm rounded overflow-hidden shadow-lg transition-all hover:shadow-xl hover:-translate-y-2 bg-white">
-                    <a href><img class="w-full" src="assets/image/aide3.png" alt="Sunset in the mountains"></a>
+                    <a href="https://sos-monmaster.fr/" target="_blank"><img class="w-full" src="assets/image/aide3.png"
+                            alt="Sunset in the mountains"></a>
                     <div class="px-6 py-4">
-                        <div class="font-bold text-xl mb-2"><a href
+                        <div class="font-bold text-xl mb-2"><a href="https://sos-monmaster.fr/" target="_blank"
                                 class="underline text-fage-600 hover:text-fage-900">SOS-MonMaster</a>
                         </div>
                         <p class="text-gray-700 text-base">
@@ -203,7 +214,7 @@
     </main>
 
     <footer class="w-full bg-fage-500 text-white px-4">
-        <div class="flex justify-between min-h-50 items-center">
+        <div class="flex flex-col lg:flex-row justify-between min-h-50 items-center">
             <div class="flex items-center">
                 <img src="assets/image/Logo_FAGE_blanc.svg" alt="Logo FAGE" class="max-w-60">
             </div>
@@ -211,11 +222,13 @@
                 <li class="text-right">
                     FAGE - Fédération des Associations Générales Etudiantes
                 </li>
-                <li class="text-right ">79 rue Périer</li>
-                <li class="text-right">92120 Montrouge</li>
-                <li class="text-right">Tél. : <a class="underline hover:text-fage-900" href="tel:+330140337070">01 40 33
+                <li class="text-center lg:text-right ">79 rue Périer</li>
+                <li class="text-center lg:text-right">92120 Montrouge</li>
+                <li class="text-center lg:text-right">Tél. : <a class="underline hover:text-fage-900"
+                        href="tel:+330140337070">01 40
+                        33
                         70 70</a></li>
-                <li class="underline text-right ">
+                <li class="underline text-center lg:text-right ">
                     <a class="hover:text-fage-900">Nous contacter</a>
                 </li>
             </ul>
