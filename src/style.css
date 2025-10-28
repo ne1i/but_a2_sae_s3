@@ -23,13 +23,13 @@ button {
 }
 
 @font-face {
-  font-family: "Relative Bold";
-  src: url("/assets/fonts/Relative-Bold-subset.ttf") format("truetype");
+  font-family: "Relative Medium";
+  src: url("/assets/fonts/Relative-Medium-subset.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
 }
 
 html,
 body {
-  font-family: "Relative Bold", sans-serif;
+  font-family: "Relative Medium", sans-serif;
 }
