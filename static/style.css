@@ -16,6 +16,8 @@
     --spacing: 0.25rem;
     --container-sm: 24rem;
     --container-2xl: 42rem;
+    --text-sm: 0.875rem;
+    --text-sm--line-height: calc(1.25 / 0.875);
     --text-base: 1rem;
     --text-base--line-height: calc(1.5 / 1);
     --text-lg: 1.125rem;
@@ -45,7 +47,6 @@
     --color-fage-50: oklch(0.944 0.0184 232.4672);
     --color-fage-100: oklch(0.8878 0.0386 233.5721);
     --color-fage-200: oklch(0.831 0.0588 232.6864);
-    --color-fage-300: oklch(0.7739 0.0814 232.4341);
     --color-fage-400: oklch(0.716 0.1047 231.1733);
     --color-fage-500: oklch(0.6599 0.1299 228.9211);
     --color-fage-600: oklch(0.5722 0.1079 229.7552);
@@ -296,6 +297,9 @@
   }
   .mb-6 {
     margin-bottom: calc(var(--spacing) * 6);
+  }
+  .mb-10 {
+    margin-bottom: calc(var(--spacing) * 10);
   }
   .mb-12 {
     margin-bottom: calc(var(--spacing) * 12);
@@ -581,6 +585,9 @@
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
   }
+  .py-6 {
+    padding-block: calc(var(--spacing) * 6);
+  }
   .py-10 {
     padding-block: calc(var(--spacing) * 10);
   }
@@ -598,6 +605,9 @@
   }
   .pl-6 {
     padding-left: calc(var(--spacing) * 6);
+  }
+  .pl-8 {
+    padding-left: calc(var(--spacing) * 8);
   }
   .text-center {
     text-align: center;
@@ -637,6 +647,13 @@
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
+  }
+  .break-normal {
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+  .break-all {
+    word-break: break-all;
   }
   .text-fage-400 {
     color: var(--color-fage-400);
