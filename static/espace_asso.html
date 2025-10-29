@@ -81,10 +81,12 @@
         </div>
     </header>
 
-    <main class="">
 
 
-        <div id="asso-ancien" class="scroll-mt-32 flex justify-center mb-30  lg:w-9/12 mx-auto">
+    <main class="lg:mt-8 lg:w-10/12  p-10 lg:p-0 lg:ml-[250px] relative flex-1">
+
+        <aside>
+
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
                     /** @type {HTMLButtonElement}*/
@@ -98,7 +100,7 @@
                     })
                 })
             </script>
-            <aside id="sidePanel"
+            <div id="sidePanel"
                 class="py-10 pt-5 px-5 mr-4  bg-fage-50 rounded-l-none rounded-tr-none  rounded-2xl  mt-10 left-0 top-30 h-fit fixed -translate-x-full transition ease-out lg:hidden block max-w-8/12">
                 <button id="sidePanelBtn"
                     class="absolute top-0 left-full bg-fage-100 hover:bg-fage-200 rounded-r-2xl p-2 text-center lg:hidden">
@@ -118,29 +120,32 @@
 
 
                 </ul>
-            </aside>
+            </div>
             <!-- Écran large -->
-            <aside class="py-10 pt-5 px-5 mr-4  bg-fage-50 rounded-2xl mt-10 lg:block hidden">
-                <ul class="">
-                    <li class=" border-b">
+            <div
+                class=" py-10 pt-5 px-5 mr-4 w-64 bg-fage-50 rounded-2xl mt-10 lg:block hidden md:items-start fixed top-1/8 left-1/10 ">
+                <ul>
+                    <li class=" border-b text-fage-600 hover:text-fage-900">
                         <a href="#asso-ancien" class=" p-2 mb-2 inline-block">Créer son association
                             d'anciens</a>
                     </li>
                     <li class=" border-b text-fage-600 hover:text-fage-900">
                         <a href="#financer-projet" class="  p-2 mb-2 inline-block">Financer ses projets</a>
                     </li>
-
-
                 </ul>
-            </aside>
+            </div>
+        </aside>
+        <div id="asso-ancien" class="scroll-mt-32 flex justify-center mb-30  lg:w-10/12 mx-auto">
 
-            <article class=" lg:mt-8 lg:w-9/12 text-lg p-10 lg:p-0">
+
+            <article class=" lg:mt-8 lg:w-10/12 text-lg p-10 lg:p-0">
                 <h1 class="text-4xl text-fage-500 font-bold text-shadow-md  ml-8">Votre asso d'anciens : créez-la,
                     rejoignez-la !
                 </h1>
                 <section class=" mt-4">
                     Les associations d'anciens étudiants se développent activement dans les établissements
-                    d'Enseignement Supérieur. A l'heure où l'insertion professionnelle est une réelle problématique, la
+                    d'Enseignement Supérieur. A l'heure où l'insertion professionnelle est une réelle problématique,
+                    la
                     création et le développement de ce type de structure deviennent indispensables.
                 </section>
                 <hr class="my-4">
@@ -151,10 +156,12 @@
                             class="object-cover w-100 lg:w-auto">
                     </a>
                     <section>
-                        Au-delà de la simple perspective de création d'un réseau d'entraide, cela permet de défendre des
+                        Au-delà de la simple perspective de création d'un réseau d'entraide, cela permet de défendre
+                        des
                         valeurs communes, de défendre, promouvoir, et de s'identifier autour de l'établissement, du
                         diplôme.
-                        Tout en mettant en relation les anciens et actuels étudiants/élèves, cela assure la promotion et
+                        Tout en mettant en relation les anciens et actuels étudiants/élèves, cela assure la
+                        promotion et
                         l'image des diplômes, et cursus préparés, aux yeux des professionnels.
                         <hr class="border-0 size-4">
                         Il paraissait essentiel de mettre en place un
@@ -188,7 +195,8 @@
                             votre établissement.
                         </li>
                         <li>
-                            Une affiche (à imprimer) permettant de communiquer et de faire la promotion des associations
+                            Une affiche (à imprimer) permettant de communiquer et de faire la promotion des
+                            associations
                             d'anciens étudiants.
                         </li>
                     </ul>
@@ -196,23 +204,9 @@
             </article>
         </div>
 
-        <div id="financer-projet" class="scroll-mt-32 flex justify-center lg:w-9/12 mx-auto mb-10">
-            <!-- Écran large -->
-            <aside class="py-10 pt-5 px-5 mr-4  bg-fage-50 rounded-2xl mt-10 lg:block hidden">
-                <ul class="">
-                    <li class=" border-b text-fage-600 hover:text-fage-900">
-                        <a href="#asso-ancien" class=" p-2 mb-2 inline-block">Créer son association
-                            d'anciens</a>
-                    </li>
-                    <li class=" border-b ">
-                        <a href="#asso-ancien" class="  p-2 mb-2 inline-block">Financer ses projets</a>
-                    </li>
+        <div id="financer-projet" class="scroll-mt-32 flex justify-center lg:w-10/12 mx-auto mb-10">
 
-
-                </ul>
-            </aside>
-
-            <article class="lg:mt-8 lg:w-9/12 text-lg p-10 lg:p-0">
+            <article class="lg:mt-8 lg:w-10/12 text-lg p-10 lg:p-0">
                 <h1 class="text-4xl text-fage-500 font-bold text-shadow-md ml-8">Financer ses projets associatifs
                 </h1>
                 <section class=" mt-4">
@@ -223,7 +217,8 @@
                         Vous cherchez à financer vos projets et vous faites partie du grand réseau de la FAGE ?
                     </h3>
 
-                    <p>Le <strong class="font-bold">Fonds des Initiatives du Réseau de la FAGE</strong> (FIRF) a pour
+                    <p>Le <strong class="font-bold">Fonds des Initiatives du Réseau de la FAGE</strong> (FIRF) a
+                        pour
                         but de favoriser l'essaimage
                         d'innovations sociales des associations étudiantes.</p>
                     <p>Pour qu'une association du réseau de la FAGE puisse bénéficier d'une aide financière du FIRF,
@@ -237,11 +232,15 @@
                             citoyenneté.</li>
                     </ul>
                     <p>Ces actions doivent toucher un maximum d'étudiant.e.s, et contribuer au rayonnement de la
-                        structure demandeuse, de la FAGE et de l'ensemble de son réseau. Elles doivent en respecter les
+                        structure demandeuse, de la FAGE et de l'ensemble de son réseau. Elles doivent en respecter
+                        les
                         valeurs et en aucun cas lui porter préjudice.</p>
-                    <p>Le FIRF vise à soutenir les projets des associations étudiantes, notamment pour les accompagner
-                        dans la réalisation de leurs projets. C'est aussi un moyen de se former à un dépôt de demande de
-                        subvention dans le cadre d'un appel à projets ou d'une demande de financement privé. À ce titre,
+                    <p>Le FIRF vise à soutenir les projets des associations étudiantes, notamment pour les
+                        accompagner
+                        dans la réalisation de leurs projets. C'est aussi un moyen de se former à un dépôt de
+                        demande de
+                        subvention dans le cadre d'un appel à projets ou d'une demande de financement privé. À ce
+                        titre,
                         l'équipe du FIRF se tient à disposition des bénévoles préparant une candidature pour les
                         accompagner dans leur montée en compétences.</p>
                 </section>
@@ -261,7 +260,8 @@
                             administrativement et financièrement à jour
                             auprès de la FAGE - élu.e par le Conseil d'Administration de la FAGE.</li>
                     </ul>
-                    <p class="mb-4">Ces deux dernier.ère.s sont élu.e.s pour une durée d'un an, en même temps que les
+                    <p class="mb-4">Ces deux dernier.ère.s sont élu.e.s pour une durée d'un an, en même temps que
+                        les
                         membres des
                         autres commissions de la FAGE, lors du premier Conseil d'Administration du mandat. Ces deux
                         membres ne pourront pas statuer sur les éventuels dossiers proposés par les associations
@@ -269,22 +269,28 @@
                     <p><strong class="font-bold">Les associations peuvent candidater au FIRF pendant l'ensemble de
                             l'année civile.</strong>La date de dépôt de dossier doit être antérieure à 1 mois à la
                         réalisation du projet. La commission se réunit au moins 2 fois par semestre pour traiter les
-                        dossiers et allouer les aides financières aux associations. Quand, suite à la candidature d'une
+                        dossiers et allouer les aides financières aux associations. Quand, suite à la candidature
+                        d'une
                         association, la commission lui demande des
                         documents complémentaires, cette dernière dispose d'une semaine pour les envoyer à la
                         commission. Si ce délai n'est pas respecté, la commission se réserve le droit de réallouer
                         l'aide financière à d'autres projets.</p>
-                    <p>L'aide financière allouée par le FIRF pour un projet ne peut pas dépasser 1000€ (dans la limite
-                        de 50% du projet) et doit être cofinancé, qu'il soit porté par une ou plusieurs associations.
-                        Une association peut proposer deux dossiers par an au maximum et ne pourra pas se faire financer
+                    <p>L'aide financière allouée par le FIRF pour un projet ne peut pas dépasser 1000€ (dans la
+                        limite
+                        de 50% du projet) et doit être cofinancé, qu'il soit porté par une ou plusieurs
+                        associations.
+                        Une association peut proposer deux dossiers par an au maximum et ne pourra pas se faire
+                        financer
                         plusieurs fois un même projet. Les dossiers devront être accompagnés de :</p>
                     <ul class="list-disc ml-8 my-6">
                         <li>Une présentation détaillée du projet</li>
                         <li>Un bilan d'activité de la structure</li>
                         <li>Un budget prévisionnel détaillé et équilibré du projet</li>
                         <li>Un RIB</li>
-                        <li>Tous les devis correspondants aux dépenses relatives au projet de l'association ; et - Tout
-                            élément jugé opportun par la structure (comme le bilan d'une éventuelle édition précédente,
+                        <li>Tous les devis correspondants aux dépenses relatives au projet de l'association ; et -
+                            Tout
+                            élément jugé opportun par la structure (comme le bilan d'une éventuelle édition
+                            précédente,
                             le plan de communication, etc.)</li>
                     </ul>
                     <p class=""><strong class="font-bold">Candidature au FIRF FAGE - 2023 :</strong> <a class="text-fage-500 break-all hover:underline hover:text-fage-900

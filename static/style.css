@@ -233,30 +233,6 @@
   .top-1\/8 {
     top: calc(1/8 * 100%);
   }
-  .top-1\/10 {
-    top: calc(1/10 * 100%);
-  }
-  .top-2\/8 {
-    top: calc(2/8 * 100%);
-  }
-  .top-2\/10 {
-    top: calc(2/10 * 100%);
-  }
-  .top-10 {
-    top: calc(var(--spacing) * 10);
-  }
-  .top-16 {
-    top: calc(var(--spacing) * 16);
-  }
-  .top-18 {
-    top: calc(var(--spacing) * 18);
-  }
-  .top-20 {
-    top: calc(var(--spacing) * 20);
-  }
-  .top-22 {
-    top: calc(var(--spacing) * 22);
-  }
   .top-30 {
     top: calc(var(--spacing) * 30);
   }
@@ -269,29 +245,11 @@
   .left-0 {
     left: calc(var(--spacing) * 0);
   }
-  .left-1\/8 {
-    left: calc(1/8 * 100%);
-  }
   .left-1\/10 {
     left: calc(1/10 * 100%);
   }
-  .left-1\/12 {
-    left: calc(1/12 * 100%);
-  }
-  .left-1\/16 {
-    left: calc(1/16 * 100%);
-  }
-  .left-1\/18 {
-    left: calc(1/18 * 100%);
-  }
-  .left-1\/20 {
-    left: calc(1/20 * 100%);
-  }
   .left-3 {
     left: calc(var(--spacing) * 3);
-  }
-  .left-20 {
-    left: calc(var(--spacing) * 20);
   }
   .left-full {
     left: 100%;
@@ -335,15 +293,6 @@
   .mr-4 {
     margin-right: calc(var(--spacing) * 4);
   }
-  .mr-20 {
-    margin-right: calc(var(--spacing) * 20);
-  }
-  .mr-100 {
-    margin-right: calc(var(--spacing) * 100);
-  }
-  .mr-auto {
-    margin-right: auto;
-  }
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
   }
@@ -367,12 +316,6 @@
   }
   .ml-8 {
     margin-left: calc(var(--spacing) * 8);
-  }
-  .ml-10 {
-    margin-left: calc(var(--spacing) * 10);
-  }
-  .ml-auto {
-    margin-left: auto;
   }
   .block {
     display: block;
@@ -410,6 +353,9 @@
   }
   .w-8 {
     width: calc(var(--spacing) * 8);
+  }
+  .w-10 {
+    width: calc(var(--spacing) * 10);
   }
   .w-64 {
     width: calc(var(--spacing) * 64);
@@ -961,6 +907,11 @@
       width: calc(9/12 * 100%);
     }
   }
+  .lg\:w-10\/12 {
+    @media (width >= 64rem) {
+      width: calc(10/12 * 100%);
+    }
+  }
   .lg\:w-80 {
     @media (width >= 64rem) {
       width: calc(var(--spacing) * 80);
@@ -1015,21 +966,6 @@
     @media (width >= 64rem) {
       font-size: var(--text-7xl);
       line-height: var(--tw-leading, var(--text-7xl--line-height));
-    }
-  }
-  .xl\:top-1\/10 {
-    @media (width >= 80rem) {
-      top: calc(1/10 * 100%);
-    }
-  }
-  .xl\:left-1\/20 {
-    @media (width >= 80rem) {
-      left: calc(1/20 * 100%);
-    }
-  }
-  .xl\:left-2\/20 {
-    @media (width >= 80rem) {
-      left: calc(2/20 * 100%);
     }
   }
   .\32 xl\:ml-120 {
