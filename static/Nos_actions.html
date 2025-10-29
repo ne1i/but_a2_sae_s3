@@ -1,10 +1,260 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos Actions </title>
+    <link rel="stylesheet" href="style.css"></head>
 <body>
-$END$
+<header
+        class="flex flex-wrap lg:flex-nowrap lg:items-center items-stretch justify-items-stretch  lg:flex-row flex-col sticky top-0 left-0 right-0 z-10 px-4 bg-white shadow-sm">
+    <div class="flex items-center justify-between lg:justify-start">
+        <button class="lg:hidden hover:bg-fage-100 active:bg-fage-200 p-2 rounded flex flex-col gap-1"
+                title="Ouvrir/fermer le menu">
+            <span class="sr-only">Menu</span>
+            <span class="block w-8 h-1 bg-fage-400 rounded"></span>
+            <span class="block w-8 h-1 bg-fage-400 rounded"></span>
+            <span class="block w-8 h-1 bg-fage-400 rounded"></span>
+        </button>
+
+        <script>
+            const button = document.querySelector("button");
+            button.addEventListener("click", () => {
+                button.classList.toggle("active");
+                const nav = document.querySelector("nav");
+                nav.classList.toggle("hidden");
+            });
+        </script>
+
+        <a class href="index.html">
+                <span class="hidden" aria-hidden="true">Retour à
+                    l'accueil</span>
+            <img src="assets/image/Logo_FAGE.svg" alt="Logo_FAGE" class="lg:max-w-40 max-w-20 m-2" />
+        </a>
+    </div>
+
+    <nav class="hidden lg:flex active grow">
+        <ul class="flex flex-wrap  gap-2 lg:flex-row flex-col items-stretch lg:items-center w-full">
+            <li>
+                <a
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 rounded-full px-4 text-white py-2 font-bold">
+                    La FAGE
+                </a>
+            </li>
+            <li>
+                <a href="Nos_actions.html"
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Nos
+                    actions</a>
+            </li>
+            <li>
+                <a
+                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Actualités</a>
+            </li>
+
+            <li>
+                <a href="espace_asso.html"
+                   class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Espace
+                    association</a>
+            </li>
+            <li class="lg:ml-auto">
+                <a href="https://www.helloasso.com/associations/federation-des-associations-generales-etudiantes-fage/formulaires/1"
+                   target="_blank"
+                   class=" block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md">Faire
+                    un don</a>
+            </li>
+            <li><a
+                    class="block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md">Contact</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="flex gap-3">
+
+
+    </div>
+
+    <div class="m-2 border-2 border-fage-400 bg-white rounded-full overflow-hidden lg:max-w-60">
+        <input role="search" aria-label="Rechercher" type="search" placeholder="Rechercher" name="search"
+               id="search" class="px-8 text-xl py-1 outline-0 w-full" />
+    </div>
+</header>
+
+<div class="flex mb-6  lg:w-9/12 mx-auto">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            /** @type {HTMLButtonElement}*/
+            const button = document.getElementById("sidePanelBtn");
+            /** @type {HTMLDivElement}*/
+            const sidePanel = document.getElementById("sidePanel");
+
+            button.addEventListener("click", function () {
+                sidePanel.classList.toggle("-translate-x-full");
+                button.children[0].classList.toggle("rotate-180");
+            })
+        })
+    </script>
+
+    <!-- Écran large -->
+    <aside class=" py-10 pt-5 px-5 mr-4 w-64 bg-fage-50 rounded-2xl mt-10 lg:block hidden md:items-start fixed top-1/8 left-1/10 ">
+        <ul class="">
+            <li class="  border-b text-fage-600 hover:text-fage-900">
+                <a class="p-2 mb-2 inline-block" href="#CNESER" >CNESER</a>
+            </li>
+            <li class="  border-b text-fage-600 hover:text-fage-900">
+                <a class="p-2 mb-2 inline-block">Enseignement supérieur</a>
+            </li>
+            <li class=" border-b text-fage-600 hover:text-fage-900">
+                <a class="p-2 mb-2 inline-block">Social</a>
+            </li>
+            <li class=" border-b text-fage-600 hover:text-fage-900">
+                <a class="p-2 mb-2 inline-block">Ecologie</a>
+            </li>
+            <li class=" border-b text-fage-600 hover:text-fage-900">
+                <a class="p-2 mb-2 inline-block">Santé</a>
+            </li>
+
+        </ul>
+    </aside>
+
+    <main class="lg:mt-8 lg:w-9/12  p-10 lg:p-0 lg:ml-[250px] relative flex-1 ">
+        <div id="sidePanel"
+             class="py-10 pt-5 px-5 mr-4  bg-fage-50 rounded-l-none rounded-tr-none  rounded-2xl  mt-10 left-0 top-30 h-fit fixed -translate-x-full transition duration-700 lg:hidden block">
+            <button id="sidePanelBtn"
+                    class="absolute top-0 left-full bg-fage-100 hover:bg-fage-200 rounded-r-2xl p-2 text-center lg:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" class="transition duration-700 w-10">
+                    <path
+                            d="M566.6 342.6C579.1 330.1 579.1 309.8 566.6 297.3L406.6 137.3C394.1 124.8 373.8 124.8 361.3 137.3C348.8 149.8 348.8 170.1 361.3 182.6L466.7 288L96 288C78.3 288 64 302.3 64 320C64 337.7 78.3 352 96 352L466.7 352L361.3 457.4C348.8 469.9 348.8 490.2 361.3 502.7C373.8 515.2 394.1 515.2 406.6 502.7L566.6 342.7z" />
+                </svg>
+            </button>
+            <ul class="">
+                <li class=" border-b text-fage-600 hover:text-fage-900">
+                    <a class="p-2 mb-2 inline-block text-xl" href="#CNESER">CNESER</a>
+                </li>
+                <li class=" border-b text-fage-600 hover:text-fage-900">
+                    <a class="p-2 mb-2 inline-block text-xl">Enseignement supérieur</a>
+                </li>
+                <li class=" border-b text-fage-600 hover:text-fage-900">
+                    <a class="p-2 mb-2 inline-block text-xl">Social</a>
+                </li>
+                <li class=" border-b text-fage-600 hover:text-fage-900">
+                    <a class="p-2 mb-2 inline-block text-xl">Ecologie</a>
+                </li>
+                <li class=" border-b text-fage-600 hover:text-fage-900">
+                    <a class="p-2 mb-2 inline-block text-xl">Santé</a>
+                </li>
+
+            </ul>
+        </div>
+        <h1 id="CNESER" class="text-4xl text-fage-500 font-bold text-center">CNESER</h1></br>
+        <h2 class="text-2xl text-fage-300 font-bold">Qu'est-ce que les élections CNESER ?</h2>
+        <section class=" mt-4">
+            <p><strong>Le CNESER (Conseil National de l’Enseignement Supérieur et de la Recherche)</strong>
+                est un organe consultatif réunissant des représentant·e·s de la communauté universitaire.
+                Il examine les textes relatifs à l’enseignement supérieur et à la recherche :
+                <strong>encadrement des stages, budget, formation professionnelle, accréditation des établissements, </strong>
+                Composé d’une centaine de membres, il se réunit en séance plénière ou en formation restreinte, généralement une fois par mois.</p>
+        </section>
+        <hr class="my-4">
+        <article class="flex flex-col-reverse lg:flex-row items-center lg:mr-8 lg:my-0 my-6 ">
+
+                <img src="assets/image/elections-cneser.png" alt="election cneser" width="300" height="300"
+                     class="object-cover ">
+
+            <div>
+                Il est notamment consulté sur :
+                <hr class="border-0 size-4">
+                <ul>
+                    <li>Les stratégies nationales de l’enseignement supérieur et de la recherche et les rapports biennaux au Parlement</li></br>
+                    <li>les orientations générales des contrats pluriannuels et la répartition des emplois et des moyens entre les différents établissements</li></br>
+                    <li>les projets de réformes concernant l’organisation de la recherche et les réformes relatives à l’emploi scientifique</li></br>
+                    <li>le cadre national des formations, la liste des diplômes nationaux, les modalités et demandes d’accréditation
+                        ainsi que la carte des formations supérieures et de la recherche prévus à l’article </li></br>
+                    <li>la création, la suppression ou le regroupement d’établissements ou de composantes </li></br>
+                </ul>
+            </div>
+        </article>
+        <hr class="my-4">
+        <h2 class="text-2xl text-fage-300 font-bold">Qui compose le CNESER ?</h2>
+        <img src="assets/image/compo-cneser.png" alt="election cneser" class="mx-auto ">
+        <hr class="my-4">
+        <h2 class="text-2xl text-fage-300 font-bold">Nos livrets</h2></br>
+        <section class="block gap-20 lg:flex-row items-center lg:mr-8">
+            <ul class="lg:grid lg:grid-cols-2  lg:gap-20 flex-col-reverse lg:flex-row justify-center gap-20 mx-auto mb-20">
+                <a href="https://www.fage.org/ressources/documents/source/1/8999-8999-PF-LONGUE-CNESER-25-27.pdf"><li class="bg-linear-to-r from-fage-700 to-fage-400 font-bold rounded-lg p-4 text-center m-7 lg:m-0 " >Profession de foi 25-27 </br>(full version)</li></a>
+                <a href="https://www.fage.org/ressources/documents/source/1/9022-PF-COURTE-CNESER-25-27.pdf"><li class="bg-linear-to-r from-fage-700 to-fage-400 font-bold rounded-lg p-4 text-center m-7 lg:m-0" >Profession de foi 25-27 </br>(short version)</li></a>
+
+            </ul>
+            <ul class="lg:grid lg:grid-cols-3 lg:col-end-2  lg:gap-20 flex-col-reverse lg:flex-row justify-center gap-20 mx-auto ">
+                <a href="https://www.fage.org/ressources/documents/source/1/9006-BILAN-CNESER-23-25.pdf"><li class="bg-linear-to-r from-amber-400 to-amber-800 font-bold rounded-lg p-4 text-center m-7 lg:m-0" >Bilan 2023-2025</li></a>
+                <a href="https://www.fage.org/ressources/documents/source/1/9001-LIVRETS-PF-CNESER-25-27.pdf.pdf"><li class="bg-linear-to-r from-violet-300 to-violet-700 font-bold rounded-lg p-4 text-center m-7 lg:m-0 " >Livret Ingénieur</li></a>
+                <a href="https://www.fage.org/ressources/documents/source/1/8998-Livrets-20PF-20CNESER-20-203e-20cyc.pdf"><li class="bg-linear-to-r from-green-400 to-green-700 font-bold rounded-lg p-4 text-center m-7 lg:m-0" >Livret Doctorat</li></a>
+                <a href="https://www.fage.org/ressources/documents/source/1/9024-Livret-TE-CNESER-25-27.pdf"><li class="bg-linear-to-r from-emerald-400 to-emerald-800 font-bold rounded-lg p-4 text-center m-7 lg:m-0" >Livret climat</li></a>
+                <a href="https://www.fage.org/ressources/documents/source/1/9026-LIVRET-LCD-25-27.pdf"><li class="bg-linear-to-r from-red-800 to-rose-600 font-bold rounded-lg p-4 text-center m-7 lg:m-0" >Livret Discrimination</li></a>
+                <a href="https://www.fage.org/ressources/documents/source/1/8997-LIVRETS-PF-CNESER-Sante.pdf"><li class="bg-linear-to-r from-fuchsia-500 to-fuchsia-800 font-bold rounded-lg p-4 text-center m-7 lg:m-0" >Livret Santé</li></a>
+                <a href="https://www.fage.org/ressources/documents/source/1/8993-LIVRETS-PF-CNESER-allshs.pdf"><li class="bg-linear-to-r from-yellow-100 to-yellow-400 font-bold rounded-lg p-4 text-center m-7 lg:m-0" >Livret ALLSHS</li></a>
+                <a href="https://www.fage.org/ressources/documents/source/1/9011-LIVRETS-PF-CNESER-Psychologie.pdf"><li class="bg-linear-to-r from-lime-400 to-lime-800 font-bold rounded-lg p-4 text-center m-7 lg:m-0" >Livret Psychologie</li></a>
+                <a href="https://www.fage.org/ressources/documents/source/1/8995-LIVRET-OUTRE-MER-25-27.pdf"><li class="bg-linear-to-r from-cyan-600 to-cyan-300 font-bold rounded-lg p-4 text-center  m-7 lg:m-0" >Livret Outre-mer</li></a>
+                <a href="https://www.fage.org/ressources/documents/source/1/8990-LIVRETS-PF-CNESER-grandes-ecoles.pdf"><li class="bg-linear-to-r from-orange-400 to-orange-800 font-bold rounded-lg p-4 text-center  m-7 lg:m-0" >Livret Grande Ecole</li></a>
+                <a href="https://www.fage.org/ressources/documents/source/1/8992-LIVRETS-PF-CNESER-classe-preparatoi.pdf"><li class="bg-linear-to-r from-red-300 to-orange-600 font-bold rounded-lg p-4 text-center m-7 lg:m-0" >Livret CPGE</li></a>
+                <a href="https://www.fage.org/ressources/documents/source/1/8991-LIVRETS-PF-CNESER-IUT.pdf"><li class="bg-linear-to-r from-indigo-600 to-sky-400 font-bold rounded-lg p-4 text-center m-7 lg:m-0 " >Livret IUT</li></a>
+
+            </ul>
+
+
+
+        </section>
+        </br>
+        <section class="bg-fage-100 rounded-2xl p-6 mt-6">
+            <h2 class="text-2xl text-fage-600 font-bold">
+                Nos autres contributions
+            </h2>
+            <ul class="list-disc pl-6 py-2">
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8979-Contribution-FAGE-VEE-2025.pdf">2025 - Valorisation de l'engagement étudiant</a> </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8975-Contribution-FAGE-Re-gulation-ESR-p.pdf">2025 - Régulation de l'ESR privé</a> </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8985-Note-Re-forme-FDE.pdf">2024 - Note réforme FDE</a> </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8981-Contribution-FAGE-Urgence-e-cologiq.pdf">2024 - Urgence écologique dans l'ESR</a> </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8978-Contribution-FAGE-OIP-2024.pdf">2024 - Orientation et Insertion Professionnelle</a> </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8983-Contribution-FAGE-Financement-ESR-2.pdf">2024 - Financement de l'ESR</a> </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8976-Contribution-FAGE-Mon-Master-2024.pdf">2024 - Mon Master</a> </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8984-Contribution-Sante-Mentale-FAGE-202.pdf">2024 - Santé mentale</a> </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8986-Contribution-FAGE-Parcoursup-2023.pdf">2024 - Accès à la santé</a> </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8986-Contribution-FAGE-Parcoursup-2023.pdf">2023 - Parcoursup</a> </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8977-Contribution-FAGE-PEC-2023.pdf">2023 - Parcours d'Engagement et de Citoyenneté</a> </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8982-Contribution-FAGE-De-mocratie-2023.pdf">2023 - La démocratie au défi des jeunes</a> </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/9020-Contribution-FAGE-LCD-Lutte-contre-.pdf">2023 - Lutte contre les discriminations et violences associées</a> </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/9021-Contribution-FAGE-100H-Inclusion-PS.pdf">2022 - Inclusion des personnes en situation de handicap</a> (avec 100% Handinamique) </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8989-8989-Enquete-FAGE-Doctorat-2022.pdf">2022 - 3ème cycle et doctorat </a>(résultats d'enquête) </li>
+                <li class="p-1"><a href="https://www.fage.org/ressources/documents/source/1/8988-8989-Enquete-FAGE-Doctorat-2022.pdf">2022 - 3ème cycle et doctorat </a>(contribution) </li>
+
+            </ul>
+
+
+
+        </section>
+
+    </main>
+
+
+</div>
+
+<footer class="w-full bg-fage-500 text-white px-4">
+    <div class="flex justify-between min-h-50 items-center">
+        <div class="flex items-center">
+            <img src="assets/image/Logo_FAGE_blanc.svg" alt="Logo FAGE" class="max-w-60">
+        </div>
+        <ul class="items-end font-bold">
+            <li class="lg:text-right text-center">
+                FAGE - Fédération des Associations Générales Etudiantes
+            </li>
+            <li class="lg:text-right text-center">79 rue Périer</li>
+            <li class="lg:text-right text-center">92120 Montrouge</li>
+            <li class="lg:text-right text-center">Tél. : <a class="underline hover:text-fage-900" href="tel:+330140337070">01 40 33
+                70 70</a></li>
+            <li class="underline lg:text-right text-center">
+                <a class="hover:text-fage-900">Nous contacter</a>
+            </li>
+        </ul>
+    </div>
+
+</footer>
 </body>
 </html>
