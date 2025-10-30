@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>FAGE - Organisation</title>
     <link href="style.css" rel="stylesheet">
 </head>
-
 <body class="grid grid-cols-[20fr_80fr] gap-2">
-    <header class="flex flex-wrap lg:items-center items-stretch justify-stretch lg:justify-between lg:flex-row flex-col sticky top-0 left-0 right-0 z-10 px-4 bg-white shadow-sm col-span-2">
-
+<header class="flex flex-wrap lg:items-center items-stretch justify-stretch lg:justify-between lg:flex-row flex-col sticky top-0 left-0 right-0 z-10 px-4 bg-white shadow-sm col-span-2">
         <div class="flex items-center justify-between lg:justify-start">
             <button class="lg:hidden hover:bg-fage-100 active:bg-fage-200 p-2 rounded flex flex-col gap-1"
                     title="Ouvrir/fermer le menu">
@@ -29,70 +27,54 @@
             </script>
 
             <a class href="index.html">
-                    <span aria-hidden="true" class="hidden">Retour à
-                        l'accueil</span>
-                <img alt="Logo_FAGE" class="lg:max-w-40 max-w-20 m-2" src="assets/image/Logo_FAGE.svg" />
+                        <span aria-hidden="true" class="hidden">Retour à
+                            l'accueil</span>
+                <img alt="Logo_FAGE" class="lg:max-w-40 max-w-20 m-2" src="assets/image/Logo_FAGE.svg"/>
             </a>
         </div>
 
         <nav class="justify-center hidden lg:flex active">
             <ul class="flex flex-1 flex-wrap gap-2 lg:flex-row flex-col items-stretch lg:items-center w-full lg:w-auto">
-                <li class="relative group">
-                    <!-- Bouton principal -->
-                    <div class="flex items-center justify-center cursor-pointer select-none bg-fage-500 hover:bg-fage-600 active:bg-fage-700 rounded-full px-4 py-2 text-white font-bold transition-colors duration-200">
+                <li>
+                    <a class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 rounded-full px-4 text-white py-2 font-bold"
+                       href="presentation.html">
                         La FAGE
-                        <svg class="w-4 h-4 ml-2 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </div>
-
-                    <!-- Sous-menu -->
-                    <ul class="absolute left-0 mt-2 w-48 bg-fage-500 rounded-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20 shadow-lg">
-                        <li>
-                            <a href="presentation.html"
-                               class="block px-4 py-2 text-white hover:bg-fage-600 border-b border-fage-400 transition-colors duration-200">
-                                Présentation
-                            </a>
-                        </li>
-                        <li>
-                            <a href="organisation.html"
-                               class="block px-4 py-2 text-white hover:bg-fage-600 border-b border-fage-400 transition-colors duration-200">
-                                Organisation
-                            </a>
-                        </li>
-                        <li>
-                            <a href="aaaf.html"
-                               class="block px-4 py-2 text-white hover:bg-fage-600 transition-colors duration-200">
-                                L'AAAF
-                            </a>
-                        </li>
-                    </ul>
+                    </a>
                 </li>
                 <li>
-                    <a class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Nos actions</a>
+                    <a
+                            class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Nos
+                        actions</a>
                 </li>
                 <li>
-                    <a class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Actualités</a>
+                    <a
+                            class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold">Actualités</a>
                 </li>
 
                 <li>
-                    <a class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold" href="espace_asso.html">Espace association</a>
+                    <a class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 py-2 rounded-full px-4 text-white font-bold"
+                       href="espace_asso.html">Espace
+                        association</a>
                 </li>
                 <li>
-                    <a class="2xl:ml-120 block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md" href="https://www.helloasso.com/associations/federation-des-associations-generales-etudiantes-fage/formulaires/1" target="_blank">Faire un don</a>
+                    <a class="2xl:ml-120 block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md"
+                       href="https://www.helloasso.com/associations/federation-des-associations-generales-etudiantes-fage/formulaires/1"
+                       target="_blank">Faire
+                        un don</a>
                 </li>
-                <li>
-                    <a class="block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md">Contact</a>
+                <li><a
+                        class="block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md">Contact</a>
                 </li>
             </ul>
         </nav>
 
         <div class="m-2 border-2 border-fage-400 bg-white rounded-full overflow-hidden lg:max-w-60">
-            <input aria-label="Rechercher" class="px-8 text-xl py-1 outline-0 w-full" id="search" name="search" placeholder="Rechercher" role="search" type="search" />
+            <input aria-label="Rechercher" class="px-8 text-xl py-1 outline-0 w-full" id="search" name="search" placeholder="Rechercher"
+                   role="search" type="search"/>
         </div>
     </header>
 
-    <aside class="flex col-span-1 sticky top-1/8 self-start mx-1">
+<aside class="flex col-span-1 mx-2 sticky top-1/8 self-start">
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 /** @type {HTMLButtonElement}*/
@@ -106,10 +88,12 @@
             })
         </script>
         <!-- Ecran petit -->
-        <div class="py-10 pt-5 px-5 mr-4  bg-fage-50 rounded-l-none rounded-tr-none  rounded-2xl  mt-10 left-0 top-30 h-fit fixed -translate-x-full transition duration-700 lg:hidden block" id="sidePanel">
-            <button class="absolute top-0 left-full bg-fage-100 hover:bg-fage-200 rounded-r-2xl p-2 text-center lg:hidden" id="sidePanelBtn">
+        <div class="py-10 pt-5 px-5 mr-4  bg-fage-50 rounded-l-none rounded-tr-none  rounded-2xl  mt-10 left-0 top-30 h-fit fixed -translate-x-full transition duration-700 lg:hidden block"
+             id="sidePanel">
+            <button class="absolute top-0 left-full bg-fage-100 hover:bg-fage-200 rounded-r-2xl p-2 text-center lg:hidden"
+                    id="sidePanelBtn">
                 <svg class="transition duration-700 w-10" viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M566.6 342.6C579.1 330.1 579.1 309.8 566.6 297.3L406.6 137.3C394.1 124.8 373.8 124.8 361.3 137.3C348.8 149.8 348.8 170.1 361.3 182.6L466.7 288L96 288C78.3 288 64 302.3 64 320C64 337.7 78.3 352 96 352L466.7 352L361.3 457.4C348.8 469.9 348.8 490.2 361.3 502.7C373.8 515.2 394.1 515.2 406.6 502.7L566.6 342.7z" />
+                    <path d="M566.6 342.6C579.1 330.1 579.1 309.8 566.6 297.3L406.6 137.3C394.1 124.8 373.8 124.8 361.3 137.3C348.8 149.8 348.8 170.1 361.3 182.6L466.7 288L96 288C78.3 288 64 302.3 64 320C64 337.7 78.3 352 96 352L466.7 352L361.3 457.4C348.8 469.9 348.8 490.2 361.3 502.7C373.8 515.2 394.1 515.2 406.6 502.7L566.6 342.7z"/>
                 </svg>
             </button>
             <ul>
@@ -125,7 +109,7 @@
         <div class="py-10 pt-5 px-5 mr-4  bg-fage-50 rounded-2xl mt-10 lg:block hidden">
             <ul>
                 <li class=" border-b text-fage-600 hover:text-fage-900">
-                    <a class="p-2 mb-2 inline-block" href="#gouvernance">La gouvernance de la FAGE</a>
+                    <a class="p-2 mb-2 inline-block" href="#gouvernance">La gouvernancede la FAGE</a>
                 </li>
                 <li class=" border-b text-fage-600 hover:text-fage-900">
                     <a class="p-2 mb-2 inline-block" href="#equipe">L'équipe nationale</a>
@@ -134,421 +118,310 @@
         </div>
     </aside>
 
-    <main class="col-span-1">
-        <article class="scroll-mt-30" id="gouvernance">
-            <h1 class="text-4xl text-fage-500 font-bold m-4 p-4">La gouvernance de la FAGE</h1>
-            <p class="m-0.5 p-0.5">La FAGE est une association. Elle est résolument indépendante, pluraliste et a-partisane. La Fédération des
-                    Associations Générales Etudiantes – FAGE – est la première organisation étudiante et principale organisation
-                    de jeunesse de France. Fondée en 1989, elle assoit son fonctionnement sur la démocratie participative et
-                    regroupe près de 2000 associations et syndicats, soit environ 300 000 étudiants. Actuellement, la FAGE
-                    rassemble 35 fédérations de territoires et 24 fédérations de filières et 5 syndicats.</p>
-            <hr class="m-4 text-fage-500">
+<main class="col-span-1 mx-1">
+        <article class="border-b-4 border-b-fage-500 scroll-mt-30" id="gouvernance">
+            <h1 class="text-4xl text-fage-500 font-bold">La gouvernance de la FAGE</h1>
+            <p>La FAGE est une association. Elle est résolument indépendante, pluraliste et a-partisane. La Fédération des
+                Associations Générales Etudiantes – FAGE – est la première organisation étudiante et principale organisation
+                de jeunesse de France. Fondée en 1989, elle assoit son fonctionnement sur la démocratie participative et
+                regroupe près de 2000 associations et syndicats, soit environ 300 000 étudiants. Actuellement, la FAGE
+                rassemble 35 fédérations de territoires et 24 fédérations de filières et 5 syndicats.</p>
             <section>
-                <h2 class="text-2xl text-fage-600 font-bold m-1 p-1">Les structures fédératives membres du conseil d'administration</h2>
-                <p class="m-0.5 p-0.5">La FAGE est composée de :</p>
+                <h2 class="text-2xl text-fage-500">Les structures fédératives membres du conseil d'administration</h2>
                 <ul class="list-disc list-inside">
-                    <li>35 fédérations territoriales</li>
-                    <li>25 fédérations de fillières</li>
-                    <li>5 membres du collège C</li>
-                    <li>2 membres associés</li>
+                    <li>Les fédérations territoriales regroupent les associations étudiantes d'une même ville ou d'une même
+                        région. Elles développent des actions locales de proximité et permettent aux associations étudiantes
+                        d'avoir un poids plus important.
+                    </li>
+                    <li>Les fédérations de filière ou monodisciplinaire regroupent les associations étudiantes d'une même
+                        filière, leur permettant d'avoir une représentation nationale. Leur principal objectif est de
+                        réfléchir sur l'évolution de la filière et l'insertion professionnelle de ses étudiants.
+                    </li>
+                    <li>Les membres associés regroupent des structures associatives à but non lucratif qui ont un rôle
+                        important pour la jeunesse, et en particulier les étudiants, et dont l'activité n'est pas contraire
+                        aux buts de la FAGE (santé, logement, emploi, solidarité, relations internationales, formation des
+                        élus, ...). Il peut s’agir d’une structure défendant une ou plusieurs grandes causes nationales ou
+                        internationales.
+                    </li>
                 </ul>
-                <hr class="m-4 text-fage-500">
-                    <ul class="list-disc list-outside m-0.5 p-0.5">
-                        <li><strong class="text-fage-500">Les 35 fédérations territoriales</strong> regroupent les associations étudiantes d'une même ville ou d'une même région. Elles développent des <strong class="text-fage-500">actions locales de proximité</strong> et permettent aux associations étudiantes d'avoir un poids plus important.
-                        </li>
-                        <p class="m-0.5 p-0.5">Ces organisations locales militent pour une représentation étudiante indépendante, progressiste et pragmatique que ce soit dans les conseils électifs ou par des projets innovants répondant aux besoins sociaux des étudiants. La structuration locale des fédérations territoriales et AGE, en regroupant associations de filières et transversales, rend ces acteurs indispensables au développement d'une action de proximité et coordonnée en étant au plus prêt des étudiants et des jeunes. Les fédérations territoriales et AGE sont des catalyseurs d'engagement apportant formation, représentation, animation et projet d'innovation sociale aux bénévoles. Elles sont des interlocuteurs privilégiés pour les institutions locales, car apportant une expertise de terrain nécessaire à l'élaboration de politiques publiques pertinentes.</p>
-                        <li><strong class="text-fage-500">Les 25 fédérations de filière</strong> ou monodisciplinaire regroupent les associations étudiantes d'une même
-                            filière, leur permettant d'avoir une représentation nationale. Leur principal objectif est de réfléchir sur <strong class="text-fage-500">l'évolution de la filière et l'insertion professionnelle</strong> de ses étudiants.
-                        </li>
-                        <p class="m-0.5 p-0.5">Ces organisations nationales militent pour une représentation étudiante indépendante, progressiste et pragmatique que ce soit dans les conseils électifs ou par des projets innovants répondant aux besoins sociaux des étudiants et à une insertion professionnelle de qualité. La structuration nationale des fédérations de filières et syndicats permet une réflexion approfondie et conduit à des propositions concrètes sur l'évolution des métiers et l'insertion professionnelle des jeunes. Ils sont des interlocuteurs privilégiés pour les institutions nationales, car apportant un regard sur les métiers tourné vers l'avenir et la pluridisciplinarité des compétences.</p>
-                        <li><strong class="text-fage-500">Les membres associés</strong> regroupent des structures associatives à but non lucratif qui ont un <strong class="text-fage-500">rôle important pour la jeunesse</strong>, et en particulier les étudiants, et dont l'activité n'est pas contraire aux buts de la FAGE (santé, logement, emploi, solidarité, relations internationales, formation des élus, ...). Il peut s’agir d’une structure défendant une ou plusieurs grandes causes nationales ou internationales. Il peut s’agir d’une structure défendant une ou plusieurs grandes causes nationales ou internationales.
-                        </li>
-                    </ul>
-                <div class="bg-fage-100 rounded-xl self-start w-fit h-fit">
-                    <a class="flex flex-wrap gap-2 items-center m-1 p-1" href="https://www.fage.org/les-assos-etudiantes/federations-fage/federations-annuaire/" target="_blank">Pour en savoir plus sur nos fédérations, consultez l'annuaire des fédérations de la FAGE !<img  alt="icône lien externe" class="w-4 h-4" height="6" src="assets/image/lien-externe.png" width="6"/></a>
-                </div>
-            </section>
-            <hr class="m-4 text-fage-500">
-            <section>
-                    <h2 class="text-2xl text-fage-600 font-bold m-1 p-1">Les trois instances de décision</h2>
-                    <ul class="list-disc list-inside">
-                        <li><strong class="text-fage-500">L'Assemblée Générale</strong></li>
-                        <p class="m-0.5 p-0.5">Publique, elle regroupe l'ensemble des membres adhérents à une association et à une fédération de la
-                            FAGE. Elle élit chaque année le Bureau national au Congrès de la FAGE.</p>
-                        <li><strong class="text-fage-500">Le Conseil d'Administration</strong></li>
-                        <p class="m-0.5 p-0.5">Il regroupe les président(e)s des 59 fédérations territoriales et de filière adhérentes à la FAGE. Il
-                            se réunit très régulièrement (tous les mois environ) pour définir les grandes décisions et les
-                            orientations de la FAGE.</p>
-                        <li><strong class="text-fage-500">Le Bureau national</strong></li>
-                        <p class="m-0.5 p-0.5">Le Bureau national se charge d'appliquer la politique votée par le conseil d'administration et de
-                            gérer les ressources humaines de la FAGE en ce sens. Il représente la FAGE auprès des instances et
-                            des médias.</p>
-                    </ul>
-                <hr class="m-4 text-fage-500">
-                <p class="m-0.5 p-0.5">C'est le <strong class="text-fage-500">Conseil d'Administration de la FAGE</strong> qui prend les décisions. Il est composé des fédérations
+                <p>C'est le conseil d'administration de la FAGE qui prend les décisions. Il est composé des fédérations
                     territoriales, des fédérations de filière et des membres associés, réunis dans deux collèges. Dans ce
                     sens, le fonctionnement de la FAGE est confédéral. Le conseil d'administration se réunit une fois tous
                     les deux mois. Les fédérations membres de la FAGE y délèguent un représentant.</p>
-                <p class="m-0.5 p-0.5">Une fois par an, une fédération membre de la FAGE organise le <strong class="text-fage-500">Congrès national</strong>. A cette occasion, dans le cadre d'une Assemblée Générale, à laquelle assistent les délégations des fédérations, des monodisciplinaires et des associations étudiantes, les administrateurs élisent le Bureau national de la FAGE et définissent les grandes orientations de l'année.</p>
+                <p>Une fois par an, une fédération membre de la FAGE organise le Congrès national. A cette occasion, dans le
+                    cadre d'une assemblée générale, à laquelle assistent les délégations des fédérations, des
+                    monodisciplinaires et des associations étudiantes, les administrateurs élisent le Bureau national de la
+                    FAGE et définissent les grandes orientations de l'année.</p>
+            </section>
+            <section>
+                <h2 class="text-2xl text-fage-500">Les trois instances de décision</h2>
+                <ul class="list-disc list-inside">
+                    <li>L'assemblée générale</li>
+                    <p>Publique, elle regroupe l'ensemble des membres adhérents à une association et à une fédération de la
+                        FAGE. Elle élit chaque année le Bureau national au Congrès de la FAGE.</p>
+                    <li>Le conseil d'administration</li>
+                    <p>Il regroupe les président(e)s des 59 fédérations territoriales et de filière adhérentes à la FAGE. Il
+                        se réunit très régulièrement (tous les mois environ) pour définir les grandes décisions et les
+                        orientations de la FAGE.</p>
+                    <li>Le Bureau national</li>
+                    <p>Le Bureau national se charge d'appliquer la politique votée par le conseil d'administration et de
+                        gérer les ressources humaines de la FAGE en ce sens. Il représente la FAGE auprès des instances et
+                        des médias.</p>
+                </ul>
             </section>
         </article>
-        <hr class="m-4 text-fage-500">
-        <article class="scroll-mt-30" id="equipe">
-                <h1 class="text-4xl text-fage-500 font-bold m-4 p-4">L'équipe nationale de la FAGE</h1>
-                <section>
-                    <details>
-                        <summary class="text-2xl text-fage-600 font-bold m-1 p-1">
-                            L'équipe salariale
-                        </summary>
-                        <p class="m-0.5 p-0.5">Présentation des salarié(e)s de la FAGE 2024/2025 depuis Avril 2021</p>
-                        <hr class="m-4 text-fage-500">
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Direction</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Directrice générale</p>
-                                <p class="text-fage-500">Oriane Guerand</p>
-                                <p>direction@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Assistant de direction</p>
-                                <p class="text-fage-500">Thomas Janvier--Perez</p>
-                                <p>thomas.janvier--perez@fage.org</p>
-                            </div>
+        <article class="border-b-4 border-b-fage-500 scroll-mt-30" id="equipe">
+            <h1 class="text-4xl text-fage-500 font-bold">L'équipe nationale de la FAGE</h1>
+            <section>
+                <details>
+                    <summary class="text-2xl text-fage-500">
+                        Le Bureau National
+                    </summary>
+                    <p>Présentation des membres du bureau national 2024/2025</p>
+                    <h3 class="text-xl">Gouvernance Générale</h3>
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Présidente</h3>
+                            <p>Maëlle NIZAN</p>
+                            <p>presidence@fage.org</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Financement associatif</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargée de financement associatif</p>
-                                <p class="text-fage-500">HéloÏse Gramage</p>
-                                <p>heloise.gramage@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Alternante chargée de financement associatif</p>
-                                <p class="text-fage-500">Charlotte Lefeuvre</p>
-                                <p>charlotte.lefeuvre@fage.org</p>
-                            </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Première Vice-Présidente - Coordination du Réseau</h3>
+                            <p>Lola BLANDIN BOURGEON</p>
+                            <p>presidence@fage.org</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Coordination réseau et formation</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Coordinateur réseau et formation</p>
-                                <p class="text-fage-500">Fernando Vega Lugo</p>
-                                <p>fernando.vega-lugo@fage.org</p>
-                            </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-Présidente - Coordination du Réseau</h3>
+                            <p>Eloïse TANGUY</p>
+                            <p>reseau@fage.org</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Chargé(e)s de projets</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargée de projets</p>
-                                <p class="text-fage-500">Sabrina Ghellab</p>
-                                <p>sabrina.ghellab@fage.org</p>
-                                <p>Auvergne-Rhône-Alpes, PACA et Occitanie</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargée de projets</p>
-                                <p class="text-fage-500">Cécile Guédon</p>
-                                <p>cecile.guedon@fage.org</p>
-                                <p>Bourgogne Franche-Comté, Bretagne, Grand Est</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargée de projets</p>
-                                <p class="text-fage-500">Randa Refaïf</p>
-                                <p>randa.refaif@fage.org</p>
-                                <p>Île-de-France, Centre-Val de Loire, Nouvelle Aquitaine</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargée de projets</p>
-                                <p class="text-fage-500">Laura Ellul</p>
-                                <p>laura.ellul@fage.org</p>
-                                <p>Hauts-de-France, Normandie et Pays de la Loire</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Alternante chargée de projets en innovation sociale</p>
-                                <p class="text-fage-500">Esther Nguyen</p>
-                                <p>esther.nguyen@fage.org</p>
-                            </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Porte-Parole</h3>
+                            <p>Elisa MANGEOLLE</p>
+                            <p>communication@fage.org</p>
+                            <p>presse@fage.org</p>
                         </div>
-                        <hr class="m-4 text-fage-500">
-                    </details>
-                </section>
-                <section>
-                    <details>
-                        <summary class="text-2xl text-fage-600 font-bold m-1 p-1">
-                            Le Bureau National
-                        </summary>
-                        <p class="m-0.5 p-0.5">Présentation des membres du bureau national 2024/2025</p>
-                        <hr class="m-4 text-fage-500">
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Gouvernance Générale</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Présidente</p>
-                                <p class="text-fage-500">Maëlle NIZAN</p>
-                                <p>presidence@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Première Vice-Présidente - Coordination du Réseau</p>
-                                <p class="text-fage-500">Lola BLANDIN BOURGEON</p>
-                                <p>presidence@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-Présidente - Coordination du Réseau</p>
-                                <p class="text-fage-500">Eloïse TANGUY</p>
-                                <p>reseau@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Porte-Parole</p>
-                                <p class="text-fage-500">Elisa MANGEOLLE</p>
-                                <p>communication@fage.org</p>
-                                <p>presse@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-Présidente - Formation</p>
-                                <p class="text-fage-500">Suzanne NIJDAM</p>
-                                <p>formation@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-Présidente - Stratégie Electorale</p>
-                                <p class="text-fage-500">Morgane BARON</p>
-                                <p>~</p>
-                            </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-Présidente - Formation</h3>
+                            <p>Suzanne NIJDAM</p>
+                            <p>formation@fage.org</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Trésorerie</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Trésorier - Evènements nationaux</p>
-                                <p class="text-fage-500">Clothilde BEAU</p>
-                                <p>tresorerie@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Trésorier adjoint - Evènements nationaux</p>
-                                <p class="text-fage-500">Mathieu KLIMECK</p>
-                                <p>tresorerie@fage.org</p>
-                            </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-Présidente - Stratégie Electorale</h3>
+                            <p>Morgane BARON</p>
+                            <p>~</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Affaires Académiques</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-Présidente - Relations Publiques et Affaires Académiques</p>
-                                <p class="text-fage-500">Flore GREZE</p>
-                                <p>~</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargé de Mission - Affaires Académiques</p>
-                                <p class="text-fage-500">Hugo CHALUMEAU-COLATO</p>
-                                <p>affaires.academiques@fage.org</p>
-                            </div>
+                    </div>
+                    <h3 class="text-xl">Trésorerie</h3>
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Trésorier - Evènements nationaux</h3>
+                            <p>Clothilde BEAU</p>
+                            <p>tresorerie@fage.org</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Affaires de Santé</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Secrétaire Générale - Prévention et Promotion de la Santé</p>
-                                <p class="text-fage-500">Cécile PELTIER</p>
-                                <p>sg@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-Président - Affaires de Santé</p>
-                                <p class="text-fage-500">Titouan RIFFARD</p>
-                                <p>sante@fage.org</p>
-                            </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Trésorier adjoint - Evènements nationaux</h3>
+                            <p>Mathieu KLIMECK</p>
+                            <p>tresorerie@fage.org</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Lutte contre les Discrimination et Politiques de Jeunesse</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Secrétaire Générale adjointe - Lutte contre les Discriminations</p>
-                                <p class="text-fage-500">Lysandre LE GALL</p>
-                                <p>sg@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-Présidente - Politiques de Jeunesse et Lutte contre les Discriminations</p>
-                                <p class="text-fage-500">Maé BOUTEILLE</p>
-                                <p>jeunesse@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargé de Mission - Politique de Jeunesse</p>
-                                <p class="text-fage-500">Amandine VELLA</p>
-                                <p>jeunesse@fage.org</p>
-                            </div>
+                    </div>
+                    <h3 class="text-xl">Affaires Académiques</h3>
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-Présidente - Relations Publiques et Affaires Académiques</h3>
+                            <p>Flore GREZE</p>
+                            <p>~</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Orientation et Insertion Professionnelle</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargée de Mission - Orientation et Insertion Professionnelle</p>
-                                <p class="text-fage-500">Tya RAMBAULT DE BARALLON</p>
-                                <p>~</p>
-                            </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Chargé de Mission - Affaires Académiques</h3>
+                            <p>Hugo CHALUMEAU-COLATO</p>
+                            <p>affaires.academiques@fage.org</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Affaires Sociales</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-Présidente - Affaires Sociales</p>
-                                <p class="text-fage-500">Mylène SCHROER</p>
-                                <p>affaires.sociales@fage.org</p>
-                            </div>
+                    </div>
+                    <h3 class="text-xl">Affaires de Santé</h3>
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Secrétaire Générale - Prévention et Promotion de la Santé</h3>
+                            <p>Cécile PELTIER</p>
+                            <p>sg@fage.org</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Affaires Internationales</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-président - Affaires Internationales</p>
-                                <p class="text-fage-500">Louis RYZ</p>
-                                <p>~</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargée de Mission - Affaires Internationales</p>
-                                <p class="text-fage-500">Jo LAPLEAU-GIRARD</p>
-                                <p>~</p>
-                            </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-Président - Affaires de Santé</h3>
+                            <p>Titouan RIFFARD</p>
+                            <p>sante@fage.org</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Défense des Droits</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-Présidente - Défense des Droits</p>
-                                <p class="text-fage-500">Pauline l'HOTTELIER</p>
-                                <p>mesdroits@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargée de Mission - Défense des Droits</p>
-                                <p class="text-fage-500">Anaïs ROPARS</p>
-                                <p>mesdroits@fage.org</p>
-                            </div>
+                    </div>
+                    <h3 class="text-xl">Lutte contre les Discrimination et Politiques de Jeunesse</h3>
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Secrétaire Générale adjointe - Lutte contre les Discriminations</h3>
+                            <p>Lysandre LE GALL</p>
+                            <p>sg@fage.org</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Urgence Ecologique</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-Présidente - Urgence Ecologique</p>
-                                <p class="text-fage-500">Flavie VINCKE</p>
-                                <p>ecologie@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargée de Mission - Urgence Ecologique</p>
-                                <p class="text-fage-500">Azénor MCILROY</p>
-                                <p>ecologie@fage.org</p>
-                            </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-Présidente - Politiques de Jeunesse et Lutte contre les Discriminations</h3>
+                            <p>Maé BOUTEILLE</p>
+                            <p>jeunesse@fage.org</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Stratégie de Communication</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-Président - Stratégie de Communication</p>
-                                <p class="text-fage-500">Martin RAY</p>
-                                <p>communication@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargée de Mission - Stratégie de Communication</p>
-                                <p class="text-fage-500">Camille PRAT</p>
-                                <p>communication@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargé de Mission - Stratégie de Communication</p>
-                                <p class="text-fage-500">Geoffroy ROBERT</p>
-                                <p>communication@fage.org</p>
-                            </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Chargé de Mission - Politique de Jeunesse</h3>
+                            <p>Amandine VELLA</p>
+                            <p>jeunesse@fage.org</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Innovation Sociale</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-Présidente - Innovation Sociale</p>
-                                <p class="text-fage-500">Marine VERDRON</p>
-                                <p>innovation.sociale@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-Président - Innovation Sociale</p>
-                                <p class="text-fage-500">Thibaut DUMONET</p>
-                                <p>innovation.sociale@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargée de Mission - Innovation Sociale</p>
-                                <p class="text-fage-500">Charlotte KRAUS</p>
-                                <p>innovation.sociale@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargée de Mission - Innovation Sociale</p>
-                                <p class="text-fage-500">Alicia TEIXEIRA-ALVES</p>
-                                <p>innovation.sociale@fage.org</p>
-                            </div>
+                    </div>
+                    <h3 class="text-xl">Orientation et Insertion Professionnelle</h3>
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Chargée de Mission - Orientation et Insertion Professionnelle</h3>
+                            <p>Tya RAMBAULT DE BARALLON</p>
+                            <p>~</p>
                         </div>
-                        <h3 class="text-xl text-fage-500 m-0.5 p-0.5">Accompagnements des Elu(e)s</h3>
-                        <div class="flex flex-wrap gap-6 items-start">
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Vice-Présidente - Accompagnement des Elu(e)s</p>
-                                <p class="text-fage-500">Axel FIOU-DUTOT</p>
-                                <p>elu.e.s@fage.org</p>
-                            </div>
-                            <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
-                                <img alt="icone de photo de profil" height="75" src="assets/image/pdp-default.png" width="75"/>
-                                <p class="m-0.5 p-0.5">Chargée de Mission - Accompagnement des Elu(e)s</p>
-                                <p class="text-fage-500">Léanor CAUCHOIS</p>
-                                <p>elu.e.s@fage.org</p>
-                            </div>
+                    </div>
+                    <h3 class="text-xl">Affaires Sociales</h3>
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-Présidente - Affaires Sociales</h3>
+                            <p>Mylène SCHROER</p>
+                            <p>affaires.sociales@fage.org</p>
                         </div>
-                        <hr class="m-4 text-fage-500">
-                    </details>
-                </section>
-                <section>
-                    <details>
-                        <summary class="text-2xl text-fage-600 font-bold m-1 p-1">
-                            Les équipes CNESER et Cnous
-                        </summary>
-                        <p class="m-0.5 p-0.5">Voici une présentation des membres de l'équipe nationale titulaires d'un mandat au CNESER ou au CA du Cnous, aussi nommés les élu(e)s nationaux de la FAGE.</p>
-                        <div class="flex flex-wrap gap-3 items-center">
-                            <section class="bg-fage-100 rounded-xl self-start w-fit h-fit">
-                                <a class="flex flex-wrap gap-2 items-center m-1 p-1" href="#CNESER">> Les élu(e)s CNESER - 2023/2025</a>
-                            </section>
-                            <section class="bg-fage-100 rounded-xl self-start w-fit h-fit">
-                                <a class="flex flex-wrap gap-2 items-center m-1 p-1" href="#Cnous">> Les élu(e)s Cnous - 2023/2025</a>
-                            </section>
+                    </div>
+                    <h3 class="text-xl">Affaires Internationales</h3>
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-président - Affaires Internationales</h3>
+                            <p>Louis RYZ</p>
+                            <p>~</p>
                         </div>
-                        <hr class="m-4 text-fage-500">
-                        <h3 id="CNESER" class="text-xl text-fage-500 m-0.5 p-0.5 scroll-mt-30">Les élu(e)s CNESER - 2023/2025</h3>
-                        <p class="m-0.5 p-0.5">SOON</p>
-                        <h3 id="Cnous" class="text-xl text-fage-500 m-0.5 p-0.5 scroll-mt-30">Les élu(e)s Cnous - 2023/2025</h3>
-                        <p class="m-0.5 p-0.5">SOON</p>
-                        <hr class="m-4 text-fage-500">
-                    </details>
-                </section>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Chargée de Mission - Affaires Internationales</h3>
+                            <p>Jo LAPLEAU-GIRARD</p>
+                            <p>~</p>
+                        </div>
+                    </div>
+                    <h3 class="text-xl">Défense des Droits</h3>
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-Présidente - Défense des Droits</h3>
+                            <p>Pauline l'HOTTELIER</p>
+                            <p>mesdroits@fage.org</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Chargée de Mission - Défense des Droits</h3>
+                            <p>Anaïs ROPARS</p>
+                            <p>mesdroits@fage.org</p>
+                        </div>
+                    </div>
+                    <h3 class="text-xl">Urgence Ecologique</h3>
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-Présidente - Urgence Ecologique</h3>
+                            <p>Flavie VINCKE</p>
+                            <p>ecologie@fage.org</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Chargée de Mission - Urgence Ecologique</h3>
+                            <p>Azénor MCILROY</p>
+                            <p>ecologie@fage.org</p>
+                        </div>
+                    </div>
+                    <h3 class="text-xl">Stratégie de Communication</h3>
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-Président - Stratégie de Communication</h3>
+                            <p>Martin RAY</p>
+                            <p>communication@fage.org</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Chargée de Mission - Stratégie de Communication</h3>
+                            <p>Camille PRAT</p>
+                            <p>communication@fage.org</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Chargé de Mission - Stratégie de Communication</h3>
+                            <p>Geoffroy ROBERT</p>
+                            <p>communication@fage.org</p>
+                        </div>
+                    </div>
+                    <h3 class="text-xl">Innovation Sociale</h3>
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-Présidente - Innovation Sociale</h3>
+                            <p>Marine VERDRON</p>
+                            <p>innovation.sociale@fage.org</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-Président - Innovation Sociale</h3>
+                            <p>Thibaut DUMONET</p>
+                            <p>innovation.sociale@fage.org</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Chargée de Mission - Innovation Sociale</h3>
+                            <p>Charlotte KRAUS</p>
+                            <p>innovation.sociale@fage.org</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Chargée de Mission - Innovation Sociale</h3>
+                            <p>Alicia TEIXEIRA-ALVES</p>
+                            <p>innovation.sociale@fage.org</p>
+                        </div>
+                    </div>
+                    <h3 class="text-xl">Accompagnements des Elu(e)s</h3>
+                    <div class="flex flex-wrap gap-6 items-start">
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Vice-Présidente - Accompagnement des Elu(e)s</h3>
+                            <p>Axel FIOU-DUTOT</p>
+                            <p>elu.e.s@fage.org</p>
+                        </div>
+                        <div class="flex flex-col items-center text-center bg-fage-100 rounded-xl p-2">
+                            <img height="75" src="assets/image/pdp-default.png" width="75"/>
+                            <h3>Chargée de Mission - Accompagnement des Elu(e)s</h3>
+                            <p>Léanor CAUCHOIS</p>
+                            <p>elu.e.s@fage.org</p>
+                        </div>
+                    </div>
+                </details>
+            </section>
+            <section>
+                <h2 class="text-2xl text-fage-500">Les équipes CNESER et CNOUS</h2>
+            </section>
+            <section>
+                <h2 class="text-2xl text-fage-500">L'équipe salariale'</h2>
+            </section>
         </article>
     </main>
 
-    <footer class="w-full bg-fage-500 text-white px-4 col-span-2 mt-6">
+<footer class="w-full bg-fage-500 text-white px-4 col-span-2 mt-4">
         <div class="flex justify-between min-h-50 items-center">
             <div class="flex items-center">
                 <img alt="Logo FAGE" class="max-w-60" src="assets/image/Logo_FAGE_blanc.svg">
