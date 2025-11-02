@@ -31,5 +31,6 @@ button {
 
 html,
 body {
-  font-family: "Relative Medium", sans-serif;
+    font-family: "Relative Medium", sans-serif;
+    scroll-behavior: smooth;
 }
