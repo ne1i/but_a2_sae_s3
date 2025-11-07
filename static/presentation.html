@@ -7,7 +7,7 @@
     <link href="style.css" rel="stylesheet">
 </head>
 
-<body class="grid grid-cols-[20fr_80fr]">
+<body class="grid lg:grid-cols-[20fr_80fr]">
     <header class="flex flex-wrap lg:items-center items-stretch justify-stretch lg:justify-between lg:flex-row flex-col sticky top-0 left-0 right-0 z-10 px-4 bg-white shadow-sm col-span-2">
 
     <div class="flex items-center justify-between lg:justify-start">
@@ -39,15 +39,17 @@
         <ul class="flex flex-1 flex-wrap gap-2 lg:flex-row flex-col items-stretch lg:items-center w-full lg:w-auto">
             <li class="relative group">
                 <!-- Bouton principal -->
-                <div class="flex items-center justify-center cursor-pointer select-none bg-fage-500 hover:bg-fage-600 active:bg-fage-700 rounded-full px-4 py-2 text-white font-bold transition-colors duration-200">
-                    La FAGE
-                    <svg class="w-4 h-4 ml-2 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </div>
+                <a href="presentation.html">
+                    <div class="flex items-center justify-center cursor-pointer select-none bg-fage-500 hover:bg-fage-600 active:bg-fage-700 rounded-full px-4 py-2 text-white font-bold transition-colors duration-200">
+                        La FAGE
+                        <svg class="hidden lg:inline-block w-4 h-4 ml-2 transition-transform duration-300 group-hover:rotate-180" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+                </a>
 
                 <!-- Sous-menu -->
-                <ul class="absolute left-0 mt-2 w-48 bg-fage-500 rounded-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20 shadow-lg">
+                <ul class="absolute left-0 mt-2 w-60 bg-fage-500 rounded-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20 shadow-lg">
                     <li>
                         <a href="presentation.html"
                            class="block px-4 py-2 text-white hover:bg-fage-600 border-b border-fage-400 transition-colors duration-200">
@@ -58,6 +60,13 @@
                         <a href="organisation.html"
                            class="block px-4 py-2 text-white hover:bg-fage-600 border-b border-fage-400 transition-colors duration-200">
                             Organisation
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.fage.org/les-assos-etudiantes/federations-fage/federations-annuaire/"
+                           target="_blank"
+                           class="block px-4 py-2 text-white hover:bg-fage-600 border-b border-fage-400 transition-colors duration-200">
+                            Les associations membres
                         </a>
                     </li>
                     <li>
@@ -90,9 +99,9 @@
     <div class="m-2 border-2 border-fage-400 bg-white rounded-full overflow-hidden lg:max-w-60">
         <input aria-label="Rechercher" class="px-8 text-xl py-1 outline-0 w-full" id="search" name="search" placeholder="Rechercher" role="search" type="search" />
     </div>
-</header>
+    </header>
 
-    <aside class="flex col-span-1 sticky top-1/8 self-start mx-1">
+    <aside class="flex col-span-1 sticky top-1/8 self-start m-1">
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 /** @type {HTMLButtonElement}*/
@@ -114,15 +123,21 @@
             </button>
             <ul>
                 <li class=" border-b text-fage-600 hover:text-fage-900">
-                    <a class="p-2 mb-2 inline-block text-xl" href="#presentation">Qui sommes-nous ?</a>
+                    <a class="p-2 mb-2 inline-block text-xl" href="presentation.html">Présentation</a>
                 </li>
                 <li class=" border-b text-fage-600 hover:text-fage-900">
-                    <a class="p-2 mb-2 inline-block text-xl" href="#instances">La FAGE dans les instances</a>
+                    <a class="p-2 mb-2 inline-block text-xl" href="organisation.html">Organisation</a>
+                </li>
+                <li class=" border-b text-fage-600 hover:text-fage-900">
+                    <a class="p-2 mb-2 inline-block text-xl" href="https://www.fage.org/les-assos-etudiantes/federations-fage/federations-annuaire/" target="_blank">Les associations membres</a>
+                </li>
+                <li class=" border-b text-fage-600 hover:text-fage-900">
+                    <a class="p-2 mb-2 inline-block text-xl" href="aaaf.html">L'AAAF</a>
                 </li>
             </ul>
         </div>
         <!-- Écran large -->
-        <div class="py-10 pt-5 px-5 mr-4  bg-fage-50 rounded-2xl mt-10 lg:block hidden">
+        <div class="py-10 pt-5 px-5 bg-fage-50 rounded-2xl mt-10 w-full lg:block hidden">
             <ul>
                 <li class=" border-b text-fage-600 hover:text-fage-900">
                     <a class="p-2 mb-2 inline-block" href="#presentation">Qui sommes-nous ?</a>
@@ -134,14 +149,20 @@
         </div>
     </aside>
 
-    <main class="col-span-1">
+    <main class="col-span-1 m-1 ml-13 lg:ml-1">
         <article class="scroll-mt-30" id="presentation">
             <h1 class="text-4xl text-fage-500 font-bold m-4 p-4">Qui sommes-nous ?</h1>
             <p class="m-0.5 p-0.5">La FAGE, Fédération des Associations Générales Etudiantes, est une association ayant pour but d’améliorer les conditions de vie et d’études des jeunes.</p>
             <hr class="m-4 text-fage-500">
             <section class="bg-fage-100 rounded-xl p-2 self-start w-fit h-fit">
                 <h2 class="text-2xl text-fage-600 font-bold m-1 p-1">La FAGE en bref.</h2>
-                <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="rounded-xl" height="236.25" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/G6Egva74tiI?si=anIUM15Bd4bL5QiF" title="YouTube video player" width="420"></iframe>
+                <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        class="rounded-xl w-full aspect-video"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        src="https://www.youtube.com/embed/G6Egva74tiI?si=anIUM15Bd4bL5QiF"
+                        title="YouTube video player">
+                </iframe>
             </section>
             <p class="m-0.5 p-0.5">La Fédération des Associations Générales Etudiantes – FAGE – est <strong class="text-fage-500">la première organisation étudiante représentative en France</strong>. Fondée en 1989, elle assoit son fonctionnement sur la démocratie participative. Elle regroupe près de 2 000 associations et syndicats, via des fédérations territoriales et de filière, soit environ 300 000 jeunes.</p>
             <p class="m-0.5 p-0.5">La FAGE a pour but d’<strong class="text-fage-500">améliorer les conditions de vie et d’études</strong> des jeunes. C’est pourquoi elle déploie des activités dans le champ de la <strong class="text-fage-500">représentation</strong> et de la <strong class="text-fage-500">défense des droits</strong>. En inventant, en expérimentant et en gérant des services et des œuvres répondant aux besoins sociaux non ou mal-satisfaits, elle est également actrice de l’<strong class="text-fage-500">innovation sociale</strong>.</p>
@@ -197,7 +218,7 @@
         </article>
     </main>
 
-    <footer class="w-full bg-fage-500 text-white px-4 col-span-2 mt-6">
+    <footer class="w-full bg-fage-500 text-white px-4 col-span-2 mt-4">
         <div class="flex justify-between min-h-50 items-center">
             <div class="flex items-center">
                 <img alt="Logo FAGE" class="max-w-60" src="assets/image/Logo_FAGE_blanc.svg">
