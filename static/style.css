@@ -348,6 +348,9 @@
   .mx-1 {
     margin-inline: calc(var(--spacing) * 1);
   }
+  .mx-2 {
+    margin-inline: calc(var(--spacing) * 2);
+  }
   .mx-auto {
     margin-inline: auto;
   }
@@ -748,11 +751,18 @@
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
   }
+  .border-b-4 {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 4px;
+  }
   .border-blue-300 {
     border-color: var(--color-blue-300);
   }
   .border-fage-400 {
     border-color: var(--color-fage-400);
+  }
+  .border-b-fage-500 {
+    border-bottom-color: var(--color-fage-500);
   }
   .bg-amber-400 {
     background-color: var(--color-amber-400);
