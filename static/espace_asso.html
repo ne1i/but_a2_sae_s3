@@ -38,11 +38,48 @@
 
         <nav class="justify-center hidden lg:flex active">
             <ul class="flex flex-1 flex-wrap gap-2 lg:flex-row flex-col items-stretch lg:items-center w-full lg:w-auto">
-                <li>
-                    <a href="index.html"
-                        class="block text-center bg-fage-500 hover:bg-fage-600 active:bg-fage-700 rounded-full px-4 text-white py-2 font-bold">
-                        La FAGE
+                <li class="relative group">
+                    <!-- Bouton principal -->
+                    <a href="presentation.html">
+                        <div
+                            class="flex items-center justify-center cursor-pointer select-none bg-fage-500 hover:bg-fage-600 active:bg-fage-700 rounded-full px-4 py-2 text-white font-bold transition-colors duration-200">
+                            La FAGE
+                            <svg class="hidden lg:inline-block w-4 h-4 ml-2 transition-transform duration-300 group-hover:rotate-180"
+                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
                     </a>
+
+                    <!-- Sous-menu -->
+                    <ul
+                        class="absolute left-0 mt-2 w-60 bg-fage-500 rounded-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20 shadow-lg">
+                        <li>
+                            <a href="presentation.html"
+                                class="block px-4 py-2 text-white hover:bg-fage-600 border-b border-fage-400 transition-colors duration-200">
+                                Présentation
+                            </a>
+                        </li>
+                        <li>
+                            <a href="organisation.html"
+                                class="block px-4 py-2 text-white hover:bg-fage-600 border-b border-fage-400 transition-colors duration-200">
+                                Organisation
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.fage.org/les-assos-etudiantes/federations-fage/federations-annuaire/"
+                                target="_blank"
+                                class="block px-4 py-2 text-white hover:bg-fage-600 border-b border-fage-400 transition-colors duration-200">
+                                Les associations membres
+                            </a>
+                        </li>
+                        <li>
+                            <a href="aaaf.html"
+                                class="block px-4 py-2 text-white hover:bg-fage-600 transition-colors duration-200">
+                                L'AAAF
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <a href="Nos_actions.html"
@@ -65,7 +102,7 @@
                         class=" block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md">Faire
                         un don</a>
                 </li>
-                <li><a
+                <li><a href="contact.html"
                         class="block text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 py-2 rounded-3xl px-4 text-white font-bold shadow-md">Contact</a>
                 </li>
             </ul>
@@ -374,7 +411,8 @@
                         33
                         70 70</a></li>
                 <li class="underline text-center lg:text-right ">
-                    <a class="hover:text-fage-900">Nous contacter</a>
+                    <a href="contact.html" class="hover:text-fage-900">Nous contacter</a>
+
                 </li>
             </ul>
         </div>
