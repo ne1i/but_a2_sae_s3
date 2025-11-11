@@ -6,7 +6,7 @@
   "scripts": {
     "tailwind:watch": "tailwindcss --watch  -i ./src/style.css -o ./static/style.css",
     "live": "live-server static/",
-    "all": "concurrently 'bun:tailwind:watch' 'bun:live'"
+    "all": "concurrently 'npm:tailwind:watch' 'npm:live'"
   },
   "devDependencies": {
     "@types/bun": "latest"
