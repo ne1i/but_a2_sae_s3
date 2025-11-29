@@ -19,6 +19,7 @@
     "bootstrap": "^5.3.8",
     "concurrently": "^9.2.1",
     "live-server": "^1.2.2",
+    "sqlite": "^5.1.1",
     "tailwindcss": "^4.1.13"
   }
 }

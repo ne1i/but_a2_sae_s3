@@ -1,16 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page de connexion</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+<html lang="fr"><?php
+                require_once __DIR__ .  "/../templates/head.php";
+                ?>
 
 <body class="bg-fage-500 min-h-screen flex items-center justify-center">
     <div class="bg-white flex flex-col items-center p-10 gap-8 shadow-2xl relative">
-        <a href="index.html" class="absolute left-6 top-6 flex gap-4 items-center text-fage-700 hover:text-fage-800 ">
+        <a href="/" class="absolute left-6 top-6 flex gap-4 items-center text-fage-700 hover:text-fage-800 ">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"
                 class="w-10 border-2 rounded-full p-1">
                 <path fill-rule="evenodd"
