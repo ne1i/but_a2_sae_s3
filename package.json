@@ -4,9 +4,10 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "tailwind:watch": "tailwindcss --watch  -i ./src/style.css -o ./static/style.css",
-    "live": "live-server static/",
-    "all": "concurrently 'npm:tailwind:watch' 'npm:live'"
+    "tailwind:watch": "tailwindcss --watch  -i ./src/style.css -o ./public/style.css",
+    "php": "php -S localhost:8080 -t public",
+    "all": "concurrently 'npm:tailwind:watch' 'npm:php' 'xdg-open localhost:8080'"
+
   },
   "devDependencies": {
     "@types/bun": "latest"
@@ -19,6 +20,7 @@
     "bootstrap": "^5.3.8",
     "concurrently": "^9.2.1",
     "live-server": "^1.2.2",
+    "sqlite": "^5.1.1",
     "tailwindcss": "^4.1.13"
   }
 }
