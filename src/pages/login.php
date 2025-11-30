@@ -2,7 +2,7 @@
 
 if (isset($_POST["username"]) && isset($_POST["password"])) {
     if ($_POST["username"] == "admin" && $_POST["password"] == "admin") {
-        setcookie("session", "mon_secret", $expires_or_options = time() + 24 * 60 * 60, $path = "/", $secure = true, $httpsecure = true);
+        setcookie("session", "mon_secret", $expires_or_options = time() + 24 * 60 * 60, $path = "/", $domain = "", $secure = true, $httpsecure = true);
         header('Location: /admin');
         die();
     }
