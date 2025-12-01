@@ -11,7 +11,7 @@ require_once __DIR__ .  "/../templates/head.php";
     <main class="flex justify-center mb-6  lg:w-9/12 mx-auto">
 
 
-        <aside class="z-100">
+        <aside>
 
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
