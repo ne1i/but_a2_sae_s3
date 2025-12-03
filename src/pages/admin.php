@@ -1,4 +1,7 @@
 <?php
+echo __DIR__ . "/../db.php";
+require_once __DIR__ . "/../db.php";
+
 if (isset($_COOKIE["session"])) {
     if ($_COOKIE["session"] != "mon_secret") {
         header('Location: /login');
@@ -7,6 +10,8 @@ if (isset($_COOKIE["session"])) {
 } else {
     header('Location: /login');
 }
+
+$db = new FageDB();
 ?>
 
 <!DOCTYPE html>
