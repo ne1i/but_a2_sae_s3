@@ -29,12 +29,12 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL UNIQUE,
     email TEXT UNIQUE,
     password_hash TEXT NOT NULL,
-    role_id INTEGER NOT NULL,
+    --role_id INTEGER NOT NULL,
     member_id INTEGER,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    last_login TEXT,
-    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE SET NULL
+    last_login TEXT
+    --FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    --FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE SET NULL
 );
 
 
