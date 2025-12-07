@@ -1,28 +1,13 @@
 <?php
 require_once __DIR__ . "/../db.php";
+require_once __DIR__ . "/../templates/admin_cookie_check.php";
 
-if (isset($_COOKIE["session"])) {
-    if ($_COOKIE["session"] != "mon_secret") {
-        header('Location: /login');
-        die();
-    }
-} else {
-    header('Location: /login');
-}
 
 $db = new FageDB();
 
+require_once __DIR__ . "/../templates/admin_head.php";
+
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panneau administrateur</title>
-    <link rel="stylesheet" href="style.css">
-</head>
 
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen flex flex-col items-center justify-center">
     <div class="grid lg:grid-cols-3 grid-cols-2 lg:m-0 m-4 gap-2">
@@ -47,7 +32,7 @@ $db = new FageDB();
             <svg xmlns="http://www.w3.org/2000/svg" class="lg:w-30 w-20" viewBox="0 0 640 640">
                 <path d="M256 144C256 117.5 277.5 96 304 96L336 96C362.5 96 384 117.5 384 144L384 496C384 522.5 362.5 544 336 544L304 544C277.5 544 256 522.5 256 496L256 144zM64 336C64 309.5 85.5 288 112 288L144 288C170.5 288 192 309.5 192 336L192 496C192 522.5 170.5 544 144 544L112 544C85.5 544 64 522.5 64 496L64 336zM496 160L528 160C554.5 160 576 181.5 576 208L576 496C576 522.5 554.5 544 528 544L496 544C469.5 544 448 522.5 448 496L448 208C448 181.5 469.5 160 496 160z" />
             </svg>Statistiques et tableaux de bord</a>
-        <a class="bg-white hover:bg-gray-300 lg:p-12 lg:py-16 py-12 px-2 text-center lg:text-2xl text-lg flex flex-col items-center gap-3 shadow-sm rounded-xl">
+        <a href="/securite" class="bg-white hover:bg-gray-300 lg:p-12 lg:py-16 py-12 px-2 text-center lg:text-2xl text-lg flex flex-col items-center gap-3 shadow-sm rounded-xl">
             <svg xmlns="http://www.w3.org/2000/svg" class="lg:w-30 w-20" viewBox="0 0 640 640">
                 <path d="M256 312C322.3 312 376 258.3 376 192C376 125.7 322.3 72 256 72C189.7 72 136 125.7 136 192C136 258.3 189.7 312 256 312zM226.3 368C127.8 368 48 447.8 48 546.3C48 562.7 61.3 576 77.7 576L329.2 576C293 533.4 272 478.5 272 420.4L272 389.3C272 382 273 374.8 274.9 368L226.3 368zM477.3 552.5L464 558.8L464 370.7L560 402.7L560 422.3C560 478.1 527.8 528.8 477.3 552.6zM453.9 323.5L341.9 360.8C328.8 365.2 320 377.4 320 391.2L320 422.3C320 496.7 363 564.4 430.2 596L448.7 604.7C453.5 606.9 458.7 608.1 463.9 608.1C469.1 608.1 474.4 606.9 479.1 604.7L497.6 596C565 564.3 608 496.6 608 422.2L608 391.1C608 377.3 599.2 365.1 586.1 360.7L474.1 323.4C467.5 321.2 460.4 321.2 453.9 323.4z" />
             </svg>Sécurité, accès et maintenance</a>

@@ -4,8 +4,11 @@ require_once __DIR__ . "/../db.php";
 
 $db = new FageDB();
 
-if (isset($_POST["username"]) && isset($_POST["password"])) {
-    if ($db->check_login_creds($_POST["username"], $_POST["password"])) {
+$username = $_POST["username"] ?? null;
+$password = $_POST["password"] ?? null;
+
+if (isset($username) && isset($password)) {
+    if ($db->check_login_creds($username, $password)) {
         setcookie("session", "mon_secret", $expires_or_options = time() + 24 * 60 * 60, $path = "/", $domain = "", $secure = true, $httpsecure = true);
         header('Location: /admin');
         die();

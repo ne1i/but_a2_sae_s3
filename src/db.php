@@ -33,4 +33,25 @@ class FageDB
         $p_hash = $user_stmt->fetch()["password_hash"];
         return password_verify($password, $p_hash);
     }
+
+    function exists($value, $table_name, $attribute_name)
+    {
+        $sql = "SELECT 1 FROM {$table_name} WHERE {$attribute_name} = :value LIMIT 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            ":value" => $value,
+        ]);
+        $result = $stmt->fetch();
+        return isset($result[0]);
+    }
+
+    function add_user($username, $password)
+    {
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $admin_stmt = $this->db->prepare("INSERT INTO users(username, password_hash) VALUES(:username, :password_hash)");
+        $admin_stmt->execute([
+            ":username" => $username,
+            ":password_hash" => $hash
+        ]);
+    }
 }
