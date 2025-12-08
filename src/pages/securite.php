@@ -1,6 +1,5 @@
 <?php
 
-require_once __DIR__ . "/../templates/admin_head.php";
 require_once __DIR__ . "/../db.php";
 
 $db = new FageDB();
@@ -25,9 +24,7 @@ if (isset($username) && isset($password) && isset($role)) {
     }
 }
 
-
-
-
+require_once __DIR__ . "/../templates/admin_head.php";
 ?>
 
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen flex flex-col items-center justify-center">

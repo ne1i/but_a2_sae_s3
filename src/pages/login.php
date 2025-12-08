@@ -12,7 +12,7 @@ if (isset($username) && isset($password)) {
     if ($db->check_login_creds($username, $password)) {
         $expiration_date = time() + 24 * 60 * 60;
         setcookie("session", $session_id, $expires_or_options = $expiration_date, $path = "/", $domain = "", $secure = true, $httpsecure = true);
-        $db->create_session($username, $session_id, $expiration_date);
+        $db->create_session($username, $session_id, date("Y-m-d H:i:s", $expiration_date));
         header('Location: /admin');
         die();
     }

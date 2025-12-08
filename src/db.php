@@ -2,10 +2,16 @@
 class FageDB
 {
     private $db;
-    private $db_path = __DIR__ . "/../data/fage.sqlite";
+    private $db_path;
 
     function __construct()
     {
+        if (isset($_ENV["DB_PATH"])) {
+            $this->db_path = $_ENV["DB_PATH"];
+        } else {
+            $this->db_path = __DIR__ . "/../data/fage.db";
+        }
+
         if (file_exists($this->db_path)) {
             $this->db = new PDO("sqlite:" . $this->db_path);
         } else {
@@ -16,7 +22,7 @@ class FageDB
 
     function init_db()
     {
-        $init_script = file_get_contents(__DIR__ . "/../data/init_script.sql");
+        $init_script = file_get_contents(__DIR__ . "/db/init_script.sql");
         $this->db->exec($init_script);
         $hash = password_hash("admin", PASSWORD_DEFAULT);
         $admin_stmt = $this->db->prepare("INSERT INTO users(username, password_hash) VALUES(:username, :password_hash)");
