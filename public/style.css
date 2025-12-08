@@ -329,6 +329,9 @@
   .m-7 {
     margin: calc(var(--spacing) * 7);
   }
+  .mx-0 {
+    margin-inline: calc(var(--spacing) * 0);
+  }
   .mx-auto {
     margin-inline: auto;
   }
@@ -607,6 +610,9 @@
   }
   .justify-center {
     justify-content: center;
+  }
+  .justify-start {
+    justify-content: flex-start;
   }
   .justify-stretch {
     justify-content: stretch;

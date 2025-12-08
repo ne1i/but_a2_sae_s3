@@ -5,10 +5,17 @@ CREATE TABLE IF NOT EXISTS roles (
     name TEXT NOT NULL UNIQUE,
     description TEXT,
     permissions TEXT,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    created_at INTEGER DEFAULT CURRENT_TIMESTAMP
 );
 
--- members d'abord
+CREATE TABLE IF NOT EXISTS user_roles (
+    user_id INTEGER NOT NULL,
+    role_id INTEGER NOT NULL,
+    PRIMARY KEY (user_id, role_id),
+    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS members (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name TEXT NOT NULL,
@@ -19,7 +26,7 @@ CREATE TABLE IF NOT EXISTS members (
     city TEXT,
     postal_code TEXT,
     birthdate TEXT,
-    joined_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    joined_at INTEGER DEFAULT CURRENT_TIMESTAMP,
     is_active INTEGER DEFAULT 1,
     notes TEXT
 );
@@ -29,12 +36,10 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL UNIQUE,
     email TEXT UNIQUE,
     password_hash TEXT NOT NULL,
-    --role_id INTEGER NOT NULL,
     member_id INTEGER,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    last_login TEXT
-    --FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    --FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE SET NULL
+    created_at INTEGER DEFAULT CURRENT_TIMESTAMP,
+    last_login TEXT,
+    FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE SET NULL
 );
 
 
@@ -44,7 +49,7 @@ CREATE TABLE IF NOT EXISTS contributions (
     member_id INTEGER NOT NULL,
     amount_cents INTEGER NOT NULL,           
     currency TEXT NOT NULL DEFAULT 'EUR',
-    paid_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    paid_at INTEGER DEFAULT CURRENT_TIMESTAMP,
     method TEXT,                             
     reference TEXT,
     notes TEXT,
@@ -58,12 +63,12 @@ CREATE TABLE IF NOT EXISTS missions (
     title TEXT NOT NULL,
     description TEXT,
     location TEXT,
-    start_at TEXT,
-    end_at TEXT,
+    start_at INTEGER,
+    end_at INTEGER,
     capacity INTEGER,                        
     budget_cents INTEGER DEFAULT 0,
     created_by INTEGER,                      
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    created_at INTEGER DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
@@ -75,7 +80,7 @@ CREATE TABLE IF NOT EXISTS mission_participants (
     member_id INTEGER NOT NULL,
     role TEXT,                               
     status TEXT DEFAULT 'registered',        
-    registered_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    registered_at INTEGER DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (mission_id) REFERENCES missions(id) ON DELETE CASCADE,
     FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE,
     UNIQUE(mission_id, member_id)
@@ -90,7 +95,7 @@ CREATE TABLE IF NOT EXISTS documents (
     mime_type TEXT,
     size_bytes INTEGER,
     uploader_id INTEGER,                     
-    uploaded_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    uploaded_at INTEGER DEFAULT CURRENT_TIMESTAMP,
     path TEXT NOT NULL,                      
     description TEXT,
     FOREIGN KEY (uploader_id) REFERENCES users(id) ON DELETE SET NULL
@@ -110,13 +115,12 @@ CREATE TABLE IF NOT EXISTS mission_documents (
 CREATE TABLE IF NOT EXISTS articles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
-    slug TEXT NOT NULL UNIQUE,
     content TEXT,
     author_id INTEGER,
     status TEXT DEFAULT 'draft',             
-    published_at TEXT,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    updated_at TEXT,
+    published_at INTEGER,
+    created_at INTEGER DEFAULT CURRENT_TIMESTAMP,
+    updated_at INTEGER,
     FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
@@ -140,7 +144,7 @@ CREATE TABLE IF NOT EXISTS partners (
     address TEXT,
     website TEXT,
     notes TEXT,
-    added_at TEXT DEFAULT CURRENT_TIMESTAMP
+    added_at INTEGER DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -150,7 +154,7 @@ CREATE TABLE IF NOT EXISTS subsidies (
     title TEXT NOT NULL,
     amount_cents INTEGER NOT NULL,
     currency TEXT NOT NULL DEFAULT 'EUR',
-    awarded_at TEXT,
+    awarded_at INTEGER,
     conditions TEXT,
     notes TEXT,
     FOREIGN KEY (partner_id) REFERENCES partners(id) ON DELETE SET NULL
@@ -164,7 +168,7 @@ CREATE TABLE IF NOT EXISTS donors (
     contact TEXT,
     email TEXT,
     notes TEXT,
-    added_at TEXT DEFAULT CURRENT_TIMESTAMP
+    added_at INTEGER DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS donations (
@@ -172,7 +176,7 @@ CREATE TABLE IF NOT EXISTS donations (
     donor_id INTEGER NOT NULL,
     amount_cents INTEGER NOT NULL,
     currency TEXT NOT NULL DEFAULT 'EUR',
-    donated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    donated_at INTEGER DEFAULT CURRENT_TIMESTAMP,
     method TEXT,
     reference TEXT,
     notes TEXT,
@@ -188,14 +192,14 @@ CREATE TABLE IF NOT EXISTS audit_logs (
     action TEXT,                              
     performed_by INTEGER,                      
     details TEXT,                              
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    created_at INTEGER DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (performed_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
-
-
-
-
-
-
-
+INSERT INTO roles (name, description, permissions) VALUES
+('admin', 'Administrateur du site avec tous les droits', 'all'),
+('responsable-benevoles', 'Responsable du pôle Bénévoles', 'benevoles'),
+('responsable-communication', 'Responsable du pôle Communication', 'communication'),
+('responsable-partenariats', 'Responsable du pôle Partenariats', 'partenariats'),
+('responsable-tresorerie', 'Responsable du pôle Trésorerie', 'tresorerie'),
+('responsable-direction', 'Responsable du pôle Direction', 'direction');

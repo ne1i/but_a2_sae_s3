@@ -30,7 +30,7 @@ class FageDB
     {
         $user_stmt = $this->db->prepare("SELECT password_hash FROM users WHERE username = :username");
         $user_stmt->execute([":username" => $username]);
-        $p_hash = $user_stmt->fetch()["password_hash"];
+        $p_hash = $user_stmt->fetchColumn();
         return password_verify($password, $p_hash);
     }
 
@@ -41,11 +41,11 @@ class FageDB
         $stmt->execute([
             ":value" => $value,
         ]);
-        $result = $stmt->fetch();
-        return isset($result[0]);
+        $result = $stmt->fetchColumn();
+        return $result !== false;
     }
 
-    function add_user($username, $password)
+    function add_user($username, $password, $role, $poles = [])
     {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $admin_stmt = $this->db->prepare("INSERT INTO users(username, password_hash) VALUES(:username, :password_hash)");
@@ -53,5 +53,44 @@ class FageDB
             ":username" => $username,
             ":password_hash" => $hash
         ]);
+        if ($role === "admin") {
+            $this->add_role_to_user($username, $role);
+            return;
+        }
+        foreach ($poles as $pole) {
+            $this->add_role_to_user($username, $pole);
+        }
+    }
+
+    function get_user_id($username)
+    {
+        $stmt = $this->db->prepare("SELECT id FROM users WHERE username = :username");
+        $stmt->execute([
+            ":username" => $username
+        ]);
+        return $stmt->fetchColumn() ?? false;
+    }
+
+    function add_role_to_user($username, $role_str)
+    {
+        $user_id = $this->get_user_id($username);
+        $role_id = $this->get_role_id_from_role($role_str);
+        if ($user_id === false || $role_id === false) {
+            return;
+        }
+        $stmt = $this->db->prepare("INSERT INTO user_roles(user_id, role_id) VALUES(:user_id, :role_id)");
+        $stmt->execute([
+            ":user_id" => $user_id,
+            ":role_id" => $role_id,
+        ]);
+    }
+
+    function get_role_id_from_role($role_str)
+    {
+        $stmt = $this->db->prepare("SELECT id FROM roles WHERE name = :role");
+        $stmt->execute([
+            ":role" => $role_str
+        ]);
+        return $stmt->fetchColumn() ?? false;
     }
 }

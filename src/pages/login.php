@@ -42,9 +42,9 @@ require_once __DIR__ .  "/../templates/head.php";
                 <h1 class="text-xl text-center">Connexion à la page administrateur</h1>
                 <form action="/login" method="post" class="flex flex-col ">
                     <label for="username" class="text-lg">Nom d'utilisateur</label>
-                    <input type="username" name="username" class="border-2 mb-4 rounded-full pl-2 py-1">
+                    <input required type="username" name="username" class="border-2 mb-4 rounded-full pl-2 py-1">
                     <label for="password" class="text-lg">Mot de passe</label>
-                    <input type="password" name="password" class="border-2 mb-4 rounded-full pl-2 py-1">
+                    <input required type="password" name="password" class="border-2 mb-4 rounded-full pl-2 py-1">
                     <button type="submit" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 my-4 text-white">Se
                         connecter</button>
                     <?php
