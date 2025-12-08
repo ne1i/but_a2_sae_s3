@@ -1,10 +1,10 @@
 <?php
 
-require_once __DIR__ . "/../templates/admin_cookie_check.php";
 require_once __DIR__ . "/../templates/admin_head.php";
 require_once __DIR__ . "/../db.php";
 
 $db = new FageDB();
+require_once __DIR__ . "/../templates/admin_cookie_check.php";
 
 $username = $_POST["username"] ?? null;
 $password = $_POST["password"] ?? null;

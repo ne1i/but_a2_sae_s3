@@ -6,10 +6,13 @@ $db = new FageDB();
 
 $username = $_POST["username"] ?? null;
 $password = $_POST["password"] ?? null;
+$session_id = random_bytes(32);
 
 if (isset($username) && isset($password)) {
     if ($db->check_login_creds($username, $password)) {
-        setcookie("session", "mon_secret", $expires_or_options = time() + 24 * 60 * 60, $path = "/", $domain = "", $secure = true, $httpsecure = true);
+        $expiration_date = time() + 24 * 60 * 60;
+        setcookie("session", $session_id, $expires_or_options = $expiration_date, $path = "/", $domain = "", $secure = true, $httpsecure = true);
+        $db->create_session($username, $session_id, $expiration_date);
         header('Location: /admin');
         die();
     }

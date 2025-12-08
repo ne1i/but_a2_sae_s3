@@ -93,4 +93,27 @@ class FageDB
         ]);
         return $stmt->fetchColumn() ?? false;
     }
+
+    function create_session($username, $session_id, $expiration_date)
+    {
+        $stmt = $this->db->prepare("INSERT INTO sessions(session_id, user_id, expires_at) VALUES(:session_id, :user_id, :expiration_date)");
+        $user_id = $this->get_user_id($username);
+        if ($user_id === false) {
+            return;
+        }
+        $stmt->execute([
+            ":session_id" => $session_id,
+            ":user_id" => $user_id,
+            ":expiration_date" => $expiration_date,
+        ]);
+    }
+
+    function is_correct_session_id($session_id)
+    {
+        $stmt = $this->db->prepare("SELECT session_id FROM sessions WHERE session_id = :session_id AND expires_at > CURRENT_TIMESTAMP");
+        $stmt->execute([
+            ":session_id" => $session_id,
+        ]);
+        return $stmt->fetchColumn() !== false;
+    }
 }

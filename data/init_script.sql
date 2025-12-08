@@ -196,6 +196,14 @@ CREATE TABLE IF NOT EXISTS audit_logs (
     FOREIGN KEY (performed_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
+CREATE TABLE IF NOT EXISTS sessions (
+    session_id TEXT PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    created_at INTEGER DEFAULT CURRENT_TIMESTAMP,
+    expires_at INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 INSERT INTO roles (name, description, permissions) VALUES
 ('admin', 'Administrateur du site avec tous les droits', 'all'),
 ('responsable-benevoles', 'Responsable du pôle Bénévoles', 'benevoles'),
