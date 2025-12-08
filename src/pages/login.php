@@ -4,6 +4,15 @@ require_once __DIR__ . "/../db.php";
 
 $db = new FageDB();
 
+if (isset($_COOKIE["session"])) {
+    $session_id = $_COOKIE["session"];
+    if ($db->is_correct_session_id($session_id)) {
+        header('Location: /admin');
+        die();
+    }
+}
+
+
 $username = $_POST["username"] ?? null;
 $password = $_POST["password"] ?? null;
 $session_id = random_bytes(32);

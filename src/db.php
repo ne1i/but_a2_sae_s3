@@ -24,12 +24,7 @@ class FageDB
     {
         $init_script = file_get_contents(__DIR__ . "/db/init_script.sql");
         $this->db->exec($init_script);
-        $hash = password_hash("admin", PASSWORD_DEFAULT);
-        $admin_stmt = $this->db->prepare("INSERT INTO users(username, password_hash) VALUES(:username, :password_hash)");
-        $admin_stmt->execute([
-            ":username" => "admin",
-            ":password_hash" => $hash
-        ]);
+        $this->add_user("admin", "admin", "admin");
     }
 
     function check_login_creds($username, $password)

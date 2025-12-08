@@ -35,7 +35,7 @@ require_once __DIR__ . "/../templates/admin_head.php";
                 <path fill-rule="evenodd"
                     d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
             </svg>
-            <p class="text-xl -ml-1 -mt-1 underline">Revenir à la page d'accueil</p>
+            <p class="text-xl -ml-1 -mt-1 underline">Revenir au back-office</p>
         </a>
         <h1 class="text-3xl">Créer un nouvel utilisateur</h1>
         <form action="/securite" method="post" class="flex flex-col ">
