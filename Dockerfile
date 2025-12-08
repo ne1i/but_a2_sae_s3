@@ -2,6 +2,7 @@ FROM php:8.4-alpine
 
 COPY ./src /app/src
 COPY ./public /app/public
+RUN mkdir /data
 
 VOLUME [ "/data" ]
 
