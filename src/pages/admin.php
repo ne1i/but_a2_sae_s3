@@ -14,16 +14,17 @@ require_once __DIR__ . "/../templates/admin_head.php";
 
 ?>
 
-<body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen flex flex-col items-center justify-center">
-    <a href="?logout=1" class="text-2xl absolute top-4 left-4 underline flex gap-4 items-center"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"
-            class="w-10 border-2 rounded-full p-1">
-            <path fill-rule="evenodd"
-                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
-        </svg>Se déconnecter</a>
-    <div class="grid lg:grid-cols-3 grid-cols-2 lg:m-0 m-4 gap-2">
-        <a <?php
+<body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
+    <div class="mt-4 -mb-4 ml-6 flex">
+        <a href="?logout=1" class="text-2xl underline flex gap-4 items-center"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"
+                class="w-10 border-2 rounded-full p-1">
+                <path fill-rule="evenodd"
+                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+            </svg>Se déconnecter</a>
+    </div>
 
-            ?>
+    <div class="grid lg:grid-cols-3 grid-cols-2 lg:m-10 m-4 gap-2">
+        <a href="/adherants_benevoles"
             id="benevoles" class="bg-white hover:bg-gray-300 lg:p-12 lg:py-16 py-12 px-2 text-center lg:text-2xl text-lg flex flex-col items-center gap-3 shadow-sm rounded-xl">
             <svg xmlns="http://www.w3.org/2000/svg" class="lg:w-30 w-20" viewBox="0 0 640 640">
                 <path d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z" />

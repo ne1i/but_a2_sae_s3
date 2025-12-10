@@ -52,7 +52,7 @@ require_once __DIR__ .  "/../templates/head.php";
 
                 <img src="assets/image/Logo_FAGE.svg" alt="Logo FAGE" class="max-w-50 mt-8">
                 <h1 class="text-xl text-center">Connexion à la page administrateur</h1>
-                <form action="/login" method="post" class="flex flex-col ">
+                <form action="/login" method="post" class="flex flex-col bg-white ">
                     <label for="username" class="text-lg">Nom d'utilisateur</label>
                     <input required type="username" name="username" class="border-2 mb-4 rounded-full pl-2 py-1">
                     <label for="password" class="text-lg">Mot de passe</label>
