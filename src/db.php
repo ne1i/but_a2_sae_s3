@@ -117,4 +117,64 @@ class FageDB
         ]);
         return $stmt->fetchColumn() !== false;
     }
+
+    function add_adherant($adherant_data_array)
+    {
+        $champs = [
+            'prenom',
+            'nom',
+            'adresse',
+            'code_postal',
+            'ville',
+            'tel',
+            'email',
+            'age',
+            'profession'
+        ];
+
+        $stmt = $this->db->prepare("INSERT INTO adherants(first_name, last_name, address, postal_code, city, phone, email, age, profession)
+        VALUES(:prenom, :nom, :adresse, :code_postal, :ville, :tel, :email, :age, :profession)");
+
+        $stmt->execute([
+            'prenom' => $adherant_data_array["prenom"],
+            'nom' => $adherant_data_array["nom"],
+            'adresse' => $adherant_data_array["adresse"],
+            'code_postal' => $adherant_data_array["code_postal"],
+            'ville' => $adherant_data_array["ville"],
+            'tel' => $adherant_data_array["tel"],
+            'email' => $adherant_data_array["email"],
+            'age' => $adherant_data_array["age"],
+            'profession' => $adherant_data_array["profession"]
+        ]);
+    }
+    function adherant_exists($adherant_data_array)
+    {
+        $champs = [
+            'prenom',
+            'nom',
+            'adresse',
+            'code_postal',
+            'ville',
+            'tel',
+            'email',
+            'age',
+            'profession'
+        ];
+
+        $stmt = $this->db->prepare("SELECT 1 FROM adherants WHERE first_name = :prenom AND last_name = :nom AND address = :adresse AND postal_code = :code_postal AND city = :ville AND phone = :tel AND email = :email AND age = :age AND profession = :profession");
+
+        $stmt->execute([
+            'prenom' => $adherant_data_array["prenom"],
+            'nom' => $adherant_data_array["nom"],
+            'adresse' => $adherant_data_array["adresse"],
+            'code_postal' => $adherant_data_array["code_postal"],
+            'ville' => $adherant_data_array["ville"],
+            'tel' => $adherant_data_array["tel"],
+            'email' => $adherant_data_array["email"],
+            'age' => $adherant_data_array["age"],
+            'profession' => $adherant_data_array["profession"]
+        ]);
+        $result = $stmt->fetchColumn();
+        return $result !== false;
+    }
 }
