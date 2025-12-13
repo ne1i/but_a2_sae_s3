@@ -39,7 +39,7 @@ require_once __DIR__ .  "/../templates/head.php";
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen flex items-center justify-center">
     <div class="px-4">
 
-        <div class="bg-white p-10 shadow-lg">
+        <div class="bg-white p-10 shadow-lg rounded-2xl">
             <a href="/" class="flex gap-4 items-center text-fage-700 hover:text-fage-800 ">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"
                     class="w-10 border-2 rounded-full p-1">

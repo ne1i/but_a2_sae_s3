@@ -27,8 +27,8 @@ if (isset($username) && isset($password) && isset($role)) {
 require_once __DIR__ . "/../templates/admin_head.php";
 ?>
 
-<body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen flex flex-col items-center justify-center">
-    <div id="create-user" class="bg-white p-8 flex flex-col gap-12">
+<body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen items-center justify-center">
+    <div id="create-user" class="bg-white p-8 flex flex-col gap-12 m-6 rounded-2xl">
         <a href="/admin" class="flex gap-4 items-center text-fage-700 hover:text-fage-800 ">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"
                 class="w-10 border-2 rounded-full p-1">

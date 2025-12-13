@@ -16,7 +16,7 @@ require_once __DIR__ . "/../templates/admin_head.php";
 
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
     <div class="mt-4 -mb-4 ml-6 flex">
-        <a href="?logout=1" class="text-2xl underline flex gap-4 items-center"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"
+        <a href="?logout=1" class="text-2xl underline flex gap-4 mb-4 items-center"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"
                 class="w-10 border-2 rounded-full p-1">
                 <path fill-rule="evenodd"
                     d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />

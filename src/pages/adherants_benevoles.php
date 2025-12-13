@@ -7,8 +7,8 @@ require_once __DIR__ . "/../templates/admin_head.php";
 
 ?>
 
-<body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen flex flex-row">
-    <aside class="bg-fage-200 rounded-r-4xl flex flex-row-reverse items-center justify-start">
+<body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen flex lg:flex-row flex-col">
+    <aside class="bg-fage-200 lg:rounded-r-4xl flex lg:flex-row-reverse items-center lg:justify-start justify-center">
         <ul class="mx-12 text-center">
             <a href="">
                 <li class="border-1 border-x-0 text-2xl hover:bg p-4">
@@ -28,12 +28,12 @@ require_once __DIR__ . "/../templates/admin_head.php";
         </ul>
     </aside>
 
-    <main class="flex items-center mx-auto">
-        <div class="bg-white p-10 shadow-lg px-14">
+    <main class="m-auto">
+        <div class="bg-white p-10 shadow-lg px-14 rounded-2xl">
 
-            <div class="flex flex-col items-center gap-8 ">
+            <div class=" ">
 
-                <h1 class="text-xl text-center">Ajouter un adhérent</h1>
+                <h1 class="text-3xl text-center mb-4">Ajouter un adhérent</h1>
                 <form action="/adherants_benevoles" method="post" class="flex flex-col bg-white ">
                     <label for="prenom" class="text-lg">Prénom</label>
                     <input required type="text" name="prenom" class="border-2 mb-4 rounded-full pl-2 py-1">
@@ -42,7 +42,7 @@ require_once __DIR__ . "/../templates/admin_head.php";
                     <label for="ville" class="text-lg">Ville</label>
                     <input required type="text" name="ville" class="border-2 mb-4 rounded-full pl-2 py-1">
                     <label for="age" class="text-lg">Age</label>
-                    <input required type="number" name="age" class="border-2 mb-4 rounded-full pl-2 py-1">
+                    <input required type="number" name="age" class="border-2 mb-4 rounded-full pl-2 py-1 pr-2">
                     <label for="profession" class="text-lg">Profession</label>
                     <input required type="text" name="profession" class="border-2 mb-4 rounded-full pl-2 py-1">
                     <button type="submit" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 my-4 text-white">Ajouter l'adhérent</button>
