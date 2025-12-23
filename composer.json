@@ -1,0 +1,15 @@
+{
+    "name": "valentin/but_a2_sae_s3",
+    "autoload": {
+        "psr-4": {
+            "ButA2SaeS3\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ne1i",
+            "email": "valentinfroment7@gmail.com"
+        }
+    ],
+    "require": {}
+}

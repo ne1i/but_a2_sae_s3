@@ -4,8 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "tailwind:watch": "tailwindcss --watch  -i ./src/style.css -o ./public/style.css",
-    "php": "php -S localhost:8080 -t public",
+    "tailwind:watch": "tailwindcss --watch  -i ./src/style.css -o ./src/public/style.css",
+    "php": "php -S localhost:8080 -t src/public",
     "all": "concurrently 'npm:tailwind:watch' 'npm:php' 'xdg-open localhost:8080'"
   },
   "devDependencies": {

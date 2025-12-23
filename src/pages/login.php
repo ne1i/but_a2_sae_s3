@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../db.php";
+use ButA2SaeS3\FageDB;
 
 $db = new FageDB();
 

@@ -1,6 +1,9 @@
 <?php
-require_once __DIR__ . "/../db.php";
+
+use ButA2SaeS3\FageDB;
+
 $db = new FageDB();
+
 require_once __DIR__ . "/../templates/admin_cookie_check.php";
 
 if (isset($_GET['logout'])) {

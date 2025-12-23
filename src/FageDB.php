@@ -1,4 +1,9 @@
 <?php
+
+namespace ButA2SaeS3;
+
+use PDO;
+
 class FageDB
 {
     private $db;
@@ -120,18 +125,6 @@ class FageDB
 
     function add_adherant($adherant_data_array)
     {
-        $champs = [
-            'prenom',
-            'nom',
-            'adresse',
-            'code_postal',
-            'ville',
-            'tel',
-            'email',
-            'age',
-            'profession'
-        ];
-
         $stmt = $this->db->prepare("INSERT INTO adherants(first_name, last_name, address, postal_code, city, phone, email, age, profession)
         VALUES(:prenom, :nom, :adresse, :code_postal, :ville, :tel, :email, :age, :profession)");
 
@@ -149,18 +142,6 @@ class FageDB
     }
     function adherant_exists($adherant_data_array)
     {
-        $champs = [
-            'prenom',
-            'nom',
-            'adresse',
-            'code_postal',
-            'ville',
-            'tel',
-            'email',
-            'age',
-            'profession'
-        ];
-
         $stmt = $this->db->prepare("SELECT 1 FROM adherants WHERE first_name = :prenom AND last_name = :nom AND address = :adresse AND postal_code = :code_postal AND city = :ville AND phone = :tel AND email = :email AND age = :age AND profession = :profession");
 
         $stmt->execute([
