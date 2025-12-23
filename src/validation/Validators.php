@@ -30,8 +30,6 @@ class Validators
             }
         }
 
-        if (!array_key_exists("prenom", $formdata)) {
-        }
 
         if (!$result->hasMessages()) {
             $result->setValue(new AddAdherantDto(

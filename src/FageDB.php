@@ -2,6 +2,7 @@
 
 namespace ButA2SaeS3;
 
+use ButA2SaeS3\dto\AddAdherantDto;
 use PDO;
 
 class FageDB
@@ -123,37 +124,31 @@ class FageDB
         return $stmt->fetchColumn() !== false;
     }
 
-    function add_adherant($adherant_data_array)
+    function add_adherant(AddAdherantDto $new_adherant)
     {
         $stmt = $this->db->prepare("INSERT INTO adherants(first_name, last_name, address, postal_code, city, phone, email, age, profession)
         VALUES(:prenom, :nom, :adresse, :code_postal, :ville, :tel, :email, :age, :profession)");
 
         $stmt->execute([
-            'prenom' => $adherant_data_array["prenom"],
-            'nom' => $adherant_data_array["nom"],
-            'adresse' => $adherant_data_array["adresse"],
-            'code_postal' => $adherant_data_array["code_postal"],
-            'ville' => $adherant_data_array["ville"],
-            'tel' => $adherant_data_array["tel"],
-            'email' => $adherant_data_array["email"],
-            'age' => $adherant_data_array["age"],
-            'profession' => $adherant_data_array["profession"]
+            'prenom' => $new_adherant->prenom,
+            'nom' => $new_adherant->nom,
+            'adresse' => $new_adherant->adresse,
+            'code_postal' => $new_adherant->code_postal,
+            'ville' => $new_adherant->ville,
+            'tel' => $new_adherant->tel,
+            'email' => $new_adherant->email,
+            'age' => $new_adherant->age,
+            'profession' => $new_adherant->profession
         ]);
     }
-    function adherant_exists($adherant_data_array)
+    function adherant_exists($prenom, $nom, $email)
     {
-        $stmt = $this->db->prepare("SELECT 1 FROM adherants WHERE first_name = :prenom AND last_name = :nom AND address = :adresse AND postal_code = :code_postal AND city = :ville AND phone = :tel AND email = :email AND age = :age AND profession = :profession");
+        $stmt = $this->db->prepare("SELECT 1 FROM adherants WHERE first_name = :prenom AND last_name = :nom AND email = :email");
 
         $stmt->execute([
-            'prenom' => $adherant_data_array["prenom"],
-            'nom' => $adherant_data_array["nom"],
-            'adresse' => $adherant_data_array["adresse"],
-            'code_postal' => $adherant_data_array["code_postal"],
-            'ville' => $adherant_data_array["ville"],
-            'tel' => $adherant_data_array["tel"],
-            'email' => $adherant_data_array["email"],
-            'age' => $adherant_data_array["age"],
-            'profession' => $adherant_data_array["profession"]
+            'prenom' => $prenom,
+            'nom' => $nom,
+            'email' => $email,
         ]);
         $result = $stmt->fetchColumn();
         return $result !== false;

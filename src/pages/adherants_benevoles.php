@@ -1,6 +1,8 @@
 <?php
 
+use ButA2SaeS3\dto\AddAdherantDto;
 use ButA2SaeS3\FageDB;
+use ButA2SaeS3\utils\HttpUtils;
 use ButA2SaeS3\validation\Validators;
 
 $db = new FageDB();
@@ -9,15 +11,21 @@ require_once __DIR__ . "/../templates/admin_cookie_check.php";
 require_once __DIR__ . "/../templates/admin_head.php";
 
 
+if (HttpUtils::isPost()) {
+    echo "test POST";
+    $result = Validators::validate_add_adherent($_POST);
 
-$result = Validators::validate_add_adherent($_POST);
+    if ($result->isValid()) {
 
-if ($result->isValid()) {
-    if ($db->adherant_exists($data)) {
-        $error = "Cet adhérant existe déjà";
-    } else {
-        $db->add_adherant($data);
-        $success = "L'adhérant a bien été ajouté";
+        /** @var AddAdherantDto $new_adherant */
+        $new_adherant = $result->value();
+
+        if ($db->adherant_exists($new_adherant->prenom, $new_adherant->nom, $new_adherant->email)) {
+            $error = "Cet adhérant existe déjà";
+        } else {
+            $db->add_adherant($new_adherant);
+            $success = "L'adhérant a bien été ajouté";
+        }
     }
 }
 ?>
@@ -47,12 +55,18 @@ if ($result->isValid()) {
 
         <main class="lg:mr-2 mr-0 grow">
             <div class="shadow-sm bg-white p-10 px-14 rounded-2xl">
+                <p class="mb-2">
+                    <a href="/admin" class="text-blue-500 underline visited:bg-purple-500"> <span class="rotate-180 inline-block">➜</span> Retour à l'accueil</a>
+                </p>
                 <h1 class=" text-3xl text-shadow-2xs mb-4">Ajouter un adhérent</h1>
                 <form action="/adherants_benevoles" method="post" class="flex flex-col bg-white">
                     <div class="flex gap-4 mb-4">
                         <div class="flex flex-col w-1/2">
                             <label for="prenom" class="text-lg">Prénom</label>
-                            <input required type="text" name="prenom" class="border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
+                            <input required type="text" name="prenom" class=" border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
+                            <?php if (isset($result?->messages()["prenom"])) { ?>
+                                <span class="text-red-500"><?= $result->messages()["prenom"] ?></span>
+                            <?php } ?>
                         </div>
 
                         <div class="flex flex-col w-1/2">
