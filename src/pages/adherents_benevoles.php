@@ -178,10 +178,30 @@ if (HttpUtils::isPost()) {
                     <?= c::Heading2("Adhérents", id: "adherents-table") ?>
 
                     <div class="space-y-4">
+                        <?php
+                        $page = max($_GET["page"] ?? 1, 1);
+                        $count = 3;
 
+                        $page_count = $db->adherents_count() / $count;
+                        ?>
 
                         <fieldset>
-                            <form action="/adherents_benevoles#adherents-table" class="flex gap-4 flex-wrap items-center">
+                            <form id="adherentForm" action="/adherents_benevoles#adherents-table" class="flex gap-4 flex-wrap items-center">
+                                <script>
+                                    /** @type {HTMLFormElement} */
+                                    let adherentForm = window.adherentForm;
+                                    adherentForm.addEventListener("submit", (e) => {
+                                        const btn = e.submitter;
+                                        /** @type {number | undefined} */
+                                        const nextPage = btn.dataset.nextPage;
+                                        if (nextPage) {
+                                            /** @type { HTMLFormElement} */
+                                            let target = e.target;
+
+                                            target.getElementsByTagName("input").namedItem("page").value = nextPage;
+                                        }
+                                    })
+                                </script>
                                 <label> Filtrer la ville :
                                     <select class="border shadow-sm px-2" name="filter-ville" id="filter-ville" placeholder="Filtrer la ville">
                                         <option value="paris">Paris</option>
@@ -202,51 +222,59 @@ if (HttpUtils::isPost()) {
                                         <option value="Vanille"></option>
                                     </datalist>
                                 </label>
+                                <input type="hidden" name="page" value="<?= $page ?>">
                                 <button type="submit" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 px-6 text-white">Filtrer</button>
                             </form>
                         </fieldset>
+                        <div class="scroll-container">
 
-                        <table class="border shadow-sm table-auto w-full">
-                            <thead class="bg-gray-100">
-                                <tr>
-                                    <th class="border px-4 py-2 text-left">Nom</th>
-                                    <th class="border px-4 py-2 text-left">Prénom</th>
-                                    <th class="border px-4 py-2 text-left">Adresse</th>
-                                    <th class="border px-4 py-2 text-left">Profession</th>
-                                    <th class="border px-4 py-2 text-left">Âge</th>
-                                    <th class="border px-4 py-2 text-left">Ville</th>
-                                    <th class="border px-4 py-2 text-left">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $page = max($_GET["page"] ?? 1, 1);
-                                $count = 50;
+                            <table class="border shadow-sm table-auto w-full overflow-x-scroll">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="border px-4 py-2 text-left">Nom</th>
+                                        <th class="border px-4 py-2 text-left">Prénom</th>
+                                        <th class="border px-4 py-2 text-left">Adresse</th>
+                                        <th class="border px-4 py-2 text-left">Profession</th>
+                                        <th class="border px-4 py-2 text-left">Âge</th>
+                                        <th class="border px-4 py-2 text-left">Ville</th>
+                                        <th class="border px-4 py-2 text-left">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $idx = 0;
 
-                                $page_count = $db->adherents_count() / $count;
+                                    foreach ($db->get_adherents($count, page: $page) as $adherent) {
+                                        echo c::AdherantTableRow($adherent, alternate: $idx % 2 == 0);
+                                        $idx++;
+                                    }
+                                    ?>
 
-                                $idx = 0;
-
-                                foreach ($db->get_adherents($count, page: $page) as $adherent) {
-                                    echo c::AdherantTableRow($adherent, alternate: $idx % 2 == 0);
-                                    $idx++;
-                                }
-                                ?>
-
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="flex justify-center gap-4 items-center">
                             <?php
                             $previous = $page > 1;
                             $next = $page < $page_count;
                             $class_disabled = "";
+
+                            $previous_page = max(1, $page  - 1);
+                            $next_page = min($page_count, $page  + 1);
                             ?>
-                            <a class="rounded-full px-4 py-2   text-shadow-2xs shadow-sm <?= $next ? "bg-fage-500 text-white" : "bg-gray-300 text-black" ?>"
-                                inert=<?= HtmlUtils::bool_to_str($next) ?> href="/adherent_benevoles?<?= HttpUtils::get_query_params_str() ?>">Précédent</a>
+                            <button
+                                type="submit"
+                                form="adherentForm"
+                                data-next-page="<?= $previous_page ?>"
+                                class="min-w-[13ch] text-center rounded-full px-4 py-2   text-shadow-2xs shadow-sm <?= $previous ? "bg-fage-500 text-white" : "bg-gray-300 text-black" ?>"
+                                <?= !$previous ? "inert" : "" ?>>Précédent</button>
                             <span class="rounded-full text-white text-shadow-2xs shadow-sm bg-fage-700 inline-block px-2"><?= $page ?></span>
-                            <a
-                                class=" rounded-full px-4 py-2 text-shadow-2xs shadow-sm <?= $next ? "bg-fage-500 text-white" : "bg-gray-300 text-black" ?>"
-                                inert=<?= HtmlUtils::bool_to_str($previous) ?> href="">Suivant</a>
+                            <button
+                                type="submit"
+                                form="adherentForm"
+                                data-next-page="<?= $next_page ?>"
+                                class=" min-w-[13ch] text-center rounded-full px-4 py-2 text-shadow-2xs shadow-sm <?= $next ? "bg-fage-500 text-white" : "bg-gray-300 text-black" ?>"
+                                <?= !$next ? "inert" : "" ?>>Suivant</button>
                         </div>
                     </div>
 
