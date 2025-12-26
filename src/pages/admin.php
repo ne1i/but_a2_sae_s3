@@ -5,20 +5,7 @@ use ButA2SaeS3\utils\HttpUtils;
 
 $db = new FageDB();
 
-require_once __DIR__ . "/../templates/admin_cookie_check.php";
-
-if (isset($_GET["logout"])) {
-    setcookie(
-        "session",
-        $session_id,
-        $expires_or_options = 0,
-        $path = "/",
-        $domain = "",
-        $secure = true,
-        $httpsecure = true,
-    );
-    HttpUtils::redirect("/login");
-}
+HttpUtils::ensure_valid_session($db);
 
 require_once __DIR__ . "/../templates/admin_head.php";
 ?>
@@ -26,7 +13,7 @@ require_once __DIR__ . "/../templates/admin_head.php";
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
     <main class="m-4">
         <div class="flex">
-            <a href="?logout=1" class="text-2xl font-bold bg-red-800 hover:bg-red-900 text-red-300  border-2 border-red-300 flex gap-2 mb-4 items-center rounded-3xl pe-3 shadow-sm">
+            <a href="/logout" class="text-2xl font-bold bg-red-800 hover:bg-red-900 text-red-300  border-2 border-red-300 flex gap-2 mb-4 items-center rounded-3xl pe-3 shadow-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" class="w-10 p-1">
                     <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
                 </svg>

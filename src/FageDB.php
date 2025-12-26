@@ -2,7 +2,7 @@
 
 namespace ButA2SaeS3;
 
-use ButA2SaeS3\dto\AddadherentDto;
+use ButA2SaeS3\dto\AddAdherentDto;
 use PDO;
 
 class FageDB
@@ -124,7 +124,7 @@ class FageDB
         return $stmt->fetchColumn() !== false;
     }
 
-    function add_adherent(AddadherentDto $new_adherent)
+    function add_adherent(AddAdherentDto $new_adherent)
     {
         $stmt = $this->db->prepare("INSERT INTO adherents(first_name, last_name, address, postal_code, city, phone, email, age, profession)
         VALUES(:prenom, :nom, :adresse, :code_postal, :ville, :tel, :email, :age, :profession)");
@@ -152,5 +152,29 @@ class FageDB
         ]);
         $result = $stmt->fetchColumn();
         return $result !== false;
+    }
+
+    function get_adherents($count = 50, $page = 1)
+    {
+        $page = max(1, $page);
+        $count = max(1, $count);
+
+        $stmt = $this->db->prepare("SELECT * FROM adherents LIMIT :count OFFSET :offset");
+        $stmt->execute([
+            ":count" => $count,
+            ":offset" => $count * ($page - 1)
+        ]);
+        $result = $stmt->fetchAll();
+        $adherentsDTOs = [];
+        foreach ($result as $rows) {
+            $adherent = new AddAdherentDto($rows["first_name"], $rows["last_name"], $rows["address"], $rows["postal_code"], $rows["city"], $rows["phone"], $rows["email"], $rows["age"], $rows["profession"]);
+            $adherentsDTOs[] = $adherent;
+        }
+        return $adherentsDTOs;
+    }
+
+    function adherents_count()
+    {
+        return $this->db->query("SELECT COUNT(id) FROM adherents")->fetchColumn();
     }
 }

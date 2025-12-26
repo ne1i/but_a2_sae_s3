@@ -1,13 +1,16 @@
 <?php
 
+use ButA2SaeS3\Constants;
 use ButA2SaeS3\dto\AddAdherentDto;
 use ButA2SaeS3\FageDB;
 use ButA2SaeS3\utils\HttpUtils;
 use ButA2SaeS3\validation\Validators;
+use ButA2SaeS3\Components as c;
+use ButA2SaeS3\utils\HtmlUtils;
 
 $db = new FageDB();
 
-require_once __DIR__ . "/../templates/admin_cookie_check.php";
+HttpUtils::ensure_valid_session($db);
 require_once __DIR__ . "/../templates/admin_head.php";
 
 
@@ -53,83 +56,203 @@ if (HttpUtils::isPost()) {
         </aside>
 
         <main class="lg:mr-2 mr-0 grow">
-            <div class="shadow-sm bg-white p-10 px-14 rounded-2xl">
-                <p class="mb-2">
-                    <a href="/admin" class="text-blue-500 underline visited:bg-purple-500"> <span class="rotate-180 inline-block">➜</span> Retour à l'accueil</a>
-                </p>
-                <h1 class=" text-3xl text-shadow-2xs mb-4">Ajouter un adhérent</h1>
-                <form action="/adherents_benevoles" method="post" class="flex flex-col bg-white">
-                    <div class="flex gap-4 mb-4">
-                        <div class="flex flex-col w-1/2">
-                            <label for="prenom" class="text-lg">Prénom</label>
-                            <input required type="text" name="prenom" class=" border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
-                            <?php if (isset($result?->messages()["prenom"])) { ?>
-                                <span class="text-red-500"><?= $result->messages()["prenom"] ?></span>
-                            <?php } ?>
+            <div class="shadow-sm bg-white p-10 px-14 rounded-2xl space-y-8">
+                <div>
+                    <div class="mb-2">
+
+                        <?= c::BackToLink(); ?>
+                    </div>
+                    <?= c::Heading2("Ajouter un adhérent") ?>
+                    <form action="/adherents_benevoles" method="post" class="flex flex-col bg-white">
+                        <div class="flex gap-4 mb-4">
+                            <div class="flex flex-col w-1/2">
+                                <label for="prenom" class="text-lg">Prénom</label>
+                                <input required type="text" name="prenom" class=" border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
+
+                            </div>
+
+                            <div class="flex flex-col w-1/2">
+                                <label for="nom" class="text-lg">Nom</label>
+                                <input required type="text" name="nom" class="border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
+
+                            </div>
                         </div>
 
-                        <div class="flex flex-col w-1/2">
-                            <label for="nom" class="text-lg">Nom</label>
-                            <input required type="text" name="nom" class="border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
+                        <label for="adresse" class="text-lg">Adresse</label>
+                        <input required type="text" name="adresse" class="border-2 mb-4 rounded-full pl-2 py-1 bg-[#fafafa]">
+
+
+                        <div class="flex gap-4 mb-4">
+                            <div class="flex flex-col w-1/2">
+                                <label for="code_postal" class="text-lg">Code postal</label>
+                                <input required type="text" name="code_postal" class="border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
+
+                            </div>
+
+                            <div class="flex flex-col w-1/2">
+                                <label for="ville" class="text-lg">Ville</label>
+                                <input required type="text" name="ville" class="border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
+
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4 mb-4">
+                            <div class="flex flex-col w-1/2">
+                                <label for="tel" class="text-lg">Téléphone</label>
+                                <input required type="tel" name="tel" class="border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
+
+                            </div>
+
+                            <div class="flex flex-col w-1/2">
+                                <label for="email" class="text-lg">Email</label>
+                                <input required type="email" name="email" class="border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
+
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col ">
+                            <label for="age" class="text-lg">Âge</label>
+                            <input required type="number" name="age" class="border-2 rounded-full pl-2 py-1 pr-2 bg-[#fafafa]">
+
+                        </div>
+
+                        <div class="flex flex-col ">
+                            <label for="profession" class="text-lg">Profession</label>
+                            <input required type="text" name="profession" class="border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
+
+                        </div>
+
+                        <button type="submit" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 my-4 text-white">
+                            Ajouter l'adhérent
+                        </button>
+
+                        <?php
+                        if (isset($error)) {
+                            echo "<span class=\"text-red-500 text-center\">";
+                            echo $error;
+                            echo "</span>";
+                        }
+                        if (isset($success)) {
+                            echo "<span class=\"text-green-500 text-center\">";
+                            echo $success;
+                            echo "</span>";
+                        }
+                        ?>
+                        <?php
+                        if (Constants::is_debug()) {
+                        ?>
+                            <button id="autofill" type="button" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 text-white">Autofill (debug)</button>
+
+                            <script>
+                                function makeid(length) {
+                                    var result = '';
+                                    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                                    var charactersLength = characters.length;
+                                    for (var i = 0; i < length; i++) {
+                                        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                                    }
+                                    return result;
+                                }
+
+                                autofill.addEventListener("click", () => {
+                                    document.querySelector("[name='prenom']").value = makeid(6);
+                                    document.querySelector("[name='nom']").value = makeid(6);
+                                    document.querySelector("[name='adresse']").value = makeid(6);
+                                    document.querySelector("[name='code_postal']").value = makeid(6);
+                                    document.querySelector("[name='ville']").value = makeid(6);
+                                    document.querySelector("[name='tel']").value = "0102030405";
+                                    document.querySelector("[name='email']").value = "test@test.com";
+                                    document.querySelector("[name='age']").value = "20";
+                                    document.querySelector("[name='profession']").value = "employé";
+
+                                });
+                            </script>
+                        <?php
+                        }
+                        ?>
+
+                    </form>
+                </div>
+                <div>
+
+                    <?= c::Heading2("Adhérents", id: "adherents-table") ?>
+
+                    <div class="space-y-4">
+
+
+                        <fieldset>
+                            <form action="/adherents_benevoles#adherents-table" class="flex gap-4 flex-wrap items-center">
+                                <label> Filtrer la ville :
+                                    <select class="border shadow-sm px-2" name="filter-ville" id="filter-ville" placeholder="Filtrer la ville">
+                                        <option value="paris">Paris</option>
+                                    </select>
+                                </label>
+
+                                <label> Age :
+                                    <input class="border shadow-sm px-2" name="filter-age" type="number" min="0" max="99" list="tickmarks" title="Filtrer par âge (eg. 18)" placeholder="18">
+                                </label>
+
+                                <label> Profession :
+                                    <input class="border shadow-sm px-2" list="professions" id="filter-profession" name="filter-profession" />
+                                    <datalist id="professions">
+                                        <option value="Chocolat"></option>
+                                        <option value="Noix de coco"></option>
+                                        <option value="Menthe"></option>
+                                        <option value="Fraise"></option>
+                                        <option value="Vanille"></option>
+                                    </datalist>
+                                </label>
+                                <button type="submit" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 px-6 text-white">Filtrer</button>
+                            </form>
+                        </fieldset>
+
+                        <table class="border shadow-sm table-auto w-full">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="border px-4 py-2 text-left">Nom</th>
+                                    <th class="border px-4 py-2 text-left">Prénom</th>
+                                    <th class="border px-4 py-2 text-left">Adresse</th>
+                                    <th class="border px-4 py-2 text-left">Profession</th>
+                                    <th class="border px-4 py-2 text-left">Âge</th>
+                                    <th class="border px-4 py-2 text-left">Ville</th>
+                                    <th class="border px-4 py-2 text-left">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $page = max($_GET["page"] ?? 1, 1);
+                                $count = 50;
+
+                                $page_count = $db->adherents_count() / $count;
+
+                                $idx = 0;
+
+                                foreach ($db->get_adherents($count, page: $page) as $adherent) {
+                                    echo c::AdherantTableRow($adherent, alternate: $idx % 2 == 0);
+                                    $idx++;
+                                }
+                                ?>
+
+                            </tbody>
+                        </table>
+                        <div class="flex justify-center gap-4 items-center">
+                            <?php
+                            $previous = $page > 1;
+                            $next = $page < $page_count;
+                            $class_disabled = "";
+                            ?>
+                            <a class="rounded-full px-4 py-2   text-shadow-2xs shadow-sm <?= $next ? "bg-fage-500 text-white" : "bg-gray-300 text-black" ?>"
+                                inert=<?= HtmlUtils::bool_to_str($next) ?> href="/adherent_benevoles?<?= HttpUtils::get_query_params_str() ?>">Précédent</a>
+                            <span class="rounded-full text-white text-shadow-2xs shadow-sm bg-fage-700 inline-block px-2"><?= $page ?></span>
+                            <a
+                                class=" rounded-full px-4 py-2 text-shadow-2xs shadow-sm <?= $next ? "bg-fage-500 text-white" : "bg-gray-300 text-black" ?>"
+                                inert=<?= HtmlUtils::bool_to_str($previous) ?> href="">Suivant</a>
                         </div>
                     </div>
 
-                    <label for="adresse" class="text-lg">Adresse</label>
-                    <input required type="text" name="adresse" class="border-2 mb-4 rounded-full pl-2 py-1 bg-[#fafafa]">
-
-                    <div class="flex gap-4 mb-4">
-                        <div class="flex flex-col w-1/2">
-                            <label for="code_postal" class="text-lg">Code postal</label>
-                            <input required type="text" name="code_postal" class="border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
-                        </div>
-
-                        <div class="flex flex-col w-1/2">
-                            <label for="ville" class="text-lg">Ville</label>
-                            <input required type="text" name="ville" class="border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
-                        </div>
-                    </div>
-
-                    <div class="flex gap-4 mb-4">
-                        <div class="flex flex-col w-1/2">
-                            <label for="tel" class="text-lg">Téléphone</label>
-                            <input required type="tel" name="tel" class="border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
-                        </div>
-
-                        <div class="flex flex-col w-1/2">
-                            <label for="email" class="text-lg">Email</label>
-                            <input required type="email" name="email" class="border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col ">
-                        <label for="age" class="text-lg">Âge</label>
-                        <input required type="number" name="age" class="border-2 rounded-full pl-2 py-1 pr-2 bg-[#fafafa]">
-                    </div>
-
-                    <div class="flex flex-col ">
-                        <label for="profession" class="text-lg">Profession</label>
-                        <input required type="text" name="profession" class="border-2 rounded-full pl-2 py-1 bg-[#fafafa]">
-                    </div>
-
-                    <button type="submit" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 my-4 text-white">
-                        Ajouter l'adhérent
-                    </button>
-
-                    <?php
-                    if (isset($error)) {
-                        echo "<span class=\"text-red-500 text-center\">";
-                        echo $error;
-                        echo "</span>";
-                    }
-                    if (isset($success)) {
-                        echo "<span class=\"text-green-500 text-center\">";
-                        echo $success;
-                        echo "</span>";
-                    }
-                    ?>
-                </form>
-
+                </div>
             </div>
+
         </main>
 
     </div>

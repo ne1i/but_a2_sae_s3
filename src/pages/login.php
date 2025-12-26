@@ -1,27 +1,20 @@
 <?php
 
 use ButA2SaeS3\FageDB;
+use ButA2SaeS3\services\SessionService;
+use ButA2SaeS3\utils\HttpUtils;
 
 $db = new FageDB();
 
-if (isset($_COOKIE["session"])) {
-    $session_id = $_COOKIE["session"];
-    if ($db->is_correct_session_id($session_id)) {
-        header('Location: /admin');
-        die();
-    }
-}
 
+HttpUtils::redirect_if_session($db);
 
 $username = $_POST["username"] ?? null;
 $password = $_POST["password"] ?? null;
-$session_id = random_bytes(32);
 
 if (isset($username) && isset($password)) {
     if ($db->check_login_creds($username, $password)) {
-        $expiration_date = time() + 24 * 60 * 60;
-        setcookie("session", $session_id, $expires_or_options = $expiration_date, $path = "/", $domain = "", $secure = true, $httpsecure = true);
-        $db->create_session($username, $session_id, date("Y-m-d H:i:s", $expiration_date));
+        SessionService::create_session($db, $username);
         header('Location: /admin');
         die();
     }

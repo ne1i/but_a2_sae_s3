@@ -1,10 +1,13 @@
 <?php
 
+use ButA2SaeS3\Constants;
 use ButA2SaeS3\FageDB;
+use ButA2SaeS3\utils\HttpUtils;
+use ButA2SaeS3\Components as c;
 
 $db = new FageDB();
 
-require_once __DIR__ . "/../templates/admin_cookie_check.php";
+HttpUtils::ensure_valid_session($db);
 
 $username = $_POST["username"] ?? null;
 $password = $_POST["password"] ?? null;
@@ -30,15 +33,9 @@ require_once __DIR__ . "/../templates/admin_head.php";
 
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen items-center justify-center">
     <div id="create-user" class="bg-white p-8 flex flex-col gap-12 m-6 rounded-2xl">
-        <a href="/admin" class="flex gap-4 items-center text-fage-700 hover:text-fage-800 ">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"
-                class="w-10 border-2 rounded-full p-1">
-                <path fill-rule="evenodd"
-                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
-            </svg>
-            <p class="text-xl -ml-1 -mt-1 underline">Revenir au back-office</p>
-        </a>
+        <?= c::BackToLink(); ?>
         <h1 class="text-3xl">Créer un nouvel utilisateur</h1>
+
         <form action="/securite" method="post" class="flex flex-col ">
             <label for="username" class="text-lg">Nom d'utilisateur</label>
             <input required type="username" name="username" class="border-2 mb-4 rounded-full pl-2 py-1">
@@ -105,6 +102,31 @@ require_once __DIR__ . "/../templates/admin_head.php";
                 echo "<span class=\"text-green-500 text-center\">";
                 echo $success;
                 echo "</span>";
+            }
+            if (Constants::is_debug()) {
+            ?>
+                <button id="autofill" type="button" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 text-white">Autofill (debug)</button>
+
+                <script>
+                    function makeid(length) {
+                        var result = '';
+                        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                        var charactersLength = characters.length;
+                        for (var i = 0; i < length; i++) {
+                            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                        }
+                        return result;
+                    }
+
+                    autofill.addEventListener("click", () => {
+                        document.querySelector("[name='username']").value = makeid(6);
+                        const pwd = makeid(6)
+                        document.querySelector("[name='password']").value = pwd;
+                        document.querySelector("[name='password-confirm']").value = pwd;
+
+                    });
+                </script>
+            <?php
             }
             ?>
         </form>
