@@ -2,7 +2,7 @@
 
 namespace ButA2SaeS3;
 
-use ButA2SaeS3\dto\AddAdherentDto;
+use ButA2SaeS3\dto\AdherentDto;
 
 class Components
 {
@@ -27,7 +27,7 @@ class Components
         return '<h1 ' . $id_str . '  class="' . $classes . '">' . $content . '</h1>';
     }
 
-    public static function AdherantTableRow(AddAdherentDto $adherant, bool $alternate)
+    public static function AdherantTableRow(AdherentDto $adherant, bool $alternate)
     {
         $bg_colors = $alternate ? "bg-gray-200 " : "bg-gray-50";
         $tr = '<tr class="hover:bg-gray-300 ' . $bg_colors . '">
@@ -38,8 +38,11 @@ class Components
                     <td class="border px-4 py-2">' . $adherant->age . '</td>
                     <td class="border px-4 py-2">' . $adherant->ville . '</td>
                     <td class="border px-4 py-2">
-                        <a href="" class="text-blue-600 underline">Modifier</a>
-                        <a href="" class="text-blue-600 underline">Supprimer</a>
+                        <a href="/edit_adherent?id=' . $adherant->id . '#adherents-table" class="text-blue-600 underline">Modifier</a>
+                        <form method="post" style="display: inline;" onsubmit="return confirm(\'Êtes-vous sûr de vouloir supprimer cet adhérent ?\')">
+                            <input type="hidden" name="delete_id" value="' . $adherant->id . '">
+                            <button type="submit" class="text-red-600 underline ml-2" style="border: none; background: none; cursor: pointer;">Supprimer</button>
+                        </form>
                     </td>
                 </tr>';
         return $tr;

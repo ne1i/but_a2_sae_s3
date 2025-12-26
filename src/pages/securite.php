@@ -32,104 +32,108 @@ require_once __DIR__ . "/../templates/admin_head.php";
 ?>
 
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen items-center justify-center">
-    <div id="create-user" class="bg-white p-8 flex flex-col gap-12 m-6 rounded-2xl">
-        <?= c::BackToLink(); ?>
-        <h1 class="text-3xl">Créer un nouvel utilisateur</h1>
+    <div id="create-user" class="bg-white p-8 m-6 rounded-2xl">
+        <div class="mb-4">
 
-        <form action="/securite" method="post" class="flex flex-col ">
-            <label for="username" class="text-lg">Nom d'utilisateur</label>
-            <input required type="username" name="username" class="border-2 mb-4 rounded-full pl-2 py-1">
-            <label for="password" class="text-lg">Mot de passe</label>
-            <input required type="password" name="password" class="border-2 mb-4 rounded-full pl-2 py-1">
-            <label for="password-confirm" class="text-lg">Confirmer le mot de passe</label>
-            <input required type="password" name="password-confirm" class="border-2 mb-4 rounded-full pl-2 py-1">
-            <label for="role" class="text-lg">Rôle de l'utilisateur (droits)</label>
+            <?= c::BackToLink(); ?>
+        </div>
+        <h1 class="text-3xl mb-4">Créer un nouvel utilisateur</h1>
+        <div>
+            <form action="/securite" method="post" class="flex flex-col ">
+                <label for="username" class="text-lg">Nom d'utilisateur</label>
+                <input required type="username" name="username" class="border-2 mb-4 rounded-full pl-2 py-1">
+                <label for="password" class="text-lg">Mot de passe</label>
+                <input required type="password" name="password" class="border-2 mb-4 rounded-full pl-2 py-1">
+                <label for="password-confirm" class="text-lg">Confirmer le mot de passe</label>
+                <input required type="password" name="password-confirm" class="border-2 mb-4 rounded-full pl-2 py-1">
+                <label for="role" class="text-lg">Rôle de l'utilisateur (droits)</label>
 
-            <select required id="role" name="role" class="border-2 p-1 m-2 mb-4 mx-0">
-                <option value="admin">Administrateur (tout les droits)</option>
-                <option value="responsable-pole">Responsable de pôle</option>
+                <select required id="role" name="role" class="border-2 p-1 m-2 mb-4 mx-0">
+                    <option value="admin">Administrateur (tout les droits)</option>
+                    <option value="responsable-pole">Responsable de pôle</option>
 
-            </select>
+                </select>
 
-            <div id="choix-poles" class="hidden flex-col justify-start gap-2">
-                <label>
-                    <input type="checkbox" name="poles[]" value="responsable-benevoles">
-                    Pôle Bénévoles
-                </label>
+                <div id="choix-poles" class="hidden flex-col justify-start gap-2">
+                    <label>
+                        <input type="checkbox" name="poles[]" value="responsable-benevoles">
+                        Pôle Bénévoles
+                    </label>
 
-                <label>
-                    <input type="checkbox" name="poles[]" value="responsable-communication">
-                    Pôle Communication
-                </label>
+                    <label>
+                        <input type="checkbox" name="poles[]" value="responsable-communication">
+                        Pôle Communication
+                    </label>
 
-                <label>
-                    <input type="checkbox" name="poles[]" value="responsable-partenariats">
-                    Pôle Partenariats
-                </label>
+                    <label>
+                        <input type="checkbox" name="poles[]" value="responsable-partenariats">
+                        Pôle Partenariats
+                    </label>
 
-                <label>
-                    <input type="checkbox" name="poles[]" value="responsable-tresorerie">
-                    Pôle Trésorerie
-                </label>
+                    <label>
+                        <input type="checkbox" name="poles[]" value="responsable-tresorerie">
+                        Pôle Trésorerie
+                    </label>
 
-                <label>
-                    <input type="checkbox" name="poles[]" value="responsable-direction">
-                    Pôle Direction
-                </label>
-            </div>
-
-            <script>
-                document.getElementById("role").addEventListener("change", function() {
-                    const bloc = document.getElementById("choix-poles");
-
-                    if (this.value === "responsable-pole") {
-                        bloc.style.display = "flex";
-                    } else {
-                        bloc.style.display = "none";
-                    }
-                });
-            </script>
-
-            <button type="submit" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 my-4 text-white">Créer le compte</button>
-            <?php
-            if (isset($error)) {
-                echo "<span class=\"text-red-500 text-center\">";
-                echo $error;
-                echo "</span>";
-            }
-
-            if (isset($success)) {
-                echo "<span class=\"text-green-500 text-center\">";
-                echo $success;
-                echo "</span>";
-            }
-            if (Constants::is_debug()) {
-            ?>
-                <button id="autofill" type="button" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 text-white">Autofill (debug)</button>
+                    <label>
+                        <input type="checkbox" name="poles[]" value="responsable-direction">
+                        Pôle Direction
+                    </label>
+                </div>
 
                 <script>
-                    function makeid(length) {
-                        var result = '';
-                        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                        var charactersLength = characters.length;
-                        for (var i = 0; i < length; i++) {
-                            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                    document.getElementById("role").addEventListener("change", function() {
+                        const bloc = document.getElementById("choix-poles");
+
+                        if (this.value === "responsable-pole") {
+                            bloc.style.display = "flex";
+                        } else {
+                            bloc.style.display = "none";
                         }
-                        return result;
-                    }
-
-                    autofill.addEventListener("click", () => {
-                        document.querySelector("[name='username']").value = makeid(6);
-                        const pwd = makeid(6)
-                        document.querySelector("[name='password']").value = pwd;
-                        document.querySelector("[name='password-confirm']").value = pwd;
-
                     });
                 </script>
-            <?php
-            }
-            ?>
-        </form>
+
+                <button type="submit" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 my-4 text-white">Créer le compte</button>
+                <?php
+                if (isset($error)) {
+                    echo "<span class=\"text-red-500 text-center\">";
+                    echo $error;
+                    echo "</span>";
+                }
+
+                if (isset($success)) {
+                    echo "<span class=\"text-green-500 text-center\">";
+                    echo $success;
+                    echo "</span>";
+                }
+                if (Constants::is_debug()) {
+                ?>
+                    <button id="autofill" type="button" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 text-white">Autofill (debug)</button>
+
+                    <script>
+                        function makeid(length) {
+                            var result = '';
+                            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                            var charactersLength = characters.length;
+                            for (var i = 0; i < length; i++) {
+                                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                            }
+                            return result;
+                        }
+
+                        autofill.addEventListener("click", () => {
+                            document.querySelector("[name='username']").value = makeid(6);
+                            const pwd = makeid(6)
+                            document.querySelector("[name='password']").value = pwd;
+                            document.querySelector("[name='password-confirm']").value = pwd;
+
+                        });
+                    </script>
+                <?php
+                }
+                ?>
+            </form>
+        </div>
     </div>
 
 

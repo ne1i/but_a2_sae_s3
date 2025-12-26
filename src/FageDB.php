@@ -3,6 +3,7 @@
 namespace ButA2SaeS3;
 
 use ButA2SaeS3\dto\AddAdherentDto;
+use ButA2SaeS3\dto\AdherentDto;
 use PDO;
 
 class FageDB
@@ -154,20 +155,50 @@ class FageDB
         return $result !== false;
     }
 
-    function get_adherents($count = 50, $page = 1)
+    function get_adherents($count = 50, $page = 1, $filter_ville = "", $filter_age = "", $filter_profession = "")
     {
         $page = max(1, $page);
         $count = max(1, $count);
 
-        $stmt = $this->db->prepare("SELECT * FROM adherents LIMIT :count OFFSET :offset");
-        $stmt->execute([
-            ":count" => $count,
-            ":offset" => $count * ($page - 1)
-        ]);
+        $sql = "SELECT * FROM adherents WHERE 1=1";
+        $params = [];
+
+        if (!empty($filter_ville)) {
+            $sql .= " AND LOWER(city) = LOWER(:filter_ville)";
+            $params[":filter_ville"] = $filter_ville;
+        }
+
+        if (!empty($filter_age)) {
+            $sql .= " AND age >= :filter_age";
+            $params[":filter_age"] = $filter_age;
+        }
+
+        if (!empty($filter_profession)) {
+            $sql .= " AND profession LIKE :filter_profession";
+            $params[":filter_profession"] = "%$filter_profession%";
+        }
+
+        $sql .= " LIMIT :count OFFSET :offset";
+        $params[":count"] = $count;
+        $params[":offset"] = $count * ($page - 1);
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
         $result = $stmt->fetchAll();
         $adherentsDTOs = [];
         foreach ($result as $rows) {
-            $adherent = new AddAdherentDto($rows["first_name"], $rows["last_name"], $rows["address"], $rows["postal_code"], $rows["city"], $rows["phone"], $rows["email"], $rows["age"], $rows["profession"]);
+            $adherent = new AdherentDto(
+                $rows["id"],
+                $rows["first_name"],
+                $rows["last_name"],
+                $rows["address"],
+                $rows["postal_code"],
+                $rows["city"],
+                $rows["phone"],
+                $rows["email"],
+                $rows["age"],
+                $rows["profession"]
+            );
             $adherentsDTOs[] = $adherent;
         }
         return $adherentsDTOs;
@@ -176,5 +207,126 @@ class FageDB
     function adherents_count()
     {
         return $this->db->query("SELECT COUNT(id) FROM adherents")->fetchColumn();
+    }
+
+    function get_distinct_cities()
+    {
+        $stmt = $this->db->prepare("SELECT DISTINCT city FROM adherents ORDER BY city");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    function get_distinct_professions()
+    {
+        $stmt = $this->db->prepare("SELECT DISTINCT profession FROM adherents WHERE profession IS NOT NULL AND profession != '' ORDER BY profession");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    function get_adherent_by_id($id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM adherents WHERE id = :id");
+        $stmt->execute([":id" => $id]);
+        $row = $stmt->fetch();
+
+        if (!$row) {
+            return null;
+        }
+
+        return new AdherentDto(
+            $row["id"],
+            $row["first_name"],
+            $row["last_name"],
+            $row["address"],
+            $row["postal_code"],
+            $row["city"],
+            $row["phone"],
+            $row["email"],
+            $row["age"],
+            $row["profession"]
+        );
+    }
+
+    function update_adherent($id, AddAdherentDto $updated_adherent)
+    {
+        $stmt = $this->db->prepare("UPDATE adherents SET 
+            first_name = :prenom, 
+            last_name = :nom, 
+            address = :adresse, 
+            postal_code = :code_postal, 
+            city = :ville, 
+            phone = :tel, 
+            email = :email, 
+            age = :age, 
+            profession = :profession 
+            WHERE id = :id");
+
+        return $stmt->execute([
+            ':prenom' => $updated_adherent->prenom,
+            ':nom' => $updated_adherent->nom,
+            ':adresse' => $updated_adherent->adresse,
+            ':code_postal' => $updated_adherent->code_postal,
+            ':ville' => $updated_adherent->ville,
+            ':tel' => $updated_adherent->tel,
+            ':email' => $updated_adherent->email,
+            ':age' => $updated_adherent->age,
+            ':profession' => $updated_adherent->profession,
+            ':id' => $id
+        ]);
+    }
+
+    function get_adherent_by_email($email)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM adherents WHERE email = :email");
+        $stmt->execute([":email" => $email]);
+        $row = $stmt->fetch();
+
+        if (!$row) {
+            return null;
+        }
+
+        return new AdherentDto(
+            $row["id"],
+            $row["first_name"],
+            $row["last_name"],
+            $row["address"],
+            $row["postal_code"],
+            $row["city"],
+            $row["phone"],
+            $row["email"],
+            $row["age"],
+            $row["profession"]
+        );
+    }
+
+    function get_adherents_count($filter_ville = "", $filter_age = "", $filter_profession = "")
+    {
+        $sql = "SELECT COUNT(id) FROM adherents WHERE 1=1";
+        $params = [];
+
+        if (!empty($filter_ville)) {
+            $sql .= " AND LOWER(city) = LOWER(:filter_ville)";
+            $params[":filter_ville"] = $filter_ville;
+        }
+
+        if (!empty($filter_age)) {
+            $sql .= " AND age >= :filter_age";
+            $params[":filter_age"] = $filter_age;
+        }
+
+        if (!empty($filter_profession)) {
+            $sql .= " AND profession LIKE :filter_profession";
+            $params[":filter_profession"] = "%$filter_profession%";
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchColumn();
+    }
+
+    function delete_adherent($id)
+    {
+        $stmt = $this->db->prepare("DELETE FROM adherents WHERE id = :id");
+        return $stmt->execute([":id" => $id]);
     }
 }

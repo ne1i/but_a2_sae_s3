@@ -6,7 +6,6 @@ use ButA2SaeS3\FageDB;
 use ButA2SaeS3\utils\HttpUtils;
 use ButA2SaeS3\validation\Validators;
 use ButA2SaeS3\Components as c;
-use ButA2SaeS3\utils\HtmlUtils;
 
 $db = new FageDB();
 
@@ -15,18 +14,33 @@ require_once __DIR__ . "/../templates/admin_head.php";
 
 
 if (HttpUtils::isPost()) {
-    $result = Validators::validate_add_adherent($_POST);
+    if (isset($_POST['delete_id'])) {
+        $delete_id = $_POST['delete_id'];
+        $adherent = $db->get_adherent_by_id($delete_id);
 
-    if ($result->isValid()) {
-
-        /** @var AddAdherentDto $new_adherent */
-        $new_adherent = $result->value();
-
-        if ($db->adherent_exists($new_adherent->prenom, $new_adherent->nom, $new_adherent->email)) {
-            $error = "Cet adhérant existe déjà";
+        if ($adherent) {
+            if ($db->delete_adherent($delete_id)) {
+                $delete_success = "L'adhérent {$adherent->prenom} {$adherent->nom} a bien été supprimé";
+            } else {
+                $delete_error = "Une erreur est survenue lors de la suppression";
+            }
         } else {
-            $db->add_adherent($new_adherent);
-            $success = "L'adhérant $new_adherent->prenom $new_adherent->nom a bien été ajouté";
+            $delete_error = "Adhérent introuvable";
+        }
+    } else {
+        $result = Validators::validate_add_adherent($_POST);
+
+        if ($result->isValid()) {
+
+            /** @var AddAdherentDto $new_adherent */
+            $new_adherent = $result->value();
+
+            if ($db->adherent_exists($new_adherent->prenom, $new_adherent->nom, $new_adherent->email)) {
+                $error = "Cet adhérant existe déjà";
+            } else {
+                $db->add_adherent($new_adherent);
+                $success = "L'adhérant $new_adherent->prenom $new_adherent->nom a bien été ajouté";
+            }
         }
     }
 }
@@ -58,7 +72,7 @@ if (HttpUtils::isPost()) {
         <main class="lg:mr-2 mr-0 grow">
             <div class="shadow-sm bg-white p-10 px-14 rounded-2xl space-y-8">
                 <div>
-                    <div class="mb-2">
+                    <div class="mb-4">
 
                         <?= c::BackToLink(); ?>
                     </div>
@@ -122,22 +136,25 @@ if (HttpUtils::isPost()) {
 
                         </div>
 
-                        <button type="submit" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 my-4 text-white">
-                            Ajouter l'adhérent
-                        </button>
-
                         <?php
                         if (isset($error)) {
                             echo "<span class=\"text-red-500 text-center\">";
                             echo $error;
                             echo "</span>";
                         }
+
                         if (isset($success)) {
                             echo "<span class=\"text-green-500 text-center\">";
                             echo $success;
                             echo "</span>";
                         }
+
                         ?>
+
+                        <button type="submit" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 my-4 text-white">
+                            Ajouter l'adhérent
+                        </button>
+
                         <?php
                         if (Constants::is_debug()) {
                         ?>
@@ -182,11 +199,18 @@ if (HttpUtils::isPost()) {
                         $page = max($_GET["page"] ?? 1, 1);
                         $count = 3;
 
-                        $page_count = $db->adherents_count() / $count;
+                        $filter_ville = $_GET["filter-ville"] ?? "";
+                        $filter_age = $_GET["filter-age"] ?? "";
+                        $filter_profession = $_GET["filter-profession"] ?? "";
+
+                        $cities = $db->get_distinct_cities();
+
+                        $total_count = $db->get_adherents_count($filter_ville, $filter_age, $filter_profession);
+                        $page_count = ceil($total_count / $count);
                         ?>
 
                         <fieldset>
-                            <form id="adherentForm" action="/adherents_benevoles#adherents-table" class="flex gap-4 flex-wrap items-center">
+                            <form id="adherentForm" method="get" action="/adherents_benevoles#adherents-table" class="flex gap-4 flex-wrap items-center">
                                 <script>
                                     /** @type {HTMLFormElement} */
                                     let adherentForm = window.adherentForm;
@@ -199,35 +223,58 @@ if (HttpUtils::isPost()) {
                                             let target = e.target;
 
                                             target.getElementsByTagName("input").namedItem("page").value = nextPage;
+                                        } else {
+                                            /** @type { HTMLFormElement} */
+                                            let target = e.target;
+                                            target.getElementsByTagName("input").namedItem("page").value = 1;
                                         }
                                     })
                                 </script>
                                 <label> Filtrer la ville :
-                                    <select class="border shadow-sm px-2" name="filter-ville" id="filter-ville" placeholder="Filtrer la ville">
-                                        <option value="paris">Paris</option>
-                                    </select>
+                                    <input class="border shadow-sm px-2" list="cities" id="filter-ville" name="filter-ville" placeholder="Filtrer la ville" value="<?= htmlspecialchars($filter_ville) ?>">
+                                    <datalist id="cities">
+                                        <?php foreach ($cities as $city): ?>
+                                            <option value="<?= htmlspecialchars($city) ?>">
+                                            <?php endforeach; ?>
+                                    </datalist>
                                 </label>
 
-                                <label> Age :
-                                    <input class="border shadow-sm px-2" name="filter-age" type="number" min="0" max="99" list="tickmarks" title="Filtrer par âge (eg. 18)" placeholder="18">
+                                <label> Age min. :
+                                    <input class="border shadow-sm px-2" name="filter-age" type="number" min="0" max="99" list="tickmarks" title="Filtrer par âge minimum (eg. 18)" placeholder="18" value="<?= htmlspecialchars($filter_age) ?>">
                                 </label>
 
                                 <label> Profession :
-                                    <input class="border shadow-sm px-2" list="professions" id="filter-profession" name="filter-profession" />
+                                    <input class="border shadow-sm px-2" list="professions" id="filter-profession" name="filter-profession" value="<?= htmlspecialchars($filter_profession) ?>" />
                                     <datalist id="professions">
-                                        <option value="Chocolat"></option>
-                                        <option value="Noix de coco"></option>
-                                        <option value="Menthe"></option>
-                                        <option value="Fraise"></option>
-                                        <option value="Vanille"></option>
+                                        <?php
+                                        $professions = $db->get_distinct_professions();
+                                        foreach ($professions as $profession): ?>
+                                            <option value="<?= htmlspecialchars($profession) ?>">
+                                            <?php endforeach; ?>
                                     </datalist>
                                 </label>
                                 <input type="hidden" name="page" value="<?= $page ?>">
                                 <button type="submit" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 px-6 text-white">Filtrer</button>
+                                <?php if (!empty($filter_ville) || !empty($filter_age) || !empty($filter_profession)): ?>
+                                    <a href="/adherents_benevoles#adherents-table" class="bg-gray-500 hover:bg-gray-600 rounded-full py-2 px-6 text-white">Effacer les filtres</a>
+                                <?php endif; ?>
                             </form>
                         </fieldset>
-                        <div class="scroll-container">
 
+                        <?php
+                        if (isset($delete_error)) {
+                            echo "<span class=\"text-red-500 text-center\">";
+                            echo $delete_error;
+                            echo "</span>";
+                        }
+                        if (isset($delete_success)) {
+                            echo "<span class=\"text-green-500 text-center\">";
+                            echo $delete_success;
+                            echo "</span>";
+                        }
+                        ?>
+
+                        <div class="scroll-container">
                             <table class="border shadow-sm table-auto w-full overflow-x-scroll">
                                 <thead class="bg-gray-100">
                                     <tr>
@@ -244,7 +291,7 @@ if (HttpUtils::isPost()) {
                                     <?php
                                     $idx = 0;
 
-                                    foreach ($db->get_adherents($count, page: $page) as $adherent) {
+                                    foreach ($db->get_adherents($count, $page, $filter_ville, $filter_age, $filter_profession) as $adherent) {
                                         echo c::AdherantTableRow($adherent, alternate: $idx % 2 == 0);
                                         $idx++;
                                     }
