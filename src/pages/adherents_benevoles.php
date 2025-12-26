@@ -169,16 +169,16 @@ if (HttpUtils::isPost()) {
                                     }
                                 })
                             </script>
-                            <?= c::FormInput("filter-ville", "Filtrer la ville", "text", $filter_ville, false, "border shadow-sm px-2", ["list" => "cities", "id" => "filter-ville", "placeholder" => "Filtrer la ville"]) ?>
+                            <?= c::FormInput("filter-ville", "Filtrer la ville", "text", $filter_ville, false, "border-2 shadow-sm px-2", ["list" => "cities", "id" => "filter-ville", "placeholder" => "Filtrer la ville"]) ?>
                             <datalist id="cities">
                                 <?php foreach ($cities as $city): ?>
                                     <option value="<?= htmlspecialchars($city) ?>">
                                     <?php endforeach; ?>
                             </datalist>
 
-                            <?= c::FormInput("filter-age", "Age min.", "number", $filter_age, false, "border shadow-sm px-2", ["min" => "0", "max" => "99", "title" => "Filtrer par âge minimum (eg. 18)", "placeholder" => "18"]) ?>
+                            <?= c::FormInput("filter-age", "Age min.", "number", $filter_age, false, "border-2 shadow-sm px-2", ["min" => "0", "max" => "99", "title" => "Filtrer par âge minimum (eg. 18)", "placeholder" => "18"]) ?>
 
-                            <?= c::FormInput("filter-profession", "Profession", "text", $filter_profession, false, "border shadow-sm px-2", ["list" => "professions", "id" => "filter-profession"]) ?>
+                            <?= c::FormInput("filter-profession", "Profession", "text", $filter_profession, false, "border-2 shadow-sm px-2", ["list" => "professions", "id" => "filter-profession"]) ?>
                             <datalist id="professions">
                                 <?php
                                 $professions = $db->get_distinct_professions();
@@ -205,16 +205,16 @@ if (HttpUtils::isPost()) {
                     ?>
 
                     <div class="scroll-container">
-                        <table class="border shadow-sm table-auto w-full overflow-x-scroll">
+                        <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="border px-4 py-2 text-left">Nom</th>
-                                    <th class="border px-4 py-2 text-left">Prénom</th>
-                                    <th class="border px-4 py-2 text-left">Adresse</th>
-                                    <th class="border px-4 py-2 text-left">Profession</th>
-                                    <th class="border px-4 py-2 text-left">Âge</th>
-                                    <th class="border px-4 py-2 text-left">Ville</th>
-                                    <th class="border px-4 py-2 text-left">Actions</th>
+                                    <th class="border-2 px-4 py-2 text-left">Nom</th>
+                                    <th class="border-2 px-4 py-2 text-left">Prénom</th>
+                                    <th class="border-2 px-4 py-2 text-left">Adresse</th>
+                                    <th class="border-2 px-4 py-2 text-left">Profession</th>
+                                    <th class="border-2 px-4 py-2 text-left">Âge</th>
+                                    <th class="border-2 px-4 py-2 text-left">Ville</th>
+                                    <th class="border-2 px-4 py-2 text-left">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>

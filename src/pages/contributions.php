@@ -53,31 +53,35 @@ $page_count = ceil($total_count / 20);
         <?php if (!empty($expiring_contributions)): ?>
             <div class="shadow-lg bg-yellow-50 border-2 border-yellow-200 p-6 rounded-2xl">
                 <?= c::Heading2("⚠️ Cotisations arrivant à échéance") ?>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-yellow-300">
-                        <thead class="bg-yellow-100">
+                <div class="scroll-container">
+                    <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
+                        <thead class="bg-gray-100">
                             <tr>
-                                <th class="border border-yellow-300 px-4 py-2 text-left">Adhérent</th>
-                                <th class="border border-yellow-300 px-4 py-2 text-left">Dernier paiement</th>
-                                <th class="border border-yellow-300 px-4 py-2 text-left">Total cotisations</th>
-                                <th class="border border-yellow-300 px-4 py-2 text-left">Actions</th>
+                                <th class="border-2 px-4 py-2 text-left">Adhérent</th>
+                                <th class="border-2 px-4 py-2 text-left">Dernier paiement</th>
+                                <th class="border-2 px-4 py-2 text-left">Total cotisations</th>
+                                <th class="border-2 px-4 py-2 text-left">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($expiring_contributions as $adherent): ?>
-                                <tr class="bg-white hover:bg-yellow-50">
-                                    <td class="border border-yellow-300 px-4 py-2">
+                            <?php
+                            $idx = 0;
+                            foreach ($expiring_contributions as $adherent): ?>
+                                <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                    <td class="border-2 px-4 py-2">
                                         <?= htmlspecialchars($adherent['first_name']) ?> <?= htmlspecialchars($adherent['last_name']) ?>
                                     </td>
-                                    <td class="border border-yellow-300 px-4 py-2">
+                                    <td class="border-2 px-4 py-2">
                                         <?= $adherent['last_payment_date'] ? date('d/m/Y', strtotime($adherent['last_payment_date'])) : 'Jamais' ?>
                                     </td>
-                                    <td class="border border-yellow-300 px-4 py-2"><?= $adherent['total_payments'] ?></td>
-                                    <td class="border border-yellow-300 px-4 py-2">
+                                    <td class="border-2 px-4 py-2"><?= $adherent['total_payments'] ?></td>
+                                    <td class="border-2 px-4 py-2">
                                         <a href="/contributions?action=add_contribution&adherents_id=<?= $adherent['id'] ?>&amount=20&method=cash" class="text-green-600 underline">Enregistrer cotisation</a>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php
+                                $idx++;
+                            endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -92,23 +96,26 @@ $page_count = ceil($total_count / 20);
 
                 <form action="/contributions" method="post" class="grid grid-cols-2 gap-4">
                     <input type="hidden" name="action" value="add_contribution">
-                    <select name="adherents_id" required class="px-3 py-2 border border-gray-300 rounded-md">
-                        <option value="">Sélectionner un adhérent</option>
-                        <?php foreach ($adherents as $adherent): ?>
-                            <option value="<?= $adherent->id ?>"><?= htmlspecialchars($adherent->prenom) ?> <?= htmlspecialchars($adherent->nom) ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <?php
+                    $adherent_options = ['' => 'Sélectionner un adhérent'];
+                    foreach ($adherents as $adherent) {
+                        $adherent_options[$adherent->id] = htmlspecialchars($adherent->prenom) . ' ' . htmlspecialchars($adherent->nom);
+                    }
+                    echo c::FormSelect("adherents_id", label: "", options: $adherent_options, selected: "", class: "", attributes: ["required" => true]);
+                    ?>
                     <?= c::FormInput("amount", "Montant (euros)", "number", "", true, "", ["step" => "0.01", "min" => "0"]) ?>
-                    <select name="method" class="px-3 py-2 border border-gray-300 rounded-md">
-                        <option value="cash">Espèces</option>
-                        <option value="card">Carte bancaire</option>
-                        <option value="check">Chèque</option>
-                        <option value="transfer">Virement</option>
-                    </select>
+                    <?php
+                    $method_options = [
+                        'cash' => 'Espèces',
+                        'card' => 'Carte bancaire',
+                        'check' => 'Chèque',
+                        'transfer' => 'Virement'
+                    ];
+                    echo c::FormSelect("method", label: "", options: $method_options, selected: "", class: "");
+                    ?>
                     <?= c::FormInput("reference", "Référence", "text", "", false) ?>
                     <div class="col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-                        <textarea name="notes" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+                        <?= c::Textarea("notes", "Notes", "", false, "", ["rows" => "2", "container-class" => ""]) ?>
                     </div>
                     <div class="col-span-2">
                         <?= c::Button("Ajouter la cotisation", "fage", "submit") ?>
@@ -126,13 +133,17 @@ $page_count = ceil($total_count / 20);
                 <div class="mb-4">
                     <form method="get" action="/contributions" class="flex gap-4">
                         <?= c::FormInput("filter-adherent", "Filtrer par adhérent", "text", $_GET["filter-adherent"] ?? "", false, "", ["placeholder" => "Nom ou prénom"]) ?>
-                        <select name="filter-method" class="px-3 py-2 border border-gray-300 rounded-md">
-                            <option value="">Toutes les méthodes</option>
-                            <option value="cash" <?= ($_GET["filter-method"] ?? "") === "cash" ? "selected" : "" ?>>Espèces</option>
-                            <option value="card" <?= ($_GET["filter-method"] ?? "") === "card" ? "selected" : "" ?>>Carte bancaire</option>
-                            <option value="check" <?= ($_GET["filter-method"] ?? "") === "check" ? "selected" : "" ?>>Chèque</option>
-                            <option value="transfer" <?= ($_GET["filter-method"] ?? "") === "transfer" ? "selected" : "" ?>>Virement</option>
-                        </select>
+                        <?php
+                        $filter_method_options = [
+                            '' => 'Toutes les méthodes',
+                            'cash' => 'Espèces',
+                            'card' => 'Carte bancaire',
+                            'check' => 'Chèque',
+                            'transfer' => 'Virement'
+                        ];
+                        $selected_method = $_GET["filter-method"] ?? "";
+                        echo c::FormSelect("filter-method", label: "", options: $filter_method_options, selected: $selected_method, class: "");
+                        ?>
                         <?= c::Button("Filtrer", "fage", "submit") ?>
                         <?php if (!empty($_GET["filter-adherent"]) || !empty($_GET["filter-method"])): ?>
                             <?= c::Button("Effacer les filtres", "gray", "link", "inline-block", ["href" => "/contributions"]) ?>
@@ -141,24 +152,26 @@ $page_count = ceil($total_count / 20);
                 </div>
 
                 <!-- Contributions Table -->
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-300">
+                <div class="scroll-container">
+                    <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Adhérent</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Montant</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Méthode</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Référence</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Notes</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Date</th>
+                                <th class="border-2 px-4 py-2 text-left">Adhérent</th>
+                                <th class="border-2 px-4 py-2 text-left">Montant</th>
+                                <th class="border-2 px-4 py-2 text-left">Méthode</th>
+                                <th class="border-2 px-4 py-2 text-left">Référence</th>
+                                <th class="border-2 px-4 py-2 text-left">Notes</th>
+                                <th class="border-2 px-4 py-2 text-left">Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($contributions as $contribution): ?>
-                                <tr class="bg-white hover:bg-gray-50">
-                                    <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($contribution['first_name']) ?> <?= htmlspecialchars($contribution['last_name']) ?></td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= number_format($contribution['amount_cents'] / 100, 2) ?> €</td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                            <?php
+                            $idx = 0;
+                            foreach ($contributions as $contribution): ?>
+                                <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($contribution['first_name']) ?> <?= htmlspecialchars($contribution['last_name']) ?></td>
+                                    <td class="border-2 px-4 py-2"><?= number_format($contribution['amount_cents'] / 100, 2) ?> €</td>
+                                    <td class="border-2 px-4 py-2">
                                         <?php
                                         $method_labels = [
                                             'cash' => 'Espèces',
@@ -169,11 +182,13 @@ $page_count = ceil($total_count / 20);
                                         echo $method_labels[$contribution['method']] ?? htmlspecialchars($contribution['method']);
                                         ?>
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($contribution['reference'] ?? '') ?></td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($contribution['notes'] ?? '') ?></td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= date('d/m/Y H:i', strtotime($contribution['paid_at'])) ?></td>
+                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($contribution['reference'] ?? '') ?></td>
+                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($contribution['notes'] ?? '') ?></td>
+                                    <td class="border-2 px-4 py-2"><?= date('d/m/Y H:i', strtotime($contribution['paid_at'])) ?></td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php
+                                $idx++;
+                            endforeach; ?>
                         </tbody>
                     </table>
                 </div>

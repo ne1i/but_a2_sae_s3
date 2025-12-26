@@ -143,7 +143,7 @@ class Components
             }
         }
 
-        $classes = 'border-2 rounded-full pl-2 py-1 bg-[#fafafa] focus:outline-none focus:ring-2 focus:ring-fage-300 ' . $class;
+        $classes = 'border-2 shadow-sm rounded-full pl-2 py-1 bg-[#fafafa] focus:outline-none focus:ring-2 focus:ring-fage-300 ' . $class;
 
         return '<div class="flex flex-col ' . ($attributes['container-class'] ?? '') . '">
                     <label for="' . $name . '" class="text-lg">' . $label . '</label>
@@ -151,7 +151,7 @@ class Components
                 </div>';
     }
 
-    public static function FormSelect($name, $label, $options, $selected = '', $class = '', $attributes = [])
+    public static function FormSelect($name, $label = "", $options, $selected = '', $class = '', $attributes = [])
     {
         $attr_string = '';
         $required_attr = '';
@@ -171,9 +171,9 @@ class Components
             $options_html .= '<option value="' . htmlspecialchars($value) . '" ' . $selected_attr . '>' . htmlspecialchars($option_text) . '</option>';
         }
 
-        return '<div class="flex flex-col ' . ($attributes['container-class'] ?? '') . '">
+        return '<div class="flex flex-col justify-end ' . ($attributes['container-class'] ?? '') . '">
                     <label for="' . $name . '" class="text-lg">' . $label . '</label>
-                    <select name="' . $name . '" class="' . $classes . '"' . $attr_string . ' ' . $required_attr . '>
+                    <select id="' . $name . '" name="' . $name . '" class="' . $classes . '"' . $attr_string . ' ' . $required_attr . '>
                         ' . $options_html . '
                     </select>
                 </div>';
@@ -211,13 +211,13 @@ class Components
     {
         $bg_colors = $alternate ? "bg-gray-200 " : "bg-gray-50";
         $tr = '<tr class="hover:bg-gray-300 ' . $bg_colors . '">
-                    <td class="border px-4 py-2">' . $adherant->nom . '</td>
-                    <td class="border px-4 py-2">' . $adherant->prenom . '</td>
-                    <td class="border px-4 py-2">' . $adherant->adresse . '</td>
-                    <td class="border px-4 py-2">' . $adherant->profession . '</td>
-                    <td class="border px-4 py-2">' . $adherant->age . '</td>
-                    <td class="border px-4 py-2">' . $adherant->ville . '</td>
-                    <td class="border px-4 py-2">
+                    <td class="border-2 px-4 py-2">' . $adherant->nom . '</td>
+                    <td class="border-2 px-4 py-2">' . $adherant->prenom . '</td>
+                    <td class="border-2 px-4 py-2">' . $adherant->adresse . '</td>
+                    <td class="border-2 px-4 py-2">' . $adherant->profession . '</td>
+                    <td class="border-2 px-4 py-2">' . $adherant->age . '</td>
+                    <td class="border-2 px-4 py-2">' . $adherant->ville . '</td>
+                    <td class="border-2 px-4 py-2">
                         <a href="/edit_adherent?id=' . $adherant->id . '#adherents-table" class="text-blue-600 underline">Modifier</a>
                         <form method="post" style="display: inline;" onsubmit="return confirm(\'Êtes-vous sûr de vouloir supprimer cet adhérent ?\')">
                             <input type="hidden" name="delete_id" value="' . $adherant->id . '">
@@ -229,22 +229,41 @@ class Components
     }
 
 
-    public static function Textarea($name = "", $label = "Contenu de l'article", $class = "", $attributes = [])
+    public static function FormDateTime($name, $label, $type = 'date', $value = '', $required = false, $class = '', $attributes = [])
     {
-
+        $required_attr = $required ? 'required' : '';
         $attr_string = '';
-        $required_attr = '';
-        foreach ($attributes as $attr => $value) {
-            if ($value === 'required') {
-                $required_attr = 'required';
-            } elseif ($value) {
-                $attr_string .= ' ' . $attr . '="' . htmlspecialchars($value) . '"';
+        foreach ($attributes as $attr => $attr_value) {
+            if ($attr !== 'value') {
+                $attr_string .= ' ' . $attr . '="' . htmlspecialchars($attr_value) . '"';
             }
         }
 
-        return '<label for="content" class="block text-sm font-medium text-black mb-1" >' . $label . '</label>
-                    <textarea
-                     class="bg-[#fafafa] w-full px-3 py-2 border-black border-2 rounded-2xl focus:outline-none focus:ring-2 focus:ring-fage-500 ' . $class  . ' "
-                     name="' . $name . '" ' . $attr_string . ' ' . $required_attr . ' ></textarea>';
+        $classes = 'border-2 rounded-full px-4  py-1 bg-[#fafafa] focus:outline-none focus:ring-2 focus:ring-fage-300 w-full ' . $class;
+
+        return '<div class="flex flex-col ' . ($attributes['container-class'] ?? '') . '">
+                    <label for="' . $name . '" class="text-lg">' . $label . '</label>
+                    <input type="' . $type . '" name="' . $name . '" id="' . $name . '" class="' . $classes . '" value="' . htmlspecialchars($value) . '" ' . $required_attr . $attr_string . '>
+                </div>';
+    }
+
+    public static function Textarea($name, $label = "", $value = "", $required = false, $class = "", $attributes = [])
+    {
+        $required_attr = $required ? 'required' : '';
+        $attr_string = '';
+        foreach ($attributes as $attr => $attr_value) {
+            if ($attr !== 'value') {
+                $attr_string .= ' ' . $attr . '="' . htmlspecialchars($attr_value) . '"';
+            }
+        }
+
+        $classes = 'border-2 shadow-sm rounded-2xl pl-2 py-1 bg-[#fafafa] focus:outline-none focus:ring-2 focus:ring-fage-300 w-full ' . $class;
+
+        $label_html = !empty($label) ? '<label for="' . $name . '" class="text-lg">' . $label . '</label>' : '';
+
+        return '<div class="flex flex-col ' . ($attributes['container-class'] ?? '') . '">
+                    ' . $label_html . '
+                    <textarea name="' . $name . '" id="' . $name . '" class="' . $classes . '" ' . $required_attr . $attr_string . '>' . htmlspecialchars($value) . '</textarea>
+                </div>';
     }
 }

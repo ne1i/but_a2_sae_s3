@@ -66,37 +66,19 @@ if (HttpUtils::isPost()) {
                     <?= c::FormInput("title", "Titre de la mission", "text", "", true, "mb-4") ?>
                     
                     <div class="mb-4">
-                        <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                        <textarea id="description" name="description" rows="4" required
-                                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fage-500"></textarea>
+                        <?= c::Textarea("description", "Description", "", true, "", ["rows" => "4"]) ?>
                     </div>
 
                     <?= c::FormInput("location", "Lieu", "text", "", true, "mb-4") ?>
 
                     <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label for="start_date" class="block text-sm font-medium text-gray-700 mb-1">Date de début</label>
-                            <input type="date" id="start_date" name="start_date" required 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fage-500">
-                        </div>
-                        <div>
-                            <label for="start_time" class="block text-sm font-medium text-gray-700 mb-1">Heure de début</label>
-                            <input type="time" id="start_time" name="start_time" required 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fage-500">
-                        </div>
+                        <?= c::FormDateTime("start_date", "Date de début", "date", "", true, "", []) ?>
+                        <?= c::FormDateTime("start_time", "Heure de début", "time", "", true, "", []) ?>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label for="end_date" class="block text-sm font-medium text-gray-700 mb-1">Date de fin</label>
-                            <input type="date" id="end_date" name="end_date" required 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fage-500">
-                        </div>
-                        <div>
-                            <label for="end_time" class="block text-sm font-medium text-gray-700 mb-1">Heure de fin</label>
-                            <input type="time" id="end_time" name="end_time" required 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fage-500">
-                        </div>
+                        <?= c::FormDateTime("end_date", "Date de fin", "date", "", true, "", []) ?>
+                        <?= c::FormDateTime("end_time", "Heure de fin", "time", "", true, "", []) ?>
                     </div>
 
                     <div class="flex gap-4 mb-4">
@@ -220,17 +202,17 @@ if (HttpUtils::isPost()) {
                     ?>
 
                     <div class="scroll-container">
-                        <table class="border shadow-sm table-auto w-full overflow-x-scroll">
+                        <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="border px-4 py-2 text-left">Titre</th>
-                                    <th class="border px-4 py-2 text-left">Lieu</th>
-                                    <th class="border px-4 py-2 text-left">Date début</th>
-                                    <th class="border px-4 py-2 text-left">Date fin</th>
-                                    <th class="border px-4 py-2 text-left">Capacité</th>
-                                    <th class="border px-4 py-2 text-left">Budget</th>
-                                    <th class="border px-4 py-2 text-left">Créé par</th>
-                                    <th class="border px-4 py-2 text-left">Actions</th>
+                                    <th class="border-2 px-4 py-2 text-left">Titre</th>
+                                    <th class="border-2 px-4 py-2 text-left">Lieu</th>
+                                    <th class="border-2 px-4 py-2 text-left">Date début</th>
+                                    <th class="border-2 px-4 py-2 text-left">Date fin</th>
+                                    <th class="border-2 px-4 py-2 text-left">Capacité</th>
+                                    <th class="border-2 px-4 py-2 text-left">Budget</th>
+                                    <th class="border-2 px-4 py-2 text-left">Créé par</th>
+                                    <th class="border-2 px-4 py-2 text-left">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -244,15 +226,15 @@ if (HttpUtils::isPost()) {
                                     $capacity = $mission['capacity'] ?? 'Illimitée';
                                     $created_by = $mission['created_by_username'] ?? 'Inconnu';
                                     ?>
-                                    <tr class="<?= $idx % 2 == 0 ? 'bg-gray-50' : 'bg-white' ?>">
-                                        <td class="border px-4 py-2"><?= htmlspecialchars($mission['title']) ?></td>
-                                        <td class="border px-4 py-2"><?= htmlspecialchars($mission['location']) ?></td>
-                                        <td class="border px-4 py-2"><?= $start_date ?></td>
-                                        <td class="border px-4 py-2"><?= $end_date ?></td>
-                                        <td class="border px-4 py-2"><?= $capacity ?></td>
-                                        <td class="border px-4 py-2"><?= $budget ?></td>
-                                        <td class="border px-4 py-2"><?= $created_by ?></td>
-                                        <td class="border px-4 py-2">
+                                    <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                        <td class="border-2 px-4 py-2"><?= htmlspecialchars($mission['title']) ?></td>
+                                        <td class="border-2 px-4 py-2"><?= htmlspecialchars($mission['location']) ?></td>
+                                        <td class="border-2 px-4 py-2"><?= $start_date ?></td>
+                                        <td class="border-2 px-4 py-2"><?= $end_date ?></td>
+                                        <td class="border-2 px-4 py-2"><?= $capacity ?></td>
+                                        <td class="border-2 px-4 py-2"><?= $budget ?></td>
+                                        <td class="border-2 px-4 py-2"><?= $created_by ?></td>
+                                        <td class="border-2 px-4 py-2">
                                             <a href="/edit_mission?id=<?= $mission['id'] ?>" class="text-blue-600 underline">Modifier</a>
                                             <span class="ml-2">
                                                 <a href="/missions?delete_id=<?= $mission['id'] ?>" class="text-red-600 underline" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette mission ?')">Supprimer</a>

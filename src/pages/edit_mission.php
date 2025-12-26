@@ -69,37 +69,19 @@ $end_time = date('H:i', $mission['end_at']);
                     <?= c::FormInput("title", "Titre de la mission", "text", htmlspecialchars($mission['title']), true, "mb-4") ?>
 
                     <div class="mb-4">
-                        <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                        <textarea id="description" name="description" rows="4" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fage-500"><?= htmlspecialchars($mission['description']) ?></textarea>
+                        <?= c::Textarea("description", "Description", htmlspecialchars($mission['description']), true, "", ["rows" => "4"]) ?>
                     </div>
 
                     <?= c::FormInput("location", "Lieu", "text", htmlspecialchars($mission['location']), true, "mb-4") ?>
 
                     <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label for="start_date" class="block text-sm font-medium text-gray-700 mb-1">Date de début</label>
-                            <input type="date" id="start_date" name="start_date" value="<?= $start_date ?>" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fage-500">
-                        </div>
-                        <div>
-                            <label for="start_time" class="block text-sm font-medium text-gray-700 mb-1">Heure de début</label>
-                            <input type="time" id="start_time" name="start_time" value="<?= $start_time ?>" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fage-500">
-                        </div>
+                        <?= c::FormDateTime("start_date", "Date de début", "date", $start_date, true, "", []) ?>
+                        <?= c::FormDateTime("start_time", "Heure de début", "time", $start_time, true, "", []) ?>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label for="end_date" class="block text-sm font-medium text-gray-700 mb-1">Date de fin</label>
-                            <input type="date" id="end_date" name="end_date" value="<?= $end_date ?>" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fage-500">
-                        </div>
-                        <div>
-                            <label for="end_time" class="block text-sm font-medium text-gray-700 mb-1">Heure de fin</label>
-                            <input type="time" id="end_time" name="end_time" value="<?= $end_time ?>" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fage-500">
-                        </div>
+                        <?= c::FormDateTime("end_date", "Date de fin", "date", $end_date, true, "", []) ?>
+                        <?= c::FormDateTime("end_time", "Heure de fin", "time", $end_time, true, "", []) ?>
                     </div>
 
                     <div class="flex gap-4 mb-4">
@@ -135,14 +117,13 @@ $end_time = date('H:i', $mission['end_at']);
 
                 <div class="mb-4">
                     <form action="/edit_mission?id=<?= $mission_id ?>" method="post" class="flex gap-4">
-                        <select name="adherent_id" required class="px-3 py-2 border border-gray-300 rounded-md">
-                            <option value="">Sélectionner un adhérent</option>
-                            <?php
-                            foreach ($db->get_adherents(1000, 1) as $adherent) {
-                                echo "<option value=\"{$adherent->id}\">{$adherent->prenom} {$adherent->nom}</option>";
-                            }
-                            ?>
-                        </select>
+                        <?php
+                        $adherent_options = ['' => 'Sélectionner un adhérent'];
+                        foreach ($db->get_adherents(1000, 1) as $adherent) {
+                            $adherent_options[$adherent->id] = htmlspecialchars($adherent->prenom) . ' ' . htmlspecialchars($adherent->nom);
+                        }
+                        echo c::FormSelect("adherent_id", label: "", options: $adherent_options, selected: "", class: "", attributes: ["required" => true]);
+                        ?>
 
                         <input type="text" name="role" placeholder="Rôle (ex: bénévole, encadrant)"
                             class="px-3 py-2 border border-gray-300 rounded-md" required>
@@ -181,27 +162,27 @@ $end_time = date('H:i', $mission['end_at']);
                 ?>
 
                 <?php if (!empty($participants)): ?>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full border border-gray-300">
+                    <div class="scroll-container">
+                        <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="border border-gray-300 px-4 py-2 text-left">Nom</th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left">Email</th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left">Téléphone</th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left">Rôle</th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left">Date d'inscription</th>
-                                    <th class="border border-gray-300 px-4 py-2 text-left">Actions</th>
+                                    <th class="border-2 px-4 py-2 text-left">Nom</th>
+                                    <th class="border-2 px-4 py-2 text-left">Email</th>
+                                    <th class="border-2 px-4 py-2 text-left">Téléphone</th>
+                                    <th class="border-2 px-4 py-2 text-left">Rôle</th>
+                                    <th class="border-2 px-4 py-2 text-left">Date d'inscription</th>
+                                    <th class="border-2 px-4 py-2 text-left">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($participants as $participant): ?>
-                                    <tr class="<?= ($participant['id'] ?? 0) % 2 == 0 ? 'bg-gray-50' : 'bg-white' ?>">
-                                        <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($participant['first_name']) ?> <?= htmlspecialchars($participant['last_name']) ?></td>
-                                        <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($participant['email']) ?></td>
-                                        <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($participant['phone']) ?></td>
-                                        <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($participant['role']) ?></td>
-                                        <td class="border border-gray-300 px-4 py-2"><?= date('d/m/Y H:i', strtotime($participant['registered_at'])) ?></td>
-                                        <td class="border border-gray-300 px-4 py-2">
+                                    <tr class="<?= ($participant['id'] ?? 0) % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                        <td class="border-2 px-4 py-2"><?= htmlspecialchars($participant['first_name']) ?> <?= htmlspecialchars($participant['last_name']) ?></td>
+                                        <td class="border-2 px-4 py-2"><?= htmlspecialchars($participant['email']) ?></td>
+                                        <td class="border-2 px-4 py-2"><?= htmlspecialchars($participant['phone']) ?></td>
+                                        <td class="border-2 px-4 py-2"><?= htmlspecialchars($participant['role']) ?></td>
+                                        <td class="border-2 px-4 py-2"><?= date('d/m/Y H:i', strtotime($participant['registered_at'])) ?></td>
+                                        <td class="border-2 px-4 py-2">
                                             <a href="/edit_mission?id=<?= $mission_id ?>&action=remove_participant&adherent_id=<?= $participant['adherent_id'] ?>" class="text-red-600 underline" onclick="return confirm('Retirer ce participant ?')">Retirer</a>
                                         </td>
                                     </tr>

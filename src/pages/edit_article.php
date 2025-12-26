@@ -118,9 +118,7 @@ $article_media = $db->get_article_media($article_id);
                     <?= c::FormInput("title", "Titre de l'article", "text", htmlspecialchars($article['title']), true) ?>
 
                     <div>
-                        <label for="content" class="block text-sm font-medium text-gray-700 mb-1">Contenu de l'article</label>
-                        <textarea id="content" name="content" rows="12" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fage-500"><?= htmlspecialchars($article['content']) ?></textarea>
+                        <?= c::Textarea("content", "Contenu de l'article", htmlspecialchars($article['content']), true, "", ["rows" => "12"]) ?>
                     </div>
 
                     <div class="flex items-center gap-4">

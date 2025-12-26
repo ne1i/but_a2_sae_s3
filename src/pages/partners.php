@@ -1,5 +1,6 @@
 <?php
 
+use ButA2SaeS3\Constants;
 use ButA2SaeS3\FageDB;
 use ButA2SaeS3\utils\HttpUtils;
 use ButA2SaeS3\Components as c;
@@ -134,39 +135,49 @@ $adherents = $db->get_adherents(1000, 1); // For dropdown
                     </div>
                     <?= c::FormInput("website", "Site web", "url", "", false) ?>
                     <div class="col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-                        <textarea name="notes" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+                        <?= c::Textarea("notes", "Notes", "", false, "", ["rows" => "2", "container-class" => ""]) ?>
                     </div>
                     <div class="col-span-2">
                         <?= c::Button("Ajouter le partenaire", "fage", "submit") ?>
+                        <?php
+                        if (Constants::is_debug()) {
+                        ?>
+                            <?= c::Button("Autofill (debug)", "fage", "button", "", ["id" => "autofill-partner"]) ?>
+                        <?php
+                        }
+                        ?>
                     </div>
                 </form>
             </div>
 
             <!-- Partners Table -->
-            <div class="overflow-x-auto">
-                <table class="min-w-full border border-gray-300">
+            <div class="scroll-container">
+                <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                     <thead class="bg-gray-100">
                         <tr>
-                            <th class="border border-gray-300 px-4 py-2 text-left">Nom</th>
-                            <th class="border border-gray-300 px-4 py-2 text-left">Contact</th>
-                            <th class="border border-gray-300 px-4 py-2 text-left">Email</th>
-                            <th class="border border-gray-300 px-4 py-2 text-left">Téléphone</th>
-                            <th class="border border-gray-300 px-4 py-2 text-left">Actions</th>
+                            <th class="border-2 px-4 py-2 text-left">Nom</th>
+                            <th class="border-2 px-4 py-2 text-left">Contact</th>
+                            <th class="border-2 px-4 py-2 text-left">Email</th>
+                            <th class="border-2 px-4 py-2 text-left">Téléphone</th>
+                            <th class="border-2 px-4 py-2 text-left">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($partners as $partner): ?>
-                            <tr class="bg-white hover:bg-gray-50">
-                                <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($partner['name']) ?></td>
-                                <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($partner['contact'] ?? '') ?></td>
-                                <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($partner['email'] ?? '') ?></td>
-                                <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($partner['phone'] ?? '') ?></td>
-                                <td class="border border-gray-300 px-4 py-2">
+                        <?php
+                        $idx = 0;
+                        foreach ($partners as $partner): ?>
+                            <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                <td class="border-2 px-4 py-2"><?= htmlspecialchars($partner['name']) ?></td>
+                                <td class="border-2 px-4 py-2"><?= htmlspecialchars($partner['contact'] ?? '') ?></td>
+                                <td class="border-2 px-4 py-2"><?= htmlspecialchars($partner['email'] ?? '') ?></td>
+                                <td class="border-2 px-4 py-2"><?= htmlspecialchars($partner['phone'] ?? '') ?></td>
+                                <td class="border-2 px-4 py-2">
                                     <a href="/partners?action=delete_partner&delete_id=<?= $partner['id'] ?>" class="text-red-600 underline" onclick="return confirm('Supprimer ce partenaire ?')">Supprimer</a>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php
+                            $idx++;
+                        endforeach; ?>
                     </tbody>
                 </table>
             </div>
@@ -187,42 +198,52 @@ $adherents = $db->get_adherents(1000, 1); // For dropdown
                         <?= c::FormInput("contact", "Personne à contacter", "text", "", false) ?>
                         <?= c::FormInput("email", "Email", "email", "", false) ?>
                         <div class="col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-                            <textarea name="notes" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+                            <?= c::Textarea("notes", "Notes", "", false, "", ["rows" => "2", "container-class" => ""]) ?>
                         </div>
                         <div class="col-span-2">
                             <?= c::Button("Ajouter le donateur", "fage", "submit") ?>
+                            <?php
+                            if (Constants::is_debug()) {
+                            ?>
+                                <?= c::Button("Autofill (debug)", "fage", "button", "", ["id" => "autofill-donor"]) ?>
+                            <?php
+                            }
+                            ?>
                         </div>
                     </form>
                 </div>
 
                 <!-- Donors Table -->
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-300">
+                <div class="scroll-container">
+                    <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Nom</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Contact</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Email</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Total donné</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Nb. donations</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Actions</th>
+                                <th class="border-2 px-4 py-2 text-left">Nom</th>
+                                <th class="border-2 px-4 py-2 text-left">Contact</th>
+                                <th class="border-2 px-4 py-2 text-left">Email</th>
+                                <th class="border-2 px-4 py-2 text-left">Total donné</th>
+                                <th class="border-2 px-4 py-2 text-left">Nb. donations</th>
+                                <th class="border-2 px-4 py-2 text-left">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($donors as $donor): ?>
-                                <tr class="bg-white hover:bg-gray-50">
-                                    <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($donor['name']) ?></td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($donor['contact'] ?? '') ?></td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($donor['email'] ?? '') ?></td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= number_format(($donor['total_donated'] ?? 0) / 100, 2) ?> €</td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= $donor['donation_count'] ?? 0 ?></td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                            <?php
+                            $idx = 0;
+                            foreach ($donors as $donor): ?>
+                                <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($donor['name']) ?></td>
+                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($donor['contact'] ?? '') ?></td>
+                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($donor['email'] ?? '') ?></td>
+                                    <td class="border-2 px-4 py-2"><?= number_format(($donor['total_donated'] ?? 0) / 100, 2) ?> €</td>
+                                    <td class="border-2 px-4 py-2"><?= $donor['donation_count'] ?? 0 ?></td>
+                                    <td class="border-2 px-4 py-2">
                                         <!-- Add donation button could go here -->
                                         <span class="text-gray-500 text-sm">Voir donations</span>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php
+                                $idx++;
+                            endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -239,49 +260,65 @@ $adherents = $db->get_adherents(1000, 1); // For dropdown
                     <h3 class="text-xl font-semibold mb-3">Ajouter une subvention</h3>
                     <form action="/partners" method="post" class="grid grid-cols-2 gap-4">
                         <input type="hidden" name="action" value="add_subsidy">
-                        <select name="partner_id" class="px-3 py-2 border border-gray-300 rounded-md">
-                            <option value="">Sélectionner un partenaire</option>
-                            <?php foreach ($db->get_partners(1000, 1) as $partner): ?>
-                                <option value="<?= $partner['id'] ?>"><?= htmlspecialchars($partner['name']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <?php
+                        $partner_options = ['' => ''];
+                        foreach ($db->get_partners(1000, 1) as $partner) {
+                            $partner_options[$partner['id']] = $partner['name'];
+                        }
+                        echo c::FormSelect(
+                            "partner_id",
+                            label: "Sélectionner un partenaire",
+                            options: $partner_options,
+                            selected: "",
+                            class: ""
+                        );
+                        ?>
                         <?= c::FormInput("title", "Titre de la subvention", "text", "", true) ?>
                         <?= c::FormInput("amount", "Montant (euros)", "number", "", true, "", ["step" => "0.01", "min" => "0"]) ?>
                         <?= c::FormInput("awarded_at", "Date d'attribution", "date", date('Y-m-d'), false) ?>
                         <div class="col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Conditions</label>
-                            <textarea name="conditions" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+                            <?= c::Textarea("conditions", "Conditions", "", false, "", ["rows" => "2", "container-class" => ""]) ?>
                         </div>
                         <div class="col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-                            <textarea name="notes" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+                            <?= c::Textarea("notes", "Notes", "", false, "", ["rows" => "2", "container-class" => ""]) ?>
                         </div>
                         <div class="col-span-2">
                             <?= c::Button("Ajouter la subvention", "fage", "submit") ?>
+                            <?php
+                            if (Constants::is_debug()) {
+                            ?>
+                                <?= c::Button("Autofill (debug)", "fage", "button", "", ["id" => "autofill-subsidy"]) ?>
+                            <?php
+                            }
+                            ?>
                         </div>
                     </form>
                 </div>
 
                 <!-- Subsidies Table -->
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-300">
+                <div class="scroll-container">
+                    <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Titre</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Partenaire</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Montant</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Date d'attribution</th>
+                                <th class="border-2 px-4 py-2 text-left">Titre</th>
+                                <th class="border-2 px-4 py-2 text-left">Partenaire</th>
+                                <th class="border-2 px-4 py-2 text-left">Montant</th>
+                                <th class="border-2 px-4 py-2 text-left">Date d'attribution</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($subsidies as $subsidy): ?>
-                                <tr class="bg-white hover:bg-gray-50">
-                                    <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($subsidy['title']) ?></td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($subsidy['partner_name'] ?? 'Non spécifié') ?></td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= number_format($subsidy['amount_cents'] / 100, 2) ?> €</td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= $subsidy['awarded_at'] ? date('d/m/Y', $subsidy['awarded_at']) : 'Non définie' ?></td>
+                            <?php
+                            $idx = 0;
+                            foreach ($subsidies as $subsidy): ?>
+                                <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($subsidy['title']) ?></td>
+                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($subsidy['partner_name'] ?? 'Non spécifié') ?></td>
+                                    <td class="border-2 px-4 py-2"><?= number_format($subsidy['amount_cents'] / 100, 2) ?> €</td>
+                                    <td class="border-2 px-4 py-2"><?= $subsidy['awarded_at'] ? date('d/m/Y', $subsidy['awarded_at']) : 'Non définie' ?></td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php
+                                $idx++;
+                            endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -298,52 +335,74 @@ $adherents = $db->get_adherents(1000, 1); // For dropdown
                     <h3 class="text-xl font-semibold mb-3">Ajouter une cotisation</h3>
                     <form action="/partners" method="post" class="grid grid-cols-2 gap-4">
                         <input type="hidden" name="action" value="add_contribution">
-                        <select name="adherents_id" required class="px-3 py-2 border border-gray-300 rounded-md">
-                            <option value="">Sélectionner un adhérent</option>
-                            <?php foreach ($adherents as $adherent): ?>
-                                <option value="<?= $adherent->id ?>"><?= htmlspecialchars($adherent->prenom) ?> <?= htmlspecialchars($adherent->nom) ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <?php
+                        $adherent_options = ['' => ''];
+                        foreach ($adherents as $adherent) {
+                            $adherent_options[$adherent->id] = htmlspecialchars($adherent->prenom) . ' ' . htmlspecialchars($adherent->nom);
+                        }
+                        echo c::FormSelect(
+                            "adherents_id",
+                            label: "Sélectionner un adhérent",
+                            options: $adherent_options,
+                            selected: "",
+                            class: "",
+                            attributes: ["required" => true, "placeholder" => "Sélectionner un adhérent"]
+                        );
+                        ?>
                         <?= c::FormInput("amount", "Montant (euros)", "number", "", true, "", ["step" => "0.01", "min" => "0"]) ?>
-                        <select name="method" class="px-3 py-2 border border-gray-300 rounded-md">
-                            <option value="cash">Espèces</option>
-                            <option value="card">Carte bancaire</option>
-                            <option value="check">Chèque</option>
-                            <option value="transfer">Virement</option>
-                        </select>
+                        <?php
+                        $method_options = [
+                            "" => "",
+                            "cash" => "Espèces",
+                            "card" => "Carte bancaire",
+                            "check" => "Chèque",
+                            "transfer" => "Virement"
+                        ];
+                        echo c::FormSelect("method", label: "Sélectionner une méthode", options: $method_options, selected: "", class: "");
+                        ?>
                         <?= c::FormInput("reference", "Référence", "text", "", false) ?>
                         <div class="col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-                            <textarea name="notes" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+                            <?= c::Textarea("notes", "Notes", "", false, "", ["rows" => "2", "container-class" => ""]) ?>
                         </div>
                         <div class="col-span-2">
                             <?= c::Button("Ajouter la cotisation", "fage", "submit") ?>
+                            <?php
+                            if (Constants::is_debug()) {
+                            ?>
+                                <?= c::Button("Autofill (debug)", "fage", "button", "", ["id" => "autofill-contribution"]) ?>
+                            <?php
+                            }
+                            ?>
                         </div>
                     </form>
                 </div>
 
                 <!-- Contributions Table -->
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-300">
+                <div class="scroll-container">
+                    <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Adhérent</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Montant</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Méthode</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Référence</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Date</th>
+                                <th class="border-2 px-4 py-2 text-left">Adhérent</th>
+                                <th class="border-2 px-4 py-2 text-left">Montant</th>
+                                <th class="border-2 px-4 py-2 text-left">Méthode</th>
+                                <th class="border-2 px-4 py-2 text-left">Référence</th>
+                                <th class="border-2 px-4 py-2 text-left">Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($contributions as $contribution): ?>
-                                <tr class="bg-white hover:bg-gray-50">
-                                    <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($contribution['first_name']) ?> <?= htmlspecialchars($contribution['last_name']) ?></td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= number_format($contribution['amount_cents'] / 100, 2) ?> €</td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($contribution['method'] ?? '') ?></td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= htmlspecialchars($contribution['reference'] ?? '') ?></td>
-                                    <td class="border border-gray-300 px-4 py-2"><?= date('d/m/Y H:i', strtotime($contribution['paid_at'])) ?></td>
+                            <?php
+                            $idx = 0;
+                            foreach ($contributions as $contribution): ?>
+                                <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($contribution['first_name']) ?> <?= htmlspecialchars($contribution['last_name']) ?></td>
+                                    <td class="border-2 px-4 py-2"><?= number_format($contribution['amount_cents'] / 100, 2) ?> €</td>
+                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($contribution['method'] ?? '') ?></td>
+                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($contribution['reference'] ?? '') ?></td>
+                                    <td class="border-2 px-4 py-2"><?= date('d/m/Y H:i', strtotime($contribution['paid_at'])) ?></td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php
+                                $idx++;
+                            endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -351,5 +410,67 @@ $adherents = $db->get_adherents(1000, 1); // For dropdown
         </div>
 
     </main>
+
+    <?php
+    if (Constants::is_debug()) {
+    ?>
+        <script>
+            function makeid(length) {
+                var result = '';
+                var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                var charactersLength = characters.length;
+                for (var i = 0; i < length; i++) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                return result;
+            }
+
+            document.getElementById("autofill-partner")?.addEventListener("click", () => {
+                document.querySelector("[name='partner_name']").value = "Partenaire " + makeid(6);
+                document.querySelector("[name='contact']").value = makeid(6);
+                document.querySelector("[name='email']").value = "test@test.com";
+                document.querySelector("[name='phone']").value = "0102030405";
+                document.querySelector("[name='address']").value = makeid(6);
+                document.querySelector("[name='website']").value = "https://example.com";
+                document.querySelector("[name='notes']").value = "Notes de test";
+            });
+
+            document.getElementById("autofill-donor")?.addEventListener("click", () => {
+                document.querySelector("[name='donor_name']").value = "Donateur " + makeid(6);
+                document.querySelector("[name='contact']").value = makeid(6);
+                document.querySelector("[name='email']").value = "test@test.com";
+                document.querySelector("[name='notes']").value = "Notes de test";
+            });
+
+            document.getElementById("autofill-subsidy")?.addEventListener("click", () => {
+                const select = document.querySelector("[name='partner_id']");
+                if (select && select.options.length > 1) {
+                    select.selectedIndex = 1;
+                }
+                document.querySelector("[name='title']").value = "Subvention " + makeid(6);
+                document.querySelector("[name='amount']").value = "1000";
+                const today = new Date();
+                document.querySelector("[name='awarded_at']").value = today.toISOString().split('T')[0];
+                document.querySelector("[name='conditions']").value = "Conditions de test";
+                document.querySelector("[name='notes']").value = "Notes de test";
+            });
+
+            document.getElementById("autofill-contribution")?.addEventListener("click", () => {
+                const select = document.querySelector("[name='adherents_id']");
+                if (select && select.options.length > 1) {
+                    select.selectedIndex = 1;
+                }
+                document.querySelector("[name='amount']").value = "20";
+                const methodSelect = document.querySelector("[name='method']");
+                if (methodSelect && methodSelect.options.length > 1) {
+                    methodSelect.selectedIndex = 1;
+                }
+                document.querySelector("[name='reference']").value = makeid(6);
+                document.querySelector("[name='notes']").value = "Notes de test";
+            });
+        </script>
+    <?php
+    }
+    ?>
 
 </body>

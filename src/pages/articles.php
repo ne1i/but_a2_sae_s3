@@ -80,12 +80,7 @@ $page_count = ceil($total_count / 20);
                 <?= c::FormInput("title", "Titre de l'article", "text", "", true) ?>
 
                 <div>
-                    <?= c::Textarea(
-                        name: "content",
-                        label: "Contenu de l'article",
-                        class: "",
-                        attributes: ["rows" => "12", "required" => "required", "placeholder" => "Rédigez votre article ici..."]
-                    ) ?>
+                    <?= c::Textarea("content", "Contenu de l'article", "", true, "", ["rows" => "12", "placeholder" => "Rédigez votre article ici..."]) ?>
                 </div>
 
                 <div class="flex items-center gap-4">
@@ -133,41 +128,43 @@ $page_count = ceil($total_count / 20);
                 </div>
 
                 <!-- Articles Table -->
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-300">
+                <div class="scroll-container">
+                    <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Titre</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Auteur</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Statut</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Date de création</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Date de publication</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Actions</th>
+                                <th class="border-2 px-4 py-2 text-left">Titre</th>
+                                <th class="border-2 px-4 py-2 text-left">Auteur</th>
+                                <th class="border-2 px-4 py-2 text-left">Statut</th>
+                                <th class="border-2 px-4 py-2 text-left">Date de création</th>
+                                <th class="border-2 px-4 py-2 text-left">Date de publication</th>
+                                <th class="border-2 px-4 py-2 text-left">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($articles as $article): ?>
-                                <tr class="bg-white hover:bg-gray-50">
-                                    <td class="border border-gray-300 px-4 py-2 font-medium">
+                            <?php
+                            $idx = 0;
+                            foreach ($articles as $article): ?>
+                                <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                    <td class="border-2 px-4 py-2 font-medium">
                                         <?= htmlspecialchars($article['title']) ?>
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                                    <td class="border-2 px-4 py-2">
                                         <?= htmlspecialchars($article['author_username'] ?? 'Inconnu') ?>
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                                    <td class="border-2 px-4 py-2">
                                         <?php if ($article['status'] === 'published'): ?>
                                             <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">Publié</span>
                                         <?php else: ?>
                                             <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm font-medium">Brouillon</span>
                                         <?php endif; ?>
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                                    <td class="border-2 px-4 py-2">
                                         <?= date('d/m/Y H:i', strtotime($article['created_at'])) ?>
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                                    <td class="border-2 px-4 py-2">
                                         <?= $article['published_at'] ? date('d/m/Y H:i', $article['published_at']) : '-' ?>
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                                    <td class="border-2 px-4 py-2">
                                         <a href="/edit_article?id=<?= $article['id'] ?>" class="text-blue-600 underline">Modifier</a>
                                         <?php if ($article['status'] === 'draft'): ?>
                                             <span class="ml-2">
@@ -179,7 +176,9 @@ $page_count = ceil($total_count / 20);
                                         </span>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php
+                                $idx++;
+                            endforeach; ?>
                         </tbody>
                     </table>
                 </div>

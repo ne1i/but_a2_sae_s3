@@ -204,22 +204,24 @@ $roles = $db->get_all_roles();
                 }
                 ?>
 
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-300">
+                <div class="scroll-container">
+                    <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Nom d'utilisateur</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Adhérent associé</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Rôles actuels</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Date de création</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Actions</th>
+                                <th class="border-2 px-4 py-2 text-left">Nom d'utilisateur</th>
+                                <th class="border-2 px-4 py-2 text-left">Adhérent associé</th>
+                                <th class="border-2 px-4 py-2 text-left">Rôles actuels</th>
+                                <th class="border-2 px-4 py-2 text-left">Date de création</th>
+                                <th class="border-2 px-4 py-2 text-left">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($users as $user): ?>
-                                <tr class="bg-white hover:bg-gray-50">
-                                    <td class="border border-gray-300 px-4 py-2 font-medium"><?= htmlspecialchars($user['username']) ?></td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                            <?php
+                            $idx = 0;
+                            foreach ($users as $user): ?>
+                                <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                    <td class="border-2 px-4 py-2 font-medium"><?= htmlspecialchars($user['username']) ?></td>
+                                    <td class="border-2 px-4 py-2">
                                         <?php
                                         if ($user['first_name'] && $user['last_name']) {
                                             echo htmlspecialchars($user['first_name']) . ' ' . htmlspecialchars($user['last_name']);
@@ -228,7 +230,7 @@ $roles = $db->get_all_roles();
                                         }
                                         ?>
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                                    <td class="border-2 px-4 py-2">
                                         <div class="flex flex-wrap gap-1">
                                             <?php
                                             $user_roles = $user['roles'] ? explode(',', $user['roles']) : [];
@@ -239,10 +241,10 @@ $roles = $db->get_all_roles();
                                             <?php endforeach; ?>
                                         </div>
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                                    <td class="border-2 px-4 py-2">
                                         <?= date('d/m/Y H:i', strtotime($user['created_at'])) ?>
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2 space-x-2">
+                                    <td class="border-2 px-4 py-2 space-x-2">
                                         <a href="#" class="text-blue-600 underline" onclick="showRoleModal(
                                         <?php echo $user['id']; ?>, 
                                         '<?php echo htmlspecialchars($user['username']); ?>', 
@@ -259,7 +261,9 @@ $roles = $db->get_all_roles();
                                         <?php endif; ?>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php
+                            $idx++;
+                            endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -271,39 +275,43 @@ $roles = $db->get_all_roles();
             <div>
                 <?= c::Heading2("Journal d'Audit") ?>
 
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-300">
+                <div class="scroll-container">
+                    <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Date</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Utilisateur</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Entité</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Action</th>
-                                <th class="border border-gray-300 px-4 py-2 text-left">Détails</th>
+                                <th class="border-2 px-4 py-2 text-left">Date</th>
+                                <th class="border-2 px-4 py-2 text-left">Utilisateur</th>
+                                <th class="border-2 px-4 py-2 text-left">Entité</th>
+                                <th class="border-2 px-4 py-2 text-left">Action</th>
+                                <th class="border-2 px-4 py-2 text-left">Détails</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($audit_logs as $log): ?>
-                                <tr class="bg-white hover:bg-gray-50">
-                                    <td class="border border-gray-300 px-4 py-2">
+                            <?php
+                            $idx = 0;
+                            foreach ($audit_logs as $log): ?>
+                                <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                    <td class="border-2 px-4 py-2">
                                         <?= date('d/m/Y H:i:s', strtotime($log['created_at'])) ?>
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                                    <td class="border-2 px-4 py-2">
                                         <?= htmlspecialchars($log['username'] ?? 'Système') ?>
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                                    <td class="border-2 px-4 py-2">
                                         <?= htmlspecialchars($log['entity']) ?>
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                                    <td class="border-2 px-4 py-2">
                                         <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm">
                                             <?= htmlspecialchars($log['action']) ?>
                                         </span>
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2">
+                                    <td class="border-2 px-4 py-2">
                                         <?= htmlspecialchars($log['details'] ?? '') ?>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php
+                            $idx++;
+                            endforeach; ?>
                         </tbody>
                     </table>
                 </div>
