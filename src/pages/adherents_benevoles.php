@@ -1,6 +1,6 @@
 <?php
 
-use ButA2SaeS3\dto\AddAdherantDto;
+use ButA2SaeS3\dto\AddAdherentDto;
 use ButA2SaeS3\FageDB;
 use ButA2SaeS3\utils\HttpUtils;
 use ButA2SaeS3\validation\Validators;
@@ -12,19 +12,18 @@ require_once __DIR__ . "/../templates/admin_head.php";
 
 
 if (HttpUtils::isPost()) {
-    echo "test POST";
     $result = Validators::validate_add_adherent($_POST);
 
     if ($result->isValid()) {
 
-        /** @var AddAdherantDto $new_adherant */
-        $new_adherant = $result->value();
+        /** @var AddAdherentDto $new_adherent */
+        $new_adherent = $result->value();
 
-        if ($db->adherant_exists($new_adherant->prenom, $new_adherant->nom, $new_adherant->email)) {
+        if ($db->adherent_exists($new_adherent->prenom, $new_adherent->nom, $new_adherent->email)) {
             $error = "Cet adhérant existe déjà";
         } else {
-            $db->add_adherant($new_adherant);
-            $success = "L'adhérant a bien été ajouté";
+            $db->add_adherent($new_adherent);
+            $success = "L'adhérant $new_adherent->prenom $new_adherent->nom a bien été ajouté";
         }
     }
 }
@@ -59,7 +58,7 @@ if (HttpUtils::isPost()) {
                     <a href="/admin" class="text-blue-500 underline visited:bg-purple-500"> <span class="rotate-180 inline-block">➜</span> Retour à l'accueil</a>
                 </p>
                 <h1 class=" text-3xl text-shadow-2xs mb-4">Ajouter un adhérent</h1>
-                <form action="/adherants_benevoles" method="post" class="flex flex-col bg-white">
+                <form action="/adherents_benevoles" method="post" class="flex flex-col bg-white">
                     <div class="flex gap-4 mb-4">
                         <div class="flex flex-col w-1/2">
                             <label for="prenom" class="text-lg">Prénom</label>

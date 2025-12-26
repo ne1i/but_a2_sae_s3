@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS user_roles (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS adherants (
+CREATE TABLE IF NOT EXISTS adherents (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
@@ -40,24 +40,24 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL UNIQUE,
     email TEXT UNIQUE,
     password_hash TEXT NOT NULL,
-    adherant_id INTEGER,
+    adherent_id INTEGER,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     last_login TEXT,
-    FOREIGN KEY (adherant_id) REFERENCES adherants(id) ON DELETE SET NULL
+    FOREIGN KEY (adherent_id) REFERENCES adherents(id) ON DELETE SET NULL
 );
 
 
 
 CREATE TABLE IF NOT EXISTS contributions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    adherants_id INTEGER NOT NULL,
+    adherents_id INTEGER NOT NULL,
     amount_cents INTEGER NOT NULL,           
     currency TEXT NOT NULL DEFAULT 'EUR',
     paid_at TEXT DEFAULT CURRENT_TIMESTAMP,
     method TEXT,                             
     reference TEXT,
     notes TEXT,
-    FOREIGN KEY (adherants_id) REFERENCES adherants(id) ON DELETE CASCADE
+    FOREIGN KEY (adherents_id) REFERENCES adherents(id) ON DELETE CASCADE
 );
 
 
@@ -81,13 +81,13 @@ CREATE TABLE IF NOT EXISTS missions (
 CREATE TABLE IF NOT EXISTS mission_participants (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     mission_id INTEGER NOT NULL,
-    adherant_id INTEGER NOT NULL,
+    adherent_id INTEGER NOT NULL,
     role TEXT,                               
     status TEXT DEFAULT 'registered',        
     registered_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (mission_id) REFERENCES missions(id) ON DELETE CASCADE,
-    FOREIGN KEY (adherant_id) REFERENCES adherants(id) ON DELETE CASCADE,
-    UNIQUE(mission_id, adherant_id)
+    FOREIGN KEY (adherent_id) REFERENCES adherents(id) ON DELETE CASCADE,
+    UNIQUE(mission_id, adherent_id)
 );
 
 

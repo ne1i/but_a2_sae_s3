@@ -7,8 +7,16 @@ $db = new FageDB();
 
 require_once __DIR__ . "/../templates/admin_cookie_check.php";
 
-if (isset($_GET['logout'])) {
-    setcookie("session", $session_id, $expires_or_options = 0, $path = "/", $domain = "", $secure = true, $httpsecure = true);
+if (isset($_GET["logout"])) {
+    setcookie(
+        "session",
+        $session_id,
+        $expires_or_options = 0,
+        $path = "/",
+        $domain = "",
+        $secure = true,
+        $httpsecure = true,
+    );
     HttpUtils::redirect("/login");
 }
 
@@ -26,7 +34,7 @@ require_once __DIR__ . "/../templates/admin_head.php";
         </div>
 
         <div class="grid lg:grid-cols-3 grid-cols-2 gap-2">
-            <a href="/adherants_benevoles"
+            <a href="/adherents_benevoles"
                 id="benevoles" class="bg-white hover:bg-gray-300 lg:p-12 lg:py-16 py-12 px-2 text-center lg:text-2xl text-lg flex flex-col items-center gap-3 shadow-sm rounded-xl">
                 <svg xmlns="http://www.w3.org/2000/svg" class="lg:w-30 w-20" viewBox="0 0 640 640">
                     <path d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z" />

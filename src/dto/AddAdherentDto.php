@@ -2,7 +2,7 @@
 
 namespace ButA2SaeS3\dto;
 
-class AddAdherantDto
+class AddAdherentDto
 {
 
     public function __construct(

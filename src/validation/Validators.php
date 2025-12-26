@@ -2,7 +2,7 @@
 
 namespace ButA2SaeS3\validation;
 
-use ButA2SaeS3\dto\AddAdherantDto;
+use ButA2SaeS3\dto\AddAdherentDto;
 use ButA2SaeS3\validation\ValidationResult;
 
 class Validators
@@ -25,14 +25,14 @@ class Validators
         $result = ValidationResult::empty();
 
         foreach ($fieldnames as $fieldname) {
-            if (empty($data[$fieldname])) {
+            if (empty($formdata[$fieldname])) {
                 $result->addMessage("$fieldname", "Le {$fieldname} est obligatoire");
             }
         }
 
 
         if (!$result->hasMessages()) {
-            $result->setValue(new AddAdherantDto(
+            $result->setValue(new AddAdherentDto(
                 prenom: $formdata["prenom"],
                 nom: $formdata["nom"],
                 adresse: $formdata["adresse"],

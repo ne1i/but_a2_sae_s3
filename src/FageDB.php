@@ -2,7 +2,7 @@
 
 namespace ButA2SaeS3;
 
-use ButA2SaeS3\dto\AddAdherantDto;
+use ButA2SaeS3\dto\AddadherentDto;
 use PDO;
 
 class FageDB
@@ -124,26 +124,26 @@ class FageDB
         return $stmt->fetchColumn() !== false;
     }
 
-    function add_adherant(AddAdherantDto $new_adherant)
+    function add_adherent(AddadherentDto $new_adherent)
     {
-        $stmt = $this->db->prepare("INSERT INTO adherants(first_name, last_name, address, postal_code, city, phone, email, age, profession)
+        $stmt = $this->db->prepare("INSERT INTO adherents(first_name, last_name, address, postal_code, city, phone, email, age, profession)
         VALUES(:prenom, :nom, :adresse, :code_postal, :ville, :tel, :email, :age, :profession)");
 
         $stmt->execute([
-            'prenom' => $new_adherant->prenom,
-            'nom' => $new_adherant->nom,
-            'adresse' => $new_adherant->adresse,
-            'code_postal' => $new_adherant->code_postal,
-            'ville' => $new_adherant->ville,
-            'tel' => $new_adherant->tel,
-            'email' => $new_adherant->email,
-            'age' => $new_adherant->age,
-            'profession' => $new_adherant->profession
+            'prenom' => $new_adherent->prenom,
+            'nom' => $new_adherent->nom,
+            'adresse' => $new_adherent->adresse,
+            'code_postal' => $new_adherent->code_postal,
+            'ville' => $new_adherent->ville,
+            'tel' => $new_adherent->tel,
+            'email' => $new_adherent->email,
+            'age' => $new_adherent->age,
+            'profession' => $new_adherent->profession
         ]);
     }
-    function adherant_exists($prenom, $nom, $email)
+    function adherent_exists($prenom, $nom, $email)
     {
-        $stmt = $this->db->prepare("SELECT 1 FROM adherants WHERE first_name = :prenom AND last_name = :nom AND email = :email");
+        $stmt = $this->db->prepare("SELECT 1 FROM adherents WHERE first_name = :prenom AND last_name = :nom AND email = :email");
 
         $stmt->execute([
             'prenom' => $prenom,
