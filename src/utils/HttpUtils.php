@@ -4,6 +4,9 @@ namespace ButA2SaeS3\utils;
 
 use ButA2SaeS3\FageDB;
 
+// Start PHP session to store user_id
+session_start();
+
 class HttpUtils
 {
 
@@ -27,10 +30,13 @@ class HttpUtils
     {
         if (isset($_COOKIE["session"])) {
             $session_id = $_COOKIE["session"];
-            if (!$db->is_correct_session_id($session_id)) {
+            $user_id = $db->get_user_id_from_session($session_id);
+            if (!$user_id) {
                 header('Location: /login');
                 die();
             }
+            // Store user_id in $_SESSION for use throughout the application
+            $_SESSION['user_id'] = $user_id;
         } else {
             header('Location: /login');
             die();
@@ -41,7 +47,10 @@ class HttpUtils
     {
         if (isset($_COOKIE["session"])) {
             $session_id = $_COOKIE["session"];
-            if ($db->is_correct_session_id($session_id)) {
+            $user_id = $db->get_user_id_from_session($session_id);
+            if ($user_id) {
+                // Store user_id in $_SESSION for use throughout the application
+                $_SESSION['user_id'] = $user_id;
                 header('Location: /admin');
                 die();
             }
@@ -50,6 +59,14 @@ class HttpUtils
 
 
     public static function create_cookie($name, $expires, $value) {}
+
+    public static function get_current_user_id(FageDB $db)
+    {
+        if (isset($_COOKIE["session"])) {
+            return $db->get_user_id_from_session($_COOKIE["session"]);
+        }
+        return null;
+    }
 
     public static function get_query_params_str()
     {

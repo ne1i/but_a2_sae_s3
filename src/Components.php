@@ -34,22 +34,102 @@ class Components
             'green' => ['bg' => 'bg-green-600', 'hover' => 'hover:bg-green-700'],
             'red' => ['bg' => 'bg-red-600', 'hover' => 'hover:bg-red-700'],
             'yellow' => ['bg' => 'bg-yellow-500', 'hover' => 'hover:bg-yellow-600'],
-            'gray' => ['bg' => 'bg-gray-500', 'hover' => 'hover:bg-gray-600']
+            'gray' => ['bg' => 'bg-gray-500', 'hover' => 'hover:bg-gray-600'],
         ];
-        
+
         $color = $variants[$variant] ?? $variants['fage'];
-        
+
         $attr_string = '';
         foreach ($attributes as $attr => $value) {
             $attr_string .= ' ' . $attr . '="' . htmlspecialchars($value) . '"';
         }
-        
-        $classes = 'rounded-full py-2 px-6 text-white ' . $color['bg'] . ' ' . $color['hover'] . ' ' . $class;
-        
+
+        $classes = 'rounded-full py-2 px-6 text-white shadow-sm ' . $color['bg'] . ' ' . $color['hover'] . ' ' . $class;
+
         if ($type === 'link') {
             return '<a href="' . ($attributes['href'] ?? '#') . '" class="' . $classes . '"' . $attr_string . '>' . $text . '</a>';
         }
-        
+
+        return '<button type="' . $type . '" class="' . $classes . '"' . $attr_string . '>' . $text . '</button>';
+    }
+
+    public static function OutlineButton($text, $variant = 'fage', $type = 'button', $class = '', $attributes = [])
+    {
+        $variants = [
+            'fage' => ["text" => "text-fage-800", 'outline' => 'border-fage-700', 'hover' => 'hover:border-fage-800'],
+            'green' => ["text" => "text-green-700", 'outline' => 'border-green-600', 'hover' => 'hover:border-green-700'],
+            'red' => ["text" => "text-red-700", 'outline' => 'border-red-600', 'hover' => 'hover:border-red-700'],
+            'yellow' => ["text" => "text-yellow-600", 'outline' => 'border-yellow-500', 'hover' => 'hover:border-yellow-600'],
+            'gray' => ["text" => "text-gray-600", 'outline' => 'border-gray-500', 'hover' => 'hover:border-gray-600'],
+        ];
+
+        $color = $variants[$variant] ?? $variants['fage'];
+
+        $attr_string = '';
+        foreach ($attributes as $attr => $value) {
+            $attr_string .= ' ' . $attr . '="' . htmlspecialchars($value) . '"';
+        }
+
+        $classes = 'rounded-full py-2 px-6 bg-white border-2 text-shadow-2xs ' . $color['text'] . ' ' . $color['outline'] . ' ' . $color['hover'] . ' ' . $class;
+
+        if ($type === 'link') {
+            return '<a href="' . ($attributes['href'] ?? '#') . '" class="' . $classes . '"' . $attr_string . '>' . $text . '</a>';
+        }
+
+        return '<button type="' . $type . '" class="' . $classes . '"' . $attr_string . '>' . $text . '</button>';
+    }
+
+    public static function SmallButton($text, $variant = 'fage', $type = 'button', $class = '', $attributes = [])
+    {
+        $variants = [
+            'fage' => ['bg' => 'bg-fage-600', 'hover' => 'hover:bg-fage-700'],
+            'green' => ['bg' => 'bg-green-500', 'hover' => 'hover:bg-green-700'],
+            'red' => ['bg' => 'bg-red-500', 'hover' => 'hover:bg-red-700'],
+            'blue' => ['bg' => 'bg-blue-500', 'hover' => 'hover:bg-blue-700'],
+            'yellow' => ['bg' => 'bg-yellow-500', 'hover' => 'hover:bg-yellow-600'],
+            'gray' => ['bg' => 'bg-gray-500', 'hover' => 'hover:bg-gray-700']
+        ];
+
+        $color = $variants[$variant] ?? $variants['fage'];
+
+        $attr_string = '';
+        foreach ($attributes as $attr => $value) {
+            $attr_string .= ' ' . $attr . '="' . htmlspecialchars($value) . '"';
+        }
+
+        $classes = 'rounded px-2 py-1 text-sm text-white ' . $color['bg'] . ' ' . $color['hover'] . ' ' . $class;
+
+        if ($type === 'link') {
+            return '<a href="' . ($attributes['href'] ?? '#') . '" class="' . $classes . '"' . $attr_string . '>' . $text . '</a>';
+        }
+
+        return '<button type="' . $type . '" class="' . $classes . '"' . $attr_string . '>' . $text . '</button>';
+    }
+
+    public static function IconButton($text, $variant = 'fage', $type = 'button', $class = '', $attributes = [])
+    {
+        $variants = [
+            'fage' => ['bg' => 'bg-fage-600', 'hover' => 'hover:bg-fage-700'],
+            'green' => ['bg' => 'bg-green-600', 'hover' => 'hover:bg-green-700'],
+            'red' => ['bg' => 'bg-red-600', 'hover' => 'hover:bg-red-700'],
+            'blue' => ['bg' => 'bg-blue-600', 'hover' => 'hover:bg-blue-700'],
+            'yellow' => ['bg' => 'bg-yellow-500', 'hover' => 'hover:bg-yellow-600'],
+            'gray' => ['bg' => 'bg-gray-500', 'hover' => 'hover:bg-gray-600']
+        ];
+
+        $color = $variants[$variant] ?? $variants['fage'];
+
+        $attr_string = '';
+        foreach ($attributes as $attr => $value) {
+            $attr_string .= ' ' . $attr . '="' . htmlspecialchars($value) . '"';
+        }
+
+        $classes = 'rounded px-4 py-2 text-white transition-colors duration-200 ' . $color['bg'] . ' ' . $color['hover'] . ' ' . $class;
+
+        if ($type === 'link') {
+            return '<a href="' . ($attributes['href'] ?? '#') . '" class="' . $classes . '"' . $attr_string . '>' . $text . '</a>';
+        }
+
         return '<button type="' . $type . '" class="' . $classes . '"' . $attr_string . '>' . $text . '</button>';
     }
 
@@ -62,9 +142,9 @@ class Components
                 $attr_string .= ' ' . $attr . '="' . htmlspecialchars($attr_value) . '"';
             }
         }
-        
+
         $classes = 'border-2 rounded-full pl-2 py-1 bg-[#fafafa] focus:outline-none focus:ring-2 focus:ring-fage-300 ' . $class;
-        
+
         return '<div class="flex flex-col ' . ($attributes['container-class'] ?? '') . '">
                     <label for="' . $name . '" class="text-lg">' . $label . '</label>
                     <input type="' . $type . '" name="' . $name . '" class="' . $classes . '" value="' . htmlspecialchars($value) . '" ' . $required_attr . $attr_string . '>
@@ -82,15 +162,15 @@ class Components
                 $required_attr = 'required';
             }
         }
-        
+
         $classes = 'border-2 rounded-full pl-2 py-1 bg-[#fafafa] focus:outline-none focus:ring-2 focus:ring-fage-300 appearance-none pr-8 ' . $class;
-        
+
         $options_html = '';
         foreach ($options as $value => $option_text) {
             $selected_attr = ($value == $selected) ? 'selected' : '';
             $options_html .= '<option value="' . htmlspecialchars($value) . '" ' . $selected_attr . '>' . htmlspecialchars($option_text) . '</option>';
         }
-        
+
         return '<div class="flex flex-col ' . ($attributes['container-class'] ?? '') . '">
                     <label for="' . $name . '" class="text-lg">' . $label . '</label>
                     <select name="' . $name . '" class="' . $classes . '"' . $attr_string . ' ' . $required_attr . '>
@@ -107,9 +187,9 @@ class Components
             'warning' => 'text-yellow-600',
             'info' => 'text-blue-500'
         ];
-        
+
         $color = $colors[$type] ?? $colors['success'];
-        
+
         return '<span class="' . $color . ' text-center">' . $text . '</span>';
     }
 
@@ -120,10 +200,10 @@ class Components
             'danger' => 'text-red-600 hover:text-red-800 underline',
             'muted' => 'text-gray-600 hover:text-gray-800 underline'
         ];
-        
+
         $color = $variants[$variant] ?? $variants['default'];
         $classes = $color . ' ' . $class;
-        
+
         return '<a href="' . $url . '" class="' . $classes . '">' . $text . '</a>';
     }
 
@@ -146,5 +226,25 @@ class Components
                     </td>
                 </tr>';
         return $tr;
+    }
+
+
+    public static function Textarea($name = "", $label = "Contenu de l'article", $class = "", $attributes = [])
+    {
+
+        $attr_string = '';
+        $required_attr = '';
+        foreach ($attributes as $attr => $value) {
+            if ($value === 'required') {
+                $required_attr = 'required';
+            } elseif ($value) {
+                $attr_string .= ' ' . $attr . '="' . htmlspecialchars($value) . '"';
+            }
+        }
+
+        return '<label for="content" class="block text-sm font-medium text-black mb-1" >' . $label . '</label>
+                    <textarea
+                     class="bg-[#fafafa] w-full px-3 py-2 border-black border-2 rounded-2xl focus:outline-none focus:ring-2 focus:ring-fage-500 ' . $class  . ' "
+                     name="' . $name . '" ' . $attr_string . ' ' . $required_attr . ' ></textarea>';
     }
 }
