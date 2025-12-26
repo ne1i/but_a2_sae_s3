@@ -40,19 +40,18 @@ require_once __DIR__ . "/../templates/admin_head.php";
         <h1 class="text-3xl mb-4">Créer un nouvel utilisateur</h1>
         <div>
             <form action="/securite" method="post" class="flex flex-col ">
-                <label for="username" class="text-lg">Nom d'utilisateur</label>
-                <input required type="username" name="username" class="border-2 mb-4 rounded-full pl-2 py-1">
-                <label for="password" class="text-lg">Mot de passe</label>
-                <input required type="password" name="password" class="border-2 mb-4 rounded-full pl-2 py-1">
-                <label for="password-confirm" class="text-lg">Confirmer le mot de passe</label>
-                <input required type="password" name="password-confirm" class="border-2 mb-4 rounded-full pl-2 py-1">
+                <?= c::FormInput("username", "Nom d'utilisateur", "text", "", true, "mb-4") ?>
+                <?= c::FormInput("password", "Mot de passe", "password", "", true, "mb-4") ?>
+                <?= c::FormInput("password-confirm", "Confirmer le mot de passe", "password", "", true, "mb-4") ?>
+
                 <label for="role" class="text-lg">Rôle de l'utilisateur (droits)</label>
-
-                <select required id="role" name="role" class="border-2 p-1 m-2 mb-4 mx-0">
-                    <option value="admin">Administrateur (tout les droits)</option>
-                    <option value="responsable-pole">Responsable de pôle</option>
-
-                </select>
+                <?php
+                $role_options = [
+                    'admin' => 'Administrateur (tout les droits)',
+                    'responsable-pole' => 'Responsable de pôle'
+                ];
+                echo c::FormSelect("role", label: "", options: $role_options, selected: "", class: "mb-4", attributes: ["id" => "role", "required"]);
+                ?>
 
                 <div id="choix-poles" class="hidden flex-col justify-start gap-2">
                     <label>
@@ -93,22 +92,18 @@ require_once __DIR__ . "/../templates/admin_head.php";
                     });
                 </script>
 
-                <button type="submit" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 my-4 text-white">Créer le compte</button>
+                <?= c::Button("Créer le compte", "fage", "submit", "my-4") ?>
                 <?php
                 if (isset($error)) {
-                    echo "<span class=\"text-red-500 text-center\">";
-                    echo $error;
-                    echo "</span>";
+                    echo c::Message($error, 'error');
                 }
 
                 if (isset($success)) {
-                    echo "<span class=\"text-green-500 text-center\">";
-                    echo $success;
-                    echo "</span>";
+                    echo c::Message($success, 'success');
                 }
                 if (Constants::is_debug()) {
                 ?>
-                    <button id="autofill" type="button" class="bg-fage-700 hover:bg-fage-800 rounded-full py-2 text-white">Autofill (debug)</button>
+                    <?= c::Button("Autofill (debug)", "fage", "button", "", ["id" => "autofill"]) ?>
 
                     <script>
                         function makeid(length) {
