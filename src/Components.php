@@ -151,7 +151,7 @@ class Components
                 </div>';
     }
 
-    public static function FormSelect($name, $label = "", $options, $selected = '', $class = '', $attributes = [])
+    public static function FormSelect($name, $label = "", $options = [], $selected = '', $class = '', $attributes = [])
     {
         $attr_string = '';
         $required_attr = '';
@@ -217,6 +217,7 @@ class Components
                     <td class="border-2 px-4 py-2">' . $adherant->profession . '</td>
                     <td class="border-2 px-4 py-2">' . $adherant->age . '</td>
                     <td class="border-2 px-4 py-2">' . $adherant->ville . '</td>
+                    {
                     <td class="border-2 px-4 py-2">
                         <a href="/edit_adherent?id=' . $adherant->id . '#adherents-table" class="text-blue-600 underline">Modifier</a>
                         <form method="post" style="display: inline;" onsubmit="return confirm(\'Êtes-vous sûr de vouloir supprimer cet adhérent ?\')">
