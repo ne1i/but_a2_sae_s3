@@ -8,13 +8,13 @@ use ButA2SaeS3\Components as c;
 $db = new FageDB();
 
 HttpUtils::ensure_valid_session($db);
-require_once __DIR__ . "/../templates/admin_head.php";
 
 
 if (!$db->has_permission(HttpUtils::get_current_user_id($db), 'all')) {
     header('Location: /admin');
     exit;
 }
+require_once __DIR__ . "/../templates/admin_head.php";
 
 
 if (HttpUtils::isPost()) {
@@ -262,7 +262,7 @@ $roles = $db->get_all_roles();
                                     </td>
                                 </tr>
                             <?php
-                            $idx++;
+                                $idx++;
                             endforeach; ?>
                         </tbody>
                     </table>
@@ -310,7 +310,7 @@ $roles = $db->get_all_roles();
                                     </td>
                                 </tr>
                             <?php
-                            $idx++;
+                                $idx++;
                             endforeach; ?>
                         </tbody>
                     </table>
@@ -362,7 +362,6 @@ $roles = $db->get_all_roles();
 
             document.querySelectorAll('input[name="roles[]"]').forEach(cb => cb.checked = false);
 
-</think>
             if (currentRoles) {
                 const roleNames = currentRoles.split(',');
                 roleNames.forEach(roleName => {
