@@ -10,9 +10,7 @@ $db = new FageDB();
 HttpUtils::ensure_valid_session($db);
 require_once __DIR__ . "/../templates/admin_head.php";
 
-// Handle form submissions
 if (HttpUtils::isPost()) {
-    // Handle partner operations
     if (isset($_POST['action'])) {
         if ($_POST['action'] === 'add_partner' && isset($_POST['partner_name'])) {
             if ($db->add_partner(
@@ -24,16 +22,16 @@ if (HttpUtils::isPost()) {
                 $_POST['website'] ?? null,
                 $_POST['notes'] ?? null
             )) {
-                $success = "Le partenaire \"{$_POST['partner_name']}\" a bien été ajouté";
+                $add_partner_success = "Le partenaire \"{$_POST['partner_name']}\" a bien été ajouté";
             } else {
-                $error = "Une erreur est survenue lors de l'ajout du partenaire";
+                $add_partner_error = "Une erreur est survenue lors de l'ajout du partenaire";
             }
         } elseif ($_POST['action'] === 'delete_partner' && isset($_POST['delete_id'])) {
             $partner = $db->get_partner_by_id($_POST['delete_id']);
             if ($partner && $db->delete_partner($_POST['delete_id'])) {
-                $success = "Le partenaire \"{$partner['name']}\" a bien été supprimé";
+                $delete_partner_success = "Le partenaire \"{$partner['name']}\" a bien été supprimé";
             } else {
-                $error = "Une erreur est survenue lors de la suppression du partenaire";
+                $delete_partner_error = "Une erreur est survenue lors de la suppression du partenaire";
             }
         } elseif ($_POST['action'] === 'add_donor' && isset($_POST['donor_name'])) {
             if ($db->add_donor(
@@ -42,12 +40,12 @@ if (HttpUtils::isPost()) {
                 $_POST['email'] ?? null,
                 $_POST['notes'] ?? null
             )) {
-                $success = "Le donateur \"{$_POST['donor_name']}\" a bien été ajouté";
+                $donator_add_success = "Le donateur \"{$_POST['donor_name']}\" a bien été ajouté";
             } else {
-                $error = "Une erreur est survenue lors de l'ajout du donateur";
+                $donator_add_error = "Une erreur est survenue lors de l'ajout du donateur";
             }
         } elseif ($_POST['action'] === 'add_donation' && isset($_POST['donor_id']) && isset($_POST['amount'])) {
-            $amount_cents = (int)($_POST['amount'] * 100); // Convert to cents
+            $amount_cents = (int)($_POST['amount'] * 100);
             if ($db->add_donation(
                 $_POST['donor_id'],
                 $amount_cents,
@@ -55,12 +53,12 @@ if (HttpUtils::isPost()) {
                 $_POST['reference'] ?? null,
                 $_POST['notes'] ?? null
             )) {
-                $success = "Le don a bien été enregistré";
+                $don_success = "Le don a bien été enregistré";
             } else {
-                $error = "Une erreur est survenue lors de l'enregistrement du don";
+                $don_error = "Une erreur est survenue lors de l'enregistrement du don";
             }
         } elseif ($_POST['action'] === 'add_subsidy' && isset($_POST['title'])) {
-            $amount_cents = (int)($_POST['amount'] * 100); // Convert to cents
+            $amount_cents = (int)($_POST['amount'] * 100);
             $awarded_at = !empty($_POST['awarded_at']) ? strtotime($_POST['awarded_at']) : time();
             if ($db->add_subsidy(
                 $_POST['partner_id'] ?? null,
@@ -70,12 +68,12 @@ if (HttpUtils::isPost()) {
                 $_POST['conditions'] ?? null,
                 $_POST['notes'] ?? null
             )) {
-                $success = "La subvention \"{$_POST['title']}\" a bien été ajoutée";
+                $subvention_success = "La subvention \"{$_POST['title']}\" a bien été ajoutée";
             } else {
-                $error = "Une erreur est survenue lors de l'ajout de la subvention";
+                $subvention_error = "Une erreur est survenue lors de l'ajout de la subvention";
             }
         } elseif ($_POST['action'] === 'add_contribution' && isset($_POST['adherents_id']) && isset($_POST['amount'])) {
-            $amount_cents = (int)($_POST['amount'] * 100); // Convert to cents
+            $amount_cents = (int)($_POST['amount'] * 100);
             if ($db->add_contribution(
                 $_POST['adherents_id'],
                 $amount_cents,
@@ -83,45 +81,34 @@ if (HttpUtils::isPost()) {
                 $_POST['reference'] ?? null,
                 $_POST['notes'] ?? null
             )) {
-                $success = "La cotisation a bien été enregistrée";
+                $cotisation_success = "La cotisation a bien été enregistrée";
             } else {
-                $error = "Une erreur est survenue lors de l'enregistrement de la cotisation";
+                $cotisation_error = "Une erreur est survenue lors de l'enregistrement de la cotisation";
             }
         }
     }
 }
 
-// Get data for display
 $page = max($_GET["page"] ?? 1, 1);
 $partners = $db->get_partners(10, $page, $_GET["filter-partner"] ?? "");
 $donors = $db->get_donors(10, $page, $_GET["filter-donor"] ?? "");
 $subsidies = $db->get_subsidies(10, $page, $_GET["filter-subsidy"] ?? "");
 $contributions = $db->get_contributions(10, $page, $_GET["filter-adherent"] ?? "", $_GET["filter-method"] ?? "");
 $expiring_contributions = $db->get_expiring_contributions(30);
-$adherents = $db->get_adherents(1000, 1); // For dropdown
+$adherents = $db->get_adherents(1000, 1);
 ?>
 
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
 
     <main class="p-2 space-y-8">
-        <!-- Alert messages -->
-        <?php
-        if (isset($error)) {
-            echo c::Message($error, 'error');
-        }
-        if (isset($success)) {
-            echo c::Message($success, 'success');
-        }
-        ?>
 
-        <!-- Partners Management -->
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div class="mb-4">
                 <?= c::BackToLink(); ?>
             </div>
             <?= c::Heading2("Gestion des Partenaires") ?>
 
-            <!-- Add Partner Form -->
             <div class=" mb-6">
                 <h3 class="text-xl font-semibold mb-3">Ajouter un partenaire</h3>
                 <form action="/partners" method="post" class="grid grid-cols-2 gap-4">
@@ -137,7 +124,11 @@ $adherents = $db->get_adherents(1000, 1); // For dropdown
                     <div class="col-span-2">
                         <?= c::Textarea("notes", "Notes", "", false, "", ["rows" => "2", "container-class" => ""]) ?>
                     </div>
+
+
+
                     <div class="col-span-2">
+
                         <?= c::Button("Ajouter le partenaire", "fage", "submit") ?>
                         <?php
                         if (Constants::is_debug()) {
@@ -148,9 +139,23 @@ $adherents = $db->get_adherents(1000, 1); // For dropdown
                         ?>
                     </div>
                 </form>
+
+                <?php
+                if (isset($add_partner_success)) {
+                    echo c::Message($add_partner_success, 'success');
+                }
+                if (isset($add_partner_error)) {
+                    echo c::Message($add_partner_error, 'error');
+                }
+                if (isset($delete_partner_success)) {
+                    echo c::Message($delete_partner_success, 'success');
+                }
+                if (isset($delete_partner_error)) {
+                    echo c::Message($delete_partner_error, 'error');
+                }
+                ?>
             </div>
 
-            <!-- Partners Table -->
             <div class="scroll-container">
                 <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                     <thead class="bg-gray-100">
@@ -184,7 +189,6 @@ $adherents = $db->get_adherents(1000, 1); // For dropdown
 
         </div>
 
-        <!-- Donors Management -->
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div>
                 <?= c::Heading2("Gestion des Donateurs") ?>
@@ -211,6 +215,21 @@ $adherents = $db->get_adherents(1000, 1); // For dropdown
                             ?>
                         </div>
                     </form>
+
+                    <?php
+                    if (isset($donator_add_success)) {
+                        echo c::Message($donator_add_success, 'success');
+                    }
+                    if (isset($donator_add_error)) {
+                        echo c::Message($donator_add_error, 'error');
+                    }
+                    if (isset($don_success)) {
+                        echo c::Message($don_success, 'success');
+                    }
+                    if (isset($don_error)) {
+                        echo c::Message($don_error, 'error');
+                    }
+                    ?>
                 </div>
 
                 <!-- Donors Table -->
@@ -250,12 +269,12 @@ $adherents = $db->get_adherents(1000, 1); // For dropdown
             </div>
         </div>
 
-        <!-- Subsidies Management -->
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div>
                 <?= c::Heading2("Gestion des Subventions") ?>
 
-                <!-- Add Subsidy Form -->
+
                 <div class="mb-6">
                     <h3 class="text-xl font-semibold mb-3">Ajouter une subvention</h3>
                     <form action="/partners" method="post" class="grid grid-cols-2 gap-4">
@@ -293,9 +312,18 @@ $adherents = $db->get_adherents(1000, 1); // For dropdown
                             ?>
                         </div>
                     </form>
+
+                    <?php
+                    if (isset($subvention_success)) {
+                        echo c::Message($subvention_success, 'success');
+                    }
+                    if (isset($subvention_error)) {
+                        echo c::Message($subvention_error, 'error');
+                    }
+                    ?>
                 </div>
 
-                <!-- Subsidies Table -->
+
                 <div class="scroll-container">
                     <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                         <thead class="bg-gray-100">
@@ -325,12 +353,12 @@ $adherents = $db->get_adherents(1000, 1); // For dropdown
             </div>
         </div>
 
-        <!-- Contributions Management -->
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div>
                 <?= c::Heading2("Gestion des Cotisations") ?>
 
-                <!-- Add Contribution Form -->
+
                 <div class="mb-6">
                     <h3 class="text-xl font-semibold mb-3">Ajouter une cotisation</h3>
                     <form action="/partners" method="post" class="grid grid-cols-2 gap-4">
@@ -375,9 +403,18 @@ $adherents = $db->get_adherents(1000, 1); // For dropdown
                             ?>
                         </div>
                     </form>
+
+                    <?php
+                    if (isset($cotisation_success)) {
+                        echo c::Message($cotisation_success, 'success');
+                    }
+                    if (isset($cotisation_error)) {
+                        echo c::Message($cotisation_error, 'error');
+                    }
+                    ?>
                 </div>
 
-                <!-- Contributions Table -->
+
                 <div class="scroll-container">
                     <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                         <thead class="bg-gray-100">

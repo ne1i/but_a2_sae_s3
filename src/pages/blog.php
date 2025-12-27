@@ -44,7 +44,7 @@
             <div class=" flex flex-wrap max-w-6xl mx-auto">
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Carte 1 -->
+
                     <div
                         class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                         <a href="https://www.fage.org/news/blog-president-fage/7299.htm" target="_blank">
@@ -61,7 +61,7 @@
                         </div>
                     </div>
 
-                    <!-- Carte 2 -->
+
                     <div
                         class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                         <a href="https://www.fage.org/news/blog-president-fage/tribune-hommage-samuel-paty.htm"
@@ -79,7 +79,7 @@
                         </div>
                     </div>
 
-                    <!-- Carte 3 -->
+
                     <div
                         class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                         <a href="https://www.fage.org/news/blog-president-fage/fage-nouvelle-annee-2020.htm"
@@ -96,7 +96,7 @@
                             </h2>
                         </div>
                     </div>
-                    <!-- Carte 4 -->
+
                     <div
                         class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                         <a href="https://www.fage.org/news/blog-president-fage/fage-orlane-francois-presidente-fage-blog-election-bresil-le-populisme-n-est-pas-la-solution.htm"
@@ -113,7 +113,7 @@
                         </div>
                     </div>
 
-                    <!-- Carte 5 -->
+
                     <div
                         class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                         <a href="https://www.fage.org/news/blog-president-fage/fage-blog-president-jimmy-losfeld-laicite-signes-ostentatoires-universite.htm"
@@ -131,7 +131,7 @@
                         </div>
                     </div>
 
-                    <!-- Carte 6 -->
+
                     <div
                         class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                         <a href="https://www.fage.org/news/blog-president-fage/fage-blog-president-plus-de-justice-sociale-dans-nos-etudes-un-defi-a-relever.htm"
@@ -148,7 +148,7 @@
                         </div>
                     </div>
 
-                    <!-- Carte 7 -->
+
                     <div
                         class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                         <a href="https://www.fage.org/news/blog-president-fage/fage-blog-jimmy-losfeld-viticulteurs-preventeurs-jusqu-ou-nous-menera-exception-culturelle-francaise.htm"

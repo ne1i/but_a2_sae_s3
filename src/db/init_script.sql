@@ -141,9 +141,9 @@ CREATE TABLE IF NOT EXISTS article_media (
 
 CREATE TABLE IF NOT EXISTS partners (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
     contact TEXT,
-    email TEXT,
+    email TEXT UNIQUE,
     phone TEXT,
     address TEXT,
     website TEXT,

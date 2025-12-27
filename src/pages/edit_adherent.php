@@ -28,7 +28,7 @@ if (HttpUtils::isPost()) {
     $result = Validators::validate_add_adherent($_POST);
 
     if ($result->isValid()) {
-        /** @var AddAdherentDto $updated_adherent */
+
         $updated_adherent = $result->value();
 
         $existing_adherent = $db->get_adherent_by_email($updated_adherent->email);
@@ -118,16 +118,7 @@ if (HttpUtils::isPost()) {
                     </button>
 
                     <?php
-                    if (isset($error)) {
-                        echo "<span class=\"text-red-500 text-center\">";
-                        echo $error;
-                        echo "</span>";
-                    }
-                    if (isset($success)) {
-                        echo "<span class=\"text-green-500 text-center\">";
-                        echo $success;
-                        echo "</span>";
-                    }
+
                     ?>
 
                 </form>

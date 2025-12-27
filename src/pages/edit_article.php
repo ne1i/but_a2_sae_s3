@@ -23,7 +23,7 @@ if (!$article) {
     exit;
 }
 
-// Handle form submissions
+
 if (HttpUtils::isPost()) {
     if (isset($_POST['action'])) {
         if ($_POST['action'] === 'update_article' && isset($_POST['title']) && isset($_POST['content'])) {
@@ -37,7 +37,7 @@ if (HttpUtils::isPost()) {
             )) {
                 $success = "L'article \"{$_POST['title']}\" a bien été mis à jour";
 
-                // Refresh article data
+
                 $article = $db->get_article_by_id($article_id);
             } else {
                 $error = "Une erreur est survenue lors de la mise à jour de l'article";
@@ -87,28 +87,20 @@ if (HttpUtils::isPost()) {
     }
 }
 
-// Get article media
+
 $article_media = $db->get_article_media($article_id);
 ?>
 
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
 
     <main class="p-2 space-y-8">
-        <!-- Alert messages -->
-        <?php
-        if (isset($error)) {
-            echo c::Message($error, 'error');
-        }
-        if (isset($success)) {
-            echo c::Message($success, 'success');
-        }
-        ?>
 
-        <!-- Edit Article Form -->
+
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div>
                 <div class="mb-4">
-                    <?= c::BackToLink(); ?>
+                    <?= c::BackToLink("Retour aux articles", "/articles"); ?>
                 </div>
                 <?= c::Heading2("Modifier l'article") ?>
 
@@ -131,11 +123,17 @@ $article_media = $db->get_article_media($article_id);
                             <span>Publié</span>
                         </label>
                     </div>
-
-                    <div class="flex gap-4">
+                    <?php
+                    if (isset($error)) {
+                        echo c::Message($error, 'error');
+                    }
+                    if (isset($success)) {
+                        echo c::Message($success, 'success');
+                    }
+                    ?>
+                    <div class="flex mt-2 gap-4">
                         <?= c::Button("Enregistrer les modifications", "fage", "submit") ?>
                         <?= c::Button("Retour à la liste", "gray", "link", "", ["href" => "/articles"]) ?>
-                        Retour à la liste
                         </a>
                         <?= c::Button("Voir sur le site", "blue", "button", "", ["onclick" => "window.open('/blog', '_blank')"]) ?>
                     </div>
@@ -143,12 +141,12 @@ $article_media = $db->get_article_media($article_id);
             </div>
         </div>
 
-        <!-- Media Management -->
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div>
                 <?= c::Heading2("Médias associés") ?>
 
-                <!-- Upload Media Form -->
+
                 <div class="mb-6">
                     <h3 class="text-xl font-semibold mb-3">Ajouter un média</h3>
                     <form action="/edit_article?id=<?= $article_id ?>" method="post" enctype="multipart/form-data" class="space-y-4">
@@ -167,7 +165,7 @@ $article_media = $db->get_article_media($article_id);
                     </form>
                 </div>
 
-                <!-- Existing Media -->
+
                 <?php if (!empty($article_media)): ?>
                     <div class="space-y-4">
                         <h3 class="text-xl font-semibold">Médias actuels</h3>

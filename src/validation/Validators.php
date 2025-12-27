@@ -66,13 +66,13 @@ class Validators
         foreach ($fieldnames as $fieldname) {
             if (empty($formdata[$fieldname])) {
                 if ($fieldname === 'capacity' || $fieldname === 'budget_cents') {
-                    continue; // Optional fields
+                    continue;
                 }
                 $result->addMessage($fieldname, "Le champ {$fieldname} est obligatoire");
             }
         }
 
-        // Validate datetime conversion
+
         $start_at = strtotime($formdata['start_date'] . ' ' . $formdata['start_time']);
         $end_at = strtotime($formdata['end_date'] . ' ' . $formdata['end_time']);
 
@@ -82,7 +82,7 @@ class Validators
             $result->addMessage('datetime', "La date de fin doit être après la date de début");
         }
 
-        // Validate numeric fields
+
         if (!empty($formdata['capacity']) && (!is_numeric($formdata['capacity']) || $formdata['capacity'] <= 0)) {
             $result->addMessage('capacity', "La capacité doit être un nombre positif");
         }

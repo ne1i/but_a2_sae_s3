@@ -28,7 +28,7 @@
     <nav class="justify-center hidden lg:flex active">
         <ul class="flex flex-1 flex-wrap gap-2 lg:flex-row flex-col items-stretch lg:items-center w-full lg:w-auto">
             <li class="relative group">
-                <!-- Bouton principal -->
+
                 <a href="/presentation">
                     <div
                         class="flex items-center justify-center cursor-pointer select-none bg-fage-500 hover:bg-fage-600 active:bg-fage-700 rounded-full px-4 py-2 text-white font-bold transition-colors duration-200">
@@ -40,7 +40,7 @@
                     </div>
                 </a>
 
-                <!-- Sous-menu -->
+
                 <ul
                     class="absolute left-0 mt-2 w-60 bg-fage-500 rounded-xl overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20 shadow-lg">
                     <li>

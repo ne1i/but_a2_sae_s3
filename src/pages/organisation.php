@@ -13,9 +13,9 @@
         <aside>
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
-                    /** @type {HTMLButtonElement}*/
+
                     const button = document.getElementById("sidePanelBtn");
-                    /** @type {HTMLDivElement}*/
+
                     const sidePanel = document.getElementById("sidePanel");
                     button.addEventListener("click", function() {
                         sidePanel.classList.toggle("-translate-x-full");
@@ -49,7 +49,7 @@
                     </li>
                 </ul>
             </div>
-            <!-- Écran large -->
+
             <div
                 class="py-10 pt-5 px-5 mr-4 w-64 bg-fage-50 rounded-2xl mt-10 lg:block hidden md:items-start fixed top-1/8 left-1/10">
                 <ul>

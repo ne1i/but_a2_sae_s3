@@ -10,13 +10,13 @@ $db = new FageDB();
 HttpUtils::ensure_valid_session($db);
 require_once __DIR__ . "/../templates/admin_head.php";
 
-// Only admins can access this page
+
 if (!$db->has_permission(HttpUtils::get_current_user_id($db), 'all')) {
     header('Location: /admin');
     exit;
 }
 
-// Handle form submissions
+
 if (HttpUtils::isPost()) {
     if (isset($_POST['action'])) {
         if ($_POST['action'] === 'update_user_roles' && isset($_POST['user_id']) && isset($_POST['roles'])) {
@@ -47,7 +47,7 @@ if (HttpUtils::isPost()) {
     }
 }
 
-// Handle user creation form
+
 $username = $_POST["username"] ?? null;
 $password = $_POST["password"] ?? null;
 $password_confirm = $_POST["password-confirm"] ?? null;
@@ -67,7 +67,7 @@ if (isset($username) && isset($password) && isset($role)) {
     }
 }
 
-// Get data for display
+
 $users = $db->get_users();
 $audit_logs = $db->get_audit_logs(50, 1);
 $roles = $db->get_all_roles();
@@ -76,7 +76,7 @@ $roles = $db->get_all_roles();
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
 
     <main class="p-2 space-y-8">
-        <!-- Create User -->
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div class="mb-4">
                 <?= c::BackToLink(); ?>
@@ -136,7 +136,7 @@ $roles = $db->get_all_roles();
                         });
                     </script>
 
-                    <!-- Alert messages for user creation -->
+
                     <?php
                     if (isset($create_user_error)) {
                         echo c::Message($create_user_error, 'error');
@@ -179,12 +179,12 @@ $roles = $db->get_all_roles();
             </div>
         </div>
 
-        <!-- User Management -->
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div>
                 <?= c::Heading2("Gestion des Utilisateurs") ?>
 
-                <!-- Alert messages for role update -->
+
                 <?php
                 if (isset($role_update_error)) {
                     echo c::Message($role_update_error, 'error');
@@ -194,7 +194,7 @@ $roles = $db->get_all_roles();
                 }
                 ?>
 
-                <!-- Alert messages for user deletion -->
+
                 <?php
                 if (isset($delete_user_error)) {
                     echo c::Message($delete_user_error, 'error');
@@ -270,7 +270,7 @@ $roles = $db->get_all_roles();
             </div>
         </div>
 
-        <!-- Audit Logs -->
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div>
                 <?= c::Heading2("Journal d'Audit") ?>
@@ -320,7 +320,7 @@ $roles = $db->get_all_roles();
 
     </main>
 
-    <!-- Role Dialog -->
+
     <dialog id="roleDialog" class="p-0 border-0 rounded-lg shadow-xl fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 m-0">
         <div class="bg-white rounded-lg w-full">
             <div class="p-6">
@@ -359,10 +359,10 @@ $roles = $db->get_all_roles();
             document.getElementById('modalUserId').value = userId;
             document.getElementById('modalUsername').textContent = username;
 
-            // Clear all checkboxes
+
             document.querySelectorAll('input[name="roles[]"]').forEach(cb => cb.checked = false);
 
-            // Check current roles
+</think>
             if (currentRoles) {
                 const roleNames = currentRoles.split(',');
                 roleNames.forEach(roleName => {

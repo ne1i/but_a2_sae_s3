@@ -9,7 +9,7 @@ $db = new FageDB();
 HttpUtils::ensure_valid_session($db);
 require_once __DIR__ . "/../templates/admin_head.php";
 
-// Handle form submissions
+
 if (HttpUtils::isPost()) {
     if (isset($_POST['action']) && $_POST['action'] === 'upload_document' && isset($_FILES['document_file'])) {
         $upload_dir = __DIR__ . "/../public/assets/documents/";
@@ -50,7 +50,7 @@ if (HttpUtils::isPost()) {
     }
 }
 
-// Get data for display
+
 $page = max($_GET["page"] ?? 1, 1);
 $documents = $db->get_documents(20, $page, $_GET["filter-filename"] ?? "");
 $total_count = $db->get_documents_count($_GET["filter-filename"] ?? "");
@@ -60,7 +60,7 @@ $page_count = ceil($total_count / 20);
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
 
     <main class="p-2 space-y-8">
-        <!-- Alert messages -->
+
         <?php
         if (isset($error)) {
             echo c::Message($error, 'error');
@@ -70,7 +70,7 @@ $page_count = ceil($total_count / 20);
         }
         ?>
 
-        <!-- Upload Document Form -->
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div>
                 <div class="mb-4">
@@ -96,12 +96,12 @@ $page_count = ceil($total_count / 20);
             </div>
         </div>
 
-        <!-- Documents List -->
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div>
                 <?= c::Heading2("Documents existants") ?>
 
-                <!-- Filters -->
+
                 <div class="mb-4">
                     <form method="get" action="/documents" class="flex gap-4">
                         <?= c::FormInput("filter-filename", "Filtrer par nom", "text", $_GET["filter-filename"] ?? "", false, "", ["placeholder" => "Nom du fichier"]) ?>
@@ -112,7 +112,7 @@ $page_count = ceil($total_count / 20);
                     </form>
                 </div>
 
-                <!-- Documents Grid -->
+
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <?php foreach ($documents as $document): ?>
                         <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
@@ -150,7 +150,7 @@ $page_count = ceil($total_count / 20);
                     <?php endforeach; ?>
                 </div>
 
-                <!-- Pagination -->
+
                 <div class="flex justify-center gap-4 items-center mt-6">
                     <?php
                     $current_page = max($_GET["page"] ?? 1, 1);

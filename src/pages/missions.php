@@ -13,8 +13,31 @@ HttpUtils::ensure_valid_session($db);
 require_once __DIR__ . "/../templates/admin_head.php";
 
 if (HttpUtils::isPost()) {
-    if (isset($_POST['delete_id'])) {
-        $delete_id = $_POST['delete_id'];
+    $result = Validators::validate_add_mission($_POST);
+
+    if ($result->isValid()) {
+        /** @var AddMissionDto $new_mission */
+        $new_mission = $result->value();
+        $user_id = HttpUtils::get_current_user_id($db);
+
+        if ($db->add_mission(
+            $new_mission->title,
+            $new_mission->description,
+            $new_mission->location,
+            $new_mission->start_at,
+            $new_mission->end_at,
+            $new_mission->capacity,
+            $new_mission->budget_cents,
+            $user_id
+        )) {
+            $success = "La mission \"{$new_mission->title}\" a bien été ajoutée";
+        } else {
+            $error = "Une erreur est survenue lors de l'ajout";
+        }
+    }
+} elseif (HttpUtils::isGet()) {
+    if (isset($_GET['delete_id'])) {
+        $delete_id = $_GET['delete_id'];
         $mission = $db->get_mission_by_id($delete_id);
 
         if ($mission) {
@@ -25,29 +48,6 @@ if (HttpUtils::isPost()) {
             }
         } else {
             $delete_error = "Mission introuvable";
-        }
-    } else {
-        $result = Validators::validate_add_mission($_POST);
-
-        if ($result->isValid()) {
-            /** @var AddMissionDto $new_mission */
-            $new_mission = $result->value();
-            $user_id = HttpUtils::get_current_user_id($db);
-
-            if ($db->add_mission(
-                $new_mission->title,
-                $new_mission->description,
-                $new_mission->location,
-                $new_mission->start_at,
-                $new_mission->end_at,
-                $new_mission->capacity,
-                $new_mission->budget_cents,
-                $user_id
-            )) {
-                $success = "La mission \"{$new_mission->title}\" a bien été ajoutée";
-            } else {
-                $error = "Une erreur est survenue lors de l'ajout";
-            }
         }
     }
 }
@@ -64,7 +64,7 @@ if (HttpUtils::isPost()) {
                 <?= c::Heading2("Ajouter une mission") ?>
                 <form action="/missions" method="post" class="flex flex-col bg-white">
                     <?= c::FormInput("title", "Titre de la mission", "text", "", true, "mb-4") ?>
-                    
+
                     <div class="mb-4">
                         <?= c::Textarea("description", "Description", "", true, "", ["rows" => "4"]) ?>
                     </div>
@@ -122,16 +122,16 @@ if (HttpUtils::isPost()) {
                                 document.querySelector("[name='title']").value = "Mission " + makeid(6);
                                 document.querySelector("[name='description']").value = "Description de la mission";
                                 document.querySelector("[name='location']").value = "Paris";
-                                
+
                                 const today = new Date();
                                 const tomorrow = new Date(today);
                                 tomorrow.setDate(tomorrow.getDate() + 1);
-                                
+
                                 document.querySelector("[name='start_date']").value = today.toISOString().split('T')[0];
                                 document.querySelector("[name='start_time']").value = "09:00";
                                 document.querySelector("[name='end_date']").value = tomorrow.toISOString().split('T')[0];
                                 document.querySelector("[name='end_time']").value = "17:00";
-                                
+
                                 document.querySelector("[name='capacity']").value = "20";
                                 document.querySelector("[name='budget_cents']").value = "1000";
                             });
@@ -146,7 +146,14 @@ if (HttpUtils::isPost()) {
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl space-y-8">
             <div>
                 <?= c::Heading2("Missions", id: "missions-table") ?>
-
+                <?php
+                if (isset($delete_error)) {
+                    echo c::Message($delete_error, 'error');
+                }
+                if (isset($delete_success)) {
+                    echo c::Message($delete_success, 'success');
+                }
+                ?>
                 <div class="space-y-4">
                     <?php
                     $page = max($_GET["page"] ?? 1, 1);
@@ -162,11 +169,10 @@ if (HttpUtils::isPost()) {
                     <fieldset>
                         <form id="missionForm" method="get" action="/missions#missions-table" class="flex gap-4 flex-wrap items-end">
                             <script>
-                                /** @type {HTMLFormElement} */
                                 let missionForm = window.missionForm;
                                 missionForm.addEventListener("submit", (e) => {
                                     const btn = e.submitter;
-                                    /** @type {number | undefined} */
+
                                     const nextPage = btn.dataset.nextPage;
                                     if (nextPage) {
                                         /** @type { HTMLFormElement} */
@@ -179,9 +185,9 @@ if (HttpUtils::isPost()) {
                                     }
                                 })
                             </script>
-                            
+
                             <?= c::FormInput("filter-title", "Filtrer le titre", "text", $filter_title, false, "border shadow-sm px-2", ["placeholder" => "Filtrer le titre"]) ?>
-                            
+
                             <?= c::FormInput("filter-location", "Filtrer le lieu", "text", $filter_location, false, "border shadow-sm px-2", ["placeholder" => "Filtrer le lieu"]) ?>
 
                             <input type="hidden" name="page" value="<?= $page ?>">
@@ -192,14 +198,7 @@ if (HttpUtils::isPost()) {
                         </form>
                     </fieldset>
 
-                    <?php
-                    if (isset($delete_error)) {
-                        echo c::Message($delete_error, 'error');
-                    }
-                    if (isset($delete_success)) {
-                        echo c::Message($delete_success, 'success');
-                    }
-                    ?>
+
 
                     <div class="scroll-container">
                         <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
@@ -225,7 +224,7 @@ if (HttpUtils::isPost()) {
                                     $budget = number_format($mission['budget_cents'] / 100, 2) . ' €';
                                     $capacity = $mission['capacity'] ?? 'Illimitée';
                                     $created_by = $mission['created_by_username'] ?? 'Inconnu';
-                                    ?>
+                                ?>
                                     <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
                                         <td class="border-2 px-4 py-2"><?= htmlspecialchars($mission['title']) ?></td>
                                         <td class="border-2 px-4 py-2"><?= htmlspecialchars($mission['location']) ?></td>
@@ -241,7 +240,7 @@ if (HttpUtils::isPost()) {
                                             </span>
                                         </td>
                                     </tr>
-                                    <?php
+                                <?php
                                     $idx++;
                                 }
                                 ?>

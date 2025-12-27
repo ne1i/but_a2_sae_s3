@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 class Carousel {
-  /** @type {Element}*/
+
   #element;
   #index = 0;
   #autoSlideInterval = 0;

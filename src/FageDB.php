@@ -352,7 +352,7 @@ class FageDB
         return $stmt->execute([":id" => $id]);
     }
 
-    // Mission Management Methods
+
     function add_mission($title, $description, $location, $start_at, $end_at, $capacity, $budget_cents, $created_by)
     {
         $stmt = $this->db->prepare(
@@ -516,9 +516,9 @@ class FageDB
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Financial Management Methods
-    
-    // Contributions (cotisations)
+
+
+
     function add_contribution($adherents_id, $amount_cents, $method, $reference = null, $notes = null)
     {
         $stmt = $this->db->prepare(
@@ -608,9 +608,13 @@ class FageDB
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Partners
+
     function add_partner($name, $contact = null, $email = null, $phone = null, $address = null, $website = null, $notes = null)
     {
+        $exists = $this->exists($email, "partners", "email");
+        if ($exists === true) {
+            return false;
+        }
         $stmt = $this->db->prepare(
             "INSERT INTO partners (name, contact, email, phone, address, website, notes) 
              VALUES (:name, :contact, :email, :phone, :address, :website, :notes)"
@@ -697,7 +701,7 @@ class FageDB
         return $stmt->execute([":id" => $id]);
     }
 
-    // Donors and Donations
+
     function add_donor($name, $contact = null, $email = null, $notes = null)
     {
         $stmt = $this->db->prepare(
@@ -787,7 +791,7 @@ class FageDB
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Subsidies
+
     function add_subsidy($partner_id, $title, $amount_cents, $awarded_at = null, $conditions = null, $notes = null)
     {
         $stmt = $this->db->prepare(
@@ -852,9 +856,9 @@ class FageDB
         return $stmt->fetchColumn();
     }
 
-    // Communication Module Methods
-    
-    // Articles Management
+
+
+
     function add_article($title, $content, $author_id, $status = 'draft')
     {
         $stmt = $this->db->prepare(
@@ -958,7 +962,7 @@ class FageDB
         }
 
         $sql .= " WHERE id = :id";
-        
+
         $stmt = $this->db->prepare($sql);
         return $stmt->execute($params);
     }
@@ -981,7 +985,7 @@ class FageDB
         ]);
     }
 
-    // Documents Management
+
     function upload_document($filename, $original_name, $mime_type, $size_bytes, $uploader_id, $path, $description = null)
     {
         $stmt = $this->db->prepare(
@@ -1056,17 +1060,16 @@ class FageDB
 
     function delete_document($id)
     {
-        // First get the document to delete the file
         $doc = $this->get_document_by_id($id);
         if ($doc && file_exists($doc['path'])) {
             unlink($doc['path']);
         }
-        
+
         $stmt = $this->db->prepare("DELETE FROM documents WHERE id = :id");
         return $stmt->execute([":id" => $id]);
     }
 
-    // Media Attachment Methods
+
     function attach_media_to_article($article_id, $document_id)
     {
         $stmt = $this->db->prepare(
@@ -1141,24 +1144,24 @@ class FageDB
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Statistics Dashboard Methods
+
     function get_adherent_statistics()
     {
         $stats = [];
-        
-        // Total adherents
+
+
         $stmt = $this->db->prepare("SELECT COUNT(id) FROM adherents WHERE is_active = 1");
         $stmt->execute();
         $stats['total_active'] = $stmt->fetchColumn();
-        
-        // New adherents this year
+
+
         $year_start = strtotime(date('Y-01-01'));
         $stmt = $this->db->prepare("SELECT COUNT(id) FROM adherents WHERE joined_at >= :year_start");
         $stmt->bindValue(":year_start", $year_start, PDO::PARAM_INT);
         $stmt->execute();
         $stats['new_this_year'] = $stmt->fetchColumn();
-        
-        // Age distribution
+
+
         $stmt = $this->db->prepare("
             SELECT 
                 CASE 
@@ -1177,8 +1180,8 @@ class FageDB
         ");
         $stmt->execute();
         $stats['age_distribution'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        // City distribution
+
+
         $stmt = $this->db->prepare("
             SELECT city, COUNT(*) as count 
             FROM adherents 
@@ -1189,8 +1192,8 @@ class FageDB
         ");
         $stmt->execute();
         $stats['city_distribution'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        // Profession distribution
+
+
         $stmt = $this->db->prepare("
             SELECT profession, COUNT(*) as count 
             FROM adherents 
@@ -1201,39 +1204,39 @@ class FageDB
         ");
         $stmt->execute();
         $stats['profession_distribution'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         return $stats;
     }
 
     function get_mission_statistics()
     {
         $stats = [];
-        
-        // Total missions
+
+
         $stmt = $this->db->prepare("SELECT COUNT(id) FROM missions");
         $stmt->execute();
         $stats['total_missions'] = $stmt->fetchColumn();
-        
-        // Missions this year
+
+
         $year_start = strtotime(date('Y-01-01'));
         $stmt = $this->db->prepare("SELECT COUNT(id) FROM missions WHERE start_at >= :year_start");
         $stmt->bindValue(":year_start", $year_start, PDO::PARAM_INT);
         $stmt->execute();
         $stats['missions_this_year'] = $stmt->fetchColumn();
-        
-        // Upcoming missions
+
+
         $current_time = time();
         $stmt = $this->db->prepare("SELECT COUNT(id) FROM missions WHERE start_at > :current_time");
         $stmt->bindValue(":current_time", $current_time, PDO::PARAM_INT);
         $stmt->execute();
         $stats['upcoming_missions'] = $stmt->fetchColumn();
-        
-        // Total participants
+
+
         $stmt = $this->db->prepare("SELECT COUNT(DISTINCT adherent_id) FROM mission_participants");
         $stmt->execute();
         $stats['total_participants'] = $stmt->fetchColumn();
-        
-        // Average participants per mission
+
+
         $stmt = $this->db->prepare("
             SELECT AVG(participant_count) as avg_participants 
             FROM (
@@ -1244,15 +1247,15 @@ class FageDB
         ");
         $stmt->execute();
         $stats['avg_participants_per_mission'] = round($stmt->fetchColumn(), 1);
-        
+
         return $stats;
     }
 
     function get_financial_statistics()
     {
         $stats = [];
-        
-        // Total contributions this year
+
+
         $year_start = strtotime(date('Y-01-01'));
         $stmt = $this->db->prepare("
             SELECT COALESCE(SUM(amount_cents), 0) as total 
@@ -1262,28 +1265,28 @@ class FageDB
         $stmt->bindValue(":year_start", $year_start, PDO::PARAM_INT);
         $stmt->execute();
         $stats['contributions_this_year'] = $stmt->fetchColumn();
-        
-        // Total donations
+
+
         $stmt = $this->db->prepare("SELECT COALESCE(SUM(amount_cents), 0) as total FROM donations");
         $stmt->execute();
         $stats['total_donations'] = $stmt->fetchColumn();
-        
-        // Total subsidies
+
+
         $stmt = $this->db->prepare("SELECT COALESCE(SUM(amount_cents), 0) as total FROM subsidies");
         $stmt->execute();
         $stats['total_subsidies'] = $stmt->fetchColumn();
-        
-        // Number of contributors
+
+
         $stmt = $this->db->prepare("SELECT COUNT(DISTINCT adherents_id) FROM contributions");
         $stmt->execute();
         $stats['contributor_count'] = $stmt->fetchColumn();
-        
-        // Number of donors
+
+
         $stmt = $this->db->prepare("SELECT COUNT(DISTINCT donor_id) FROM donations");
         $stmt->execute();
         $stats['donor_count'] = $stmt->fetchColumn();
-        
-        // Monthly contribution trend (last 12 months)
+
+
         $stmt = $this->db->prepare("
             SELECT 
                 strftime('%Y-%m', datetime(paid_at, 'unixepoch')) as month,
@@ -1298,15 +1301,15 @@ class FageDB
         $stmt->bindValue(":months_ago", $months_ago, PDO::PARAM_INT);
         $stmt->execute();
         $stats['monthly_contributions'] = array_reverse($stmt->fetchAll(PDO::FETCH_ASSOC));
-        
+
         return $stats;
     }
 
     function get_participation_statistics()
     {
         $stats = [];
-        
-        // Most active adherents
+
+
         $stmt = $this->db->prepare("
             SELECT a.first_name, a.last_name, COUNT(mp.id) as mission_count
             FROM adherents a
@@ -1318,22 +1321,22 @@ class FageDB
         ");
         $stmt->execute();
         $stats['most_active_adherents'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        // Participation rate
+
+
         $stmt = $this->db->prepare("SELECT COUNT(id) FROM adherents WHERE is_active = 1");
         $stmt->execute();
         $total_adherents = $stmt->fetchColumn();
-        
+
         $stmt = $this->db->prepare("SELECT COUNT(DISTINCT adherent_id) FROM mission_participants");
         $stmt->execute();
         $participants_count = $stmt->fetchColumn();
-        
+
         $stats['participation_rate'] = $total_adherents > 0 ? round(($participants_count / $total_adherents) * 100, 1) : 0;
-        
+
         return $stats;
     }
 
-    // Enhanced Security Methods
+
     function get_users($limit = 50, $page = 1)
     {
         $offset = ($page - 1) * $limit;
@@ -1370,11 +1373,11 @@ class FageDB
 
     function update_user_roles($user_id, $role_ids)
     {
-        // Remove existing roles
+
         $stmt = $this->db->prepare("DELETE FROM user_roles WHERE user_id = :user_id");
         $stmt->execute([":user_id" => $user_id]);
-        
-        // Add new roles
+
+
         foreach ($role_ids as $role_id) {
             $stmt = $this->db->prepare("INSERT INTO user_roles (user_id, role_id) VALUES (:user_id, :role_id)");
             $stmt->execute([
@@ -1382,21 +1385,21 @@ class FageDB
                 ":role_id" => $role_id
             ]);
         }
-        
+
         return true;
     }
 
     function delete_user($id)
     {
-        // Delete user roles first
+
         $stmt = $this->db->prepare("DELETE FROM user_roles WHERE user_id = :user_id");
         $stmt->execute([":user_id" => $id]);
-        
-        // Delete sessions
+
+
         $stmt = $this->db->prepare("DELETE FROM sessions WHERE user_id = :user_id");
         $stmt->execute([":user_id" => $id]);
-        
-        // Delete user
+
+
         $stmt = $this->db->prepare("DELETE FROM users WHERE id = :id");
         return $stmt->execute([":id" => $id]);
     }
@@ -1464,44 +1467,43 @@ class FageDB
         }
 
         try {
-            // Export database structure and data
+
             $tables = $this->db->query("SELECT name FROM sqlite_master WHERE type='table'")->fetchAll(PDO::FETCH_COLUMN);
-            
+
             $backup_content = "-- Database Backup - " . date('Y-m-d H:i:s') . "\n";
             $backup_content .= "-- Generated by FAGE Association Management System\n\n";
-            
+
             foreach ($tables as $table) {
-                // Get CREATE TABLE statement
+
                 $create_stmt = $this->db->query("SELECT sql FROM sqlite_master WHERE name='{$table}'")->fetchColumn();
                 $backup_content .= $create_stmt . ";\n\n";
-                
-                // Get table data
+
+
                 $rows = $this->db->query("SELECT * FROM {$table}")->fetchAll(PDO::FETCH_ASSOC);
                 if (!empty($rows)) {
                     $backup_content .= "-- Data for table {$table}\n";
                     foreach ($rows as $row) {
                         $columns = array_keys($row);
-                        $values = array_map(function($value) {
+                        $values = array_map(function ($value) {
                             if ($value === null) return 'NULL';
                             if (is_numeric($value)) return $value;
                             return "'" . addslashes($value) . "'";
                         }, $row);
-                        
+
                         $backup_content .= "INSERT INTO {$table} (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $values) . ");\n";
                     }
                     $backup_content .= "\n";
                 }
             }
-            
-            // Write backup to file
+
+
             file_put_contents($backup_path, $backup_content);
-            
+
             return [
                 'success' => true,
                 'path' => $backup_path,
                 'size' => filesize($backup_path)
             ];
-            
         } catch (\Exception $e) {
             return [
                 'success' => false,
@@ -1516,7 +1518,7 @@ class FageDB
         if (!is_dir($backup_dir)) {
             return [];
         }
-        
+
         $files = [];
         foreach (glob($backup_dir . "*.sql") as $file) {
             $files[] = [
@@ -1526,12 +1528,12 @@ class FageDB
                 'created' => filemtime($file)
             ];
         }
-        
-        // Sort by creation date (newest first)
-        usort($files, function($a, $b) {
+
+
+        usort($files, function ($a, $b) {
             return $b['created'] - $a['created'];
         });
-        
+
         return $files;
     }
 
@@ -1545,12 +1547,12 @@ class FageDB
             WHERE u.id = :user_id AND r.permissions = 'all'
         ");
         $stmt->execute([":user_id" => $user_id]);
-        
+
         if ($stmt->fetchColumn()) {
-            return true; // Admin has all permissions
+            return true;
         }
-        
-        // Check specific permission (simplified for this implementation)
+
+
         $stmt = $this->db->prepare("
             SELECT COUNT(*) 
             FROM users u 
@@ -1562,7 +1564,7 @@ class FageDB
             ":user_id" => $user_id,
             ":permission" => $permission
         ]);
-        
+
         return $stmt->fetchColumn() > 0;
     }
 }

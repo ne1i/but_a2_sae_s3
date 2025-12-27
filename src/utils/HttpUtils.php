@@ -4,7 +4,7 @@ namespace ButA2SaeS3\utils;
 
 use ButA2SaeS3\FageDB;
 
-// Start PHP session to store user_id
+
 session_start();
 
 class HttpUtils
@@ -35,8 +35,6 @@ class HttpUtils
                 header('Location: /login');
                 die();
             }
-            // Store user_id in $_SESSION for use throughout the application
-            $_SESSION['user_id'] = $user_id;
         } else {
             header('Location: /login');
             die();
@@ -49,8 +47,6 @@ class HttpUtils
             $session_id = $_COOKIE["session"];
             $user_id = $db->get_user_id_from_session($session_id);
             if ($user_id) {
-                // Store user_id in $_SESSION for use throughout the application
-                $_SESSION['user_id'] = $user_id;
                 header('Location: /admin');
                 die();
             }

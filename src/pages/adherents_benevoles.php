@@ -32,7 +32,7 @@ if (HttpUtils::isPost()) {
 
         if ($result->isValid()) {
 
-            /** @var AddAdherentDto $new_adherent */
+    
             $new_adherent = $result->value();
 
             if ($db->adherent_exists($new_adherent->prenom, $new_adherent->nom, $new_adherent->email)) {
@@ -151,11 +151,10 @@ if (HttpUtils::isPost()) {
                     <fieldset>
                         <form id="adherentForm" method="get" action="/adherents_benevoles#adherents-table" class="flex gap-4 flex-wrap items-end">
                             <script>
-                                /** @type {HTMLFormElement} */
                                 let adherentForm = window.adherentForm;
                                 adherentForm.addEventListener("submit", (e) => {
                                     const btn = e.submitter;
-                                    /** @type {number | undefined} */
+
                                     const nextPage = btn.dataset.nextPage;
                                     if (nextPage) {
                                         /** @type { HTMLFormElement} */

@@ -49,7 +49,7 @@ if (HttpUtils::isPost()) {
     }
 }
 
-// Pre-fill form values
+
 $start_date = date('Y-m-d', $mission['start_at']);
 $start_time = date('H:i', $mission['start_at']);
 $end_date = date('Y-m-d', $mission['end_at']);
@@ -62,7 +62,7 @@ $end_time = date('H:i', $mission['end_at']);
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div>
                 <div class="mb-4">
-                    <?= c::BackToLink(); ?>
+                    <?= c::BackToLink("Retour aux missions", "/missions"); ?>
                 </div>
                 <?= c::Heading2("Modifier la mission") ?>
                 <form action="/edit_mission?id=<?= $mission_id ?>" method="post" class="flex flex-col bg-white">
@@ -146,8 +146,8 @@ $end_time = date('H:i', $mission['end_at']);
                     }
                 }
 
-                if (isset($_POST['action']) && $_POST['action'] === 'remove_participant') {
-                    $adherent_id = $_POST['adherent_id'] ?? null;
+                if (isset($_GET['action']) && $_GET['action'] === 'remove_participant') {
+                    $adherent_id = $_GET['adherent_id'] ?? null;
 
                     if ($adherent_id) {
                         if ($db->remove_mission_participant($mission_id, $adherent_id)) {

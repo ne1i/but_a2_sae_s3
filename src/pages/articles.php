@@ -9,7 +9,7 @@ $db = new FageDB();
 HttpUtils::ensure_valid_session($db);
 require_once __DIR__ . "/../templates/admin_head.php";
 
-// Handle form submissions
+
 if (HttpUtils::isPost()) {
     if (isset($_POST['action'])) {
         if ($_POST['action'] === 'add_article' && isset($_POST['title']) && isset($_POST['content'])) {
@@ -26,13 +26,6 @@ if (HttpUtils::isPost()) {
             } else {
                 $error = "Une erreur est survenue lors de l'ajout de l'article";
             }
-        } elseif ($_POST['action'] === 'delete_article' && isset($_POST['delete_id'])) {
-            $article = $db->get_article_by_id($_POST['delete_id']);
-            if ($article && $db->delete_article($_POST['delete_id'])) {
-                $success = "L'article \"{$article['title']}\" a bien été supprimé";
-            } else {
-                $error = "Une erreur est survenue lors de la suppression de l'article";
-            }
         } elseif ($_POST['action'] === 'publish_article' && isset($_POST['publish_id'])) {
             $article = $db->get_article_by_id($_POST['publish_id']);
             if ($article && $db->publish_article($_POST['publish_id'])) {
@@ -42,9 +35,19 @@ if (HttpUtils::isPost()) {
             }
         }
     }
+} elseif (HttpUtils::isGet()) {
+    if ($_GET['action'] === 'delete_article' && isset($_GET['delete_id'])) {
+        $article = $db->get_article_by_id($_GET['delete_id']);
+        if ($article && $db->delete_article($_GET['delete_id'])) {
+            $delete_success = "L'article \"{$article['title']}\" a bien été supprimé";
+        } else {
+            $delete_error = "Une erreur est survenue lors de la suppression de l'article";
+        }
+    }
 }
 
-// Get data for display
+
+
 $page = max($_GET["page"] ?? 1, 1);
 $articles = $db->get_articles(20, $page, $_GET["filter-title"] ?? "", $_GET["filter-status"] ?? "");
 $total_count = $db->get_articles_count($_GET["filter-title"] ?? "", $_GET["filter-status"] ?? "");
@@ -54,10 +57,10 @@ $page_count = ceil($total_count / 20);
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
 
     <main class="p-2 space-y-8">
-        <!-- Alert messages -->
 
 
-        <!-- Add Article Form -->
+
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div class="mb-4">
 
@@ -101,12 +104,19 @@ $page_count = ceil($total_count / 20);
             </form>
         </div>
 
-        <!-- Articles List -->
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div>
                 <?= c::Heading2("Articles existants") ?>
+                <?php
+                if (isset($delete_error)) {
+                    echo c::Message($delete_error, 'error');
+                }
+                if (isset($delete_success)) {
+                    echo c::Message($delete_success, 'success');
+                }
+                ?>
 
-                <!-- Filters -->
                 <div class="mb-4">
                     <form method="get" action="/articles" class="flex gap-4 items-end">
                         <?= c::FormInput("filter-title", "Filtrer par titre", "text", $_GET["filter-title"] ?? "", false, "", ["placeholder" => "Titre de l'article"]) ?>
@@ -127,7 +137,7 @@ $page_count = ceil($total_count / 20);
                     </form>
                 </div>
 
-                <!-- Articles Table -->
+
                 <div class="scroll-container">
                     <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                         <thead class="bg-gray-100">
@@ -183,7 +193,7 @@ $page_count = ceil($total_count / 20);
                     </table>
                 </div>
 
-                <!-- Pagination -->
+
                 <div class="flex justify-center gap-4 items-center mt-4">
                     <?php
                     $current_page = max($_GET["page"] ?? 1, 1);

@@ -9,10 +9,10 @@ $db = new FageDB();
 HttpUtils::ensure_valid_session($db);
 require_once __DIR__ . "/../templates/admin_head.php";
 
-// Handle form submissions
+
 if (HttpUtils::isPost()) {
     if (isset($_POST['action']) && $_POST['action'] === 'add_contribution' && isset($_POST['adherents_id']) && isset($_POST['amount'])) {
-        $amount_cents = (int)($_POST['amount'] * 100); // Convert to cents
+        $amount_cents = (int)($_POST['amount'] * 100);
         if ($db->add_contribution(
             $_POST['adherents_id'],
             $amount_cents,
@@ -27,11 +27,11 @@ if (HttpUtils::isPost()) {
     }
 }
 
-// Get data for display
+
 $page = max($_GET["page"] ?? 1, 1);
 $contributions = $db->get_contributions(20, $page, $_GET["filter-adherent"] ?? "", $_GET["filter-method"] ?? "");
 $expiring_contributions = $db->get_expiring_contributions(30);
-$adherents = $db->get_adherents(1000, 1); // For dropdown
+$adherents = $db->get_adherents(1000, 1);
 $total_count = $db->get_contributions_count($_GET["filter-adherent"] ?? "", $_GET["filter-method"] ?? "");
 $page_count = ceil($total_count / 20);
 ?>
@@ -39,7 +39,7 @@ $page_count = ceil($total_count / 20);
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
 
     <main class="p-2 space-y-8">
-        <!-- Alert messages -->
+
         <?php
         if (isset($error)) {
             echo c::Message($error, 'error');
@@ -49,7 +49,7 @@ $page_count = ceil($total_count / 20);
         }
         ?>
 
-        <!-- Expiring Contributions Alert -->
+
         <?php if (!empty($expiring_contributions)): ?>
             <div class="shadow-lg bg-yellow-50 border-2 border-yellow-200 p-6 rounded-2xl">
                 <?= c::Heading2("⚠️ Cotisations arrivant à échéance") ?>
@@ -88,7 +88,7 @@ $page_count = ceil($total_count / 20);
             </div>
         <?php endif; ?>
 
-        <!-- Add Contribution Form -->
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div>
                 <?= c::BackToLink(); ?>
@@ -124,12 +124,12 @@ $page_count = ceil($total_count / 20);
             </div>
         </div>
 
-        <!-- Contributions History -->
+
         <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
             <div>
                 <?= c::Heading2("Historique des cotisations") ?>
 
-                <!-- Filters -->
+
                 <div class="mb-4">
                     <form method="get" action="/contributions" class="flex gap-4">
                         <?= c::FormInput("filter-adherent", "Filtrer par adhérent", "text", $_GET["filter-adherent"] ?? "", false, "", ["placeholder" => "Nom ou prénom"]) ?>
@@ -151,7 +151,7 @@ $page_count = ceil($total_count / 20);
                     </form>
                 </div>
 
-                <!-- Contributions Table -->
+
                 <div class="scroll-container">
                     <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                         <thead class="bg-gray-100">
@@ -193,7 +193,7 @@ $page_count = ceil($total_count / 20);
                     </table>
                 </div>
 
-                <!-- Pagination -->
+
                 <div class="flex justify-center gap-4 items-center mt-4">
                     <?php
                     $current_page = max($_GET["page"] ?? 1, 1);
