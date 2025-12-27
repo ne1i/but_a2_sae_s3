@@ -50,7 +50,7 @@ require_once __DIR__ .  "/../templates/head.php";
 
                 </ul>
             </div>
-            <!-- Écran large -->
+
             <div
                 class=" py-10 pt-5 px-5 mr-4 w-64 bg-fage-50 rounded-2xl mt-10 lg:block hidden md:items-start fixed top-1/8 left-1/10 ">
                 <ul>
@@ -81,7 +81,7 @@ require_once __DIR__ .  "/../templates/head.php";
                 <figure class="relative w-80 m-2">
                     <p class="sr-only">Filtre par type d'actualités</p>
                     <select
-                        class="block appearance-none w-full bg-white border border-blue-300 text-gray-700 py-3 px-4 pr-10 rounded-md leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                        class="block appearance-none w-full border-2 rounded-full pl-2 py-1 bg-[#fafafa] focus:outline-none focus:ring-2 focus:ring-fage-300 pr-8">
                         <option disabled selected>Choisissez un type d'actualités</option>
                         <option>CD et DP</option>
                         <option>Interviews</option>
@@ -96,7 +96,7 @@ require_once __DIR__ .  "/../templates/head.php";
                 <figure class="relative w-80 m-2">
                     <p class="sr-only">Filtre par thèmes</p>
                     <select
-                        class="block appearance-none w-full bg-white border border-blue-300 text-gray-700 py-3 px-4 pr-10 rounded-md leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                        class="block appearance-none w-full border-2 rounded-full pl-2 py-1 bg-[#fafafa] focus:outline-none focus:ring-2 focus:ring-fage-300 pr-8">
                         <option disabled selected>Thèmes</option>
                         <option>Enseignement supérieur</option>
                         <option>Social</option>
@@ -114,7 +114,7 @@ require_once __DIR__ .  "/../templates/head.php";
                 <figure class="relative w-80 m-2">
                     <p class="sr-only">Filtre par acteurs</p>
                     <select
-                        class="block appearance-none w-full bg-white border border-blue-300 text-gray-700 py-3 px-4 pr-10 rounded-md leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                        class="block appearance-none w-full border-2 rounded-full pl-2 py-1 bg-[#fafafa] focus:outline-none focus:ring-2 focus:ring-fage-300 pr-8">
                         <option disabled selected>Acteurs</option>
                         <option>Fage</option>
                         <option>Fedés Territoriales</option>
@@ -131,7 +131,7 @@ require_once __DIR__ .  "/../templates/head.php";
                 <figure class="relative w-80 m-2">
                     <p class="sr-only">Filtre par dates</p>
                     <select
-                        class="block appearance-none w-full bg-white border border-blue-300 text-gray-700 py-3 px-4 pr-10 rounded-md leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                        class="block appearance-none w-full border-2 rounded-full pl-2 py-1 bg-[#fafafa] focus:outline-none focus:ring-2 focus:ring-fage-300 pr-8">
                         <option disabled selected>Dates</option>
                         <option>Aujourd'hui</option>
                         <option>Cette semaine</option>

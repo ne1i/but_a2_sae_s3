@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS user_roles (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS members (
+CREATE TABLE IF NOT EXISTS adherents (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
@@ -28,7 +28,8 @@ CREATE TABLE IF NOT EXISTS members (
     address TEXT,
     city TEXT,
     postal_code TEXT,
-    birthdate TEXT,
+    age INTEGER,
+    profession TEXT,
     joined_at TEXT DEFAULT CURRENT_TIMESTAMP,
     is_active INTEGER DEFAULT 1,
     notes TEXT
@@ -39,24 +40,24 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL UNIQUE,
     email TEXT UNIQUE,
     password_hash TEXT NOT NULL,
-    member_id INTEGER,
+    adherent_id INTEGER,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     last_login TEXT,
-    FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE SET NULL
+    FOREIGN KEY (adherent_id) REFERENCES adherents(id) ON DELETE SET NULL
 );
 
 
 
 CREATE TABLE IF NOT EXISTS contributions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    member_id INTEGER NOT NULL,
+    adherents_id INTEGER NOT NULL,
     amount_cents INTEGER NOT NULL,           
     currency TEXT NOT NULL DEFAULT 'EUR',
     paid_at TEXT DEFAULT CURRENT_TIMESTAMP,
     method TEXT,                             
     reference TEXT,
     notes TEXT,
-    FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE
+    FOREIGN KEY (adherents_id) REFERENCES adherents(id) ON DELETE CASCADE
 );
 
 
@@ -80,13 +81,13 @@ CREATE TABLE IF NOT EXISTS missions (
 CREATE TABLE IF NOT EXISTS mission_participants (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     mission_id INTEGER NOT NULL,
-    member_id INTEGER NOT NULL,
+    adherent_id INTEGER NOT NULL,
     role TEXT,                               
     status TEXT DEFAULT 'registered',        
     registered_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (mission_id) REFERENCES missions(id) ON DELETE CASCADE,
-    FOREIGN KEY (member_id) REFERENCES members(id) ON DELETE CASCADE,
-    UNIQUE(mission_id, member_id)
+    FOREIGN KEY (adherent_id) REFERENCES adherents(id) ON DELETE CASCADE,
+    UNIQUE(mission_id, adherent_id)
 );
 
 
@@ -140,9 +141,9 @@ CREATE TABLE IF NOT EXISTS article_media (
 
 CREATE TABLE IF NOT EXISTS partners (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
     contact TEXT,
-    email TEXT,
+    email TEXT UNIQUE,
     phone TEXT,
     address TEXT,
     website TEXT,

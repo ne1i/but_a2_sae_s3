@@ -24,7 +24,7 @@ require_once __DIR__ .  "/../templates/head.php";
                 });
             </script>
 
-            <!-- MOBILE -->
+
             <div id="sidePanel"
                 class="py-10 pt-5 px-5 mr-4 bg-fage-50 rounded-l-none rounded-tr-none rounded-2xl mt-10 left-0 top-30 h-fit fixed -translate-x-full transition ease-out lg:hidden block max-w-8/12">
                 <button id="sidePanelBtn"
@@ -45,7 +45,7 @@ require_once __DIR__ .  "/../templates/head.php";
                 </ul>
             </div>
 
-            <!-- DESKTOP -->
+
             <div
                 class="py-10 pt-5 px-5 mr-4 w-64 bg-fage-50 rounded-2xl mt-10 lg:block hidden md:items-start fixed top-1/8 left-1/10">
                 <ul>
