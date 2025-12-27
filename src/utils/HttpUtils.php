@@ -5,7 +5,6 @@ namespace ButA2SaeS3\utils;
 use ButA2SaeS3\FageDB;
 
 
-session_start();
 
 class HttpUtils
 {

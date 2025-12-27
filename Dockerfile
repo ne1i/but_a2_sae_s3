@@ -1,6 +1,7 @@
-FROM php:8.4-alpine
+FROM php:8.5-alpine
 
 COPY ./src /app/src
+COPY ./vendor /app/vendor
 RUN mkdir /data
 
 VOLUME [ "/data" ]

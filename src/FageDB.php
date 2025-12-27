@@ -1246,7 +1246,12 @@ class FageDB
             )
         ");
         $stmt->execute();
-        $stats['avg_participants_per_mission'] = round($stmt->fetchColumn(), 1);
+        $col = $stmt->fetchColumn();
+        if (!empty($col)) {
+            $stats['avg_participants_per_mission'] = round($col, 1);
+        } else {
+            $stats['avg_participants_per_mission'] = 0;
+        }
 
         return $stats;
     }

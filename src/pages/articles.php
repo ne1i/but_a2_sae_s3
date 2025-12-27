@@ -36,7 +36,7 @@ if (HttpUtils::isPost()) {
         }
     }
 } elseif (HttpUtils::isGet()) {
-    if ($_GET['action'] === 'delete_article' && isset($_GET['delete_id'])) {
+    if (isset($_GET['action']) && $_GET['action'] === 'delete_article' && isset($_GET['delete_id'])) {
         $article = $db->get_article_by_id($_GET['delete_id']);
         if ($article && $db->delete_article($_GET['delete_id'])) {
             $delete_success = "L'article \"{$article['title']}\" a bien été supprimé";
@@ -129,9 +129,9 @@ $page_count = ceil($total_count / 20);
                         ];
                         ?>
 
-                        <?= c::FormSelect("filter-status", label: "", options: $role_options, selected: $_GET["filter-status"], attributes: ["id" => "filter-status"]); ?>
                         <?= c::Button("Filtrer", "fage", "submit") ?>
                         <?php if (!empty($_GET["filter-title"]) || !empty($_GET["filter-status"])): ?>
+                            <?= c::FormSelect("filter-status", label: "", options: $role_options, selected: $_GET["filter-status"], attributes: ["id" => "filter-status"]); ?>
                             <?= c::Button("Effacer les filtres", "gray", "link", "inline-block", ["href" => "/articles"]) ?>
                         <?php endif; ?>
                     </form>
