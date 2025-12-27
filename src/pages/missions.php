@@ -86,7 +86,7 @@ if (HttpUtils::isPost()) {
                             <?= c::FormInput("capacity", "Capacité (participants)", "number", "", false, "", ["min" => "1"]) ?>
                         </div>
                         <div class="w-1/2">
-                            <?= c::FormInput("budget_cents", "Budget (euros)", "number", "", false, "", ["min" => "0", "step" => "0.01"]) ?>
+                            <?= c::FormInput("budget_cents", "Budget (en euros)", "number", "", false, "", ["min" => "0", "step" => "0.01"]) ?>
                         </div>
                     </div>
 
@@ -133,7 +133,7 @@ if (HttpUtils::isPost()) {
                                 document.querySelector("[name='end_time']").value = "17:00";
 
                                 document.querySelector("[name='capacity']").value = "20";
-                                document.querySelector("[name='budget_cents']").value = "1000";
+                                document.querySelector("[name='budget_cents']").value = "500.50";
                             });
                         </script>
                     <?php

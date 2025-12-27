@@ -865,7 +865,7 @@ class FageDB
             "INSERT INTO articles (title, content, author_id, status, published_at, updated_at) 
              VALUES (:title, :content, :author_id, :status, :published_at, :updated_at)"
         );
-        $current_time = time();
+        $current_time = time() + 3600; // Add 1 hour for local timezone
         return $stmt->execute([
             ":title" => $title,
             ":content" => $content,
@@ -943,7 +943,7 @@ class FageDB
 
     function update_article($id, $title, $content, $status = null)
     {
-        $current_time = time();
+        $current_time = time() + 3600; // Add 1 hour for local timezone
         $sql = "UPDATE articles SET title = :title, content = :content, updated_at = :updated_time";
         $params = [
             ":id" => $id,
@@ -975,7 +975,7 @@ class FageDB
 
     function publish_article($id)
     {
-        $current_time = time();
+        $current_time = time() + 3600; // Add 1 hour for local timezone
         $stmt = $this->db->prepare(
             "UPDATE articles SET status = 'published', published_at = :published_at WHERE id = :id"
         );

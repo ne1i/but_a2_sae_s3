@@ -99,7 +99,7 @@ class Validators
                 start_at: $start_at,
                 end_at: $end_at,
                 capacity: !empty($formdata['capacity']) ? (int)$formdata['capacity'] : null,
-                budget_cents: !empty($formdata['budget_cents']) ? (int)$formdata['budget_cents'] : 0
+                budget_cents: !empty($formdata['budget_cents']) ? (int)($formdata['budget_cents'] * 100) : 0
             ));
         }
 
