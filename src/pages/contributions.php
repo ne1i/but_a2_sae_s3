@@ -1,58 +1,67 @@
 <?php
 
 use ButA2SaeS3\FageDB;
+use ButA2SaeS3\repositories\AdherentRepository;
+use ButA2SaeS3\repositories\ContributionRepository;
+use ButA2SaeS3\services\ContributionValidationService;
+use ButA2SaeS3\services\FormService;
 use ButA2SaeS3\utils\HttpUtils;
 use ButA2SaeS3\Components as c;
 
 $db = new FageDB();
+$adherentRepository = new AdherentRepository($db);
+$contributionRepository = new ContributionRepository($db->getConnection());
 
 HttpUtils::ensure_valid_session($db);
-require_once __DIR__ . "/../templates/admin_head.php";
 
+FormService::handleFormSubmission(
+    [ContributionValidationService::class, 'validateAddContribution'],
+    function ($dto) use ($contributionRepository) {
+        $contributionRepository->add(
+            $dto->adherents_id,
+            $dto->amount_cents,
+            $dto->method,
+            $dto->reference,
+            $dto->notes
+        );
+    },
+    "La cotisation a bien été enregistrée",
+    "/contributions#contribution-add"
+);
 
-if (HttpUtils::isPost()) {
-    if (isset($_POST['action']) && $_POST['action'] === 'add_contribution' && isset($_POST['adherents_id']) && isset($_POST['amount'])) {
-        $amount_cents = (int)($_POST['amount'] * 100);
-        if ($db->add_contribution(
-            $_POST['adherents_id'],
-            $amount_cents,
-            $_POST['method'],
-            $_POST['reference'] ?? null,
-            $_POST['notes'] ?? null
-        )) {
-            $success = "La cotisation a bien été enregistrée";
-        } else {
-            $error = "Une erreur est survenue lors de l'enregistrement de la cotisation";
-        }
-    }
-}
-
+$formState = FormService::restoreFormData();
+$formData = $formState['data'] ?? [];
+$formErrors = $formState['errors'] ?? [];
+$successMessage = FormService::getSuccessMessage();
+$errorMessage = FormService::getErrorMessage();
 
 $page = max($_GET["page"] ?? 1, 1);
-$contributions = $db->get_contributions(20, $page, $_GET["filter-adherent"] ?? "", $_GET["filter-method"] ?? "");
-$expiring_contributions = $db->get_expiring_contributions(30);
-$adherents = $db->get_adherents(1000, 1);
-$total_count = $db->get_contributions_count($_GET["filter-adherent"] ?? "", $_GET["filter-method"] ?? "");
+$filterAdherent = $_GET["filter-adherent"] ?? "";
+$filterMethod = $_GET["filter-method"] ?? "";
+$contributions = $contributionRepository->list(20, $page, $filterAdherent, $filterMethod);
+$expiring_contributions = $contributionRepository->expiring(30);
+$adherents = $adherentRepository->findAll(1000, 1);
+$total_count = $contributionRepository->count($filterAdherent, $filterMethod);
 $page_count = ceil($total_count / 20);
 ?>
+
+<?php require_once __DIR__ . "/../templates/admin_head.php"; ?>
 
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
 
     <main class="p-2 space-y-8">
 
-        <?php
-        if (isset($error)) {
-            echo c::Message($error, 'error');
-        }
-        if (isset($success)) {
-            echo c::Message($success, 'success');
-        }
-        ?>
+        <?php if ($successMessage): ?>
+            <?= c::Message($successMessage, 'success') ?>
+        <?php endif; ?>
+        <?php if ($errorMessage): ?>
+            <?= c::Message($errorMessage, 'error') ?>
+        <?php endif; ?>
 
 
         <?php if (!empty($expiring_contributions)): ?>
             <div class="shadow-lg bg-yellow-50 border-2 border-yellow-200 p-6 rounded-2xl">
-                <?= c::Heading2("⚠️ Cotisations arrivant à échéance") ?>
+                <?= c::Heading2("⚠️ Cotisations arrivant à échéance", id: "contributions-expiring") ?>
                 <div class="scroll-container">
                     <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
                         <thead class="bg-gray-100">
@@ -76,7 +85,12 @@ $page_count = ceil($total_count / 20);
                                     </td>
                                     <td class="border-2 px-4 py-2"><?= $adherent['total_payments'] ?></td>
                                     <td class="border-2 px-4 py-2">
-                                        <a href="/contributions?action=add_contribution&adherents_id=<?= $adherent['id'] ?>&amount=20&method=cash" class="text-green-600 underline">Enregistrer cotisation</a>
+                                        <form action="/contributions" method="post" class="inline">
+                                            <input type="hidden" name="adherents_id" value="<?= $adherent['id'] ?>">
+                                            <input type="hidden" name="amount" value="20">
+                                            <input type="hidden" name="method" value="cash">
+                                            <?= c::Button("Enregistrer cotisation", "green", "submit", "", ["class" => "underline bg-transparent text-green-600 hover:text-green-800"]) ?>
+                                        </form>
                                     </td>
                                 </tr>
                             <?php
@@ -89,10 +103,10 @@ $page_count = ceil($total_count / 20);
         <?php endif; ?>
 
 
-        <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
+        <div class="shadow-lg bg-white p-10 container-padding rounded-2xl">
             <div>
                 <?= c::BackToLink(); ?>
-                <?= c::Heading2("Ajouter une cotisation") ?>
+                <?= c::Heading2("Ajouter une cotisation", id: "contribution-add") ?>
 
                 <form action="/contributions" method="post" class="grid grid-cols-2 gap-4">
                     <input type="hidden" name="action" value="add_contribution">
@@ -101,9 +115,9 @@ $page_count = ceil($total_count / 20);
                     foreach ($adherents as $adherent) {
                         $adherent_options[$adherent->id] = htmlspecialchars($adherent->prenom) . ' ' . htmlspecialchars($adherent->nom);
                     }
-                    echo c::FormSelect("adherents_id", label: "", options: $adherent_options, selected: "", class: "", attributes: ["required" => true]);
+                    echo c::FormSelect("adherents_id", label: "", options: $adherent_options, selected: $formData['adherents_id'] ?? "", class: "", attributes: ["required" => true, "error" => $formErrors['adherents_id'] ?? null]);
                     ?>
-                    <?= c::FormInput("amount", "Montant (euros)", "number", "", true, "", ["step" => "0.01", "min" => "0"]) ?>
+                    <?= c::FormInput("amount", "Montant (euros)", "number", $formData['amount'] ?? "", true, "", ["step" => "0.01", "min" => "0", "error" => $formErrors['amount'] ?? null]) ?>
                     <?php
                     $method_options = [
                         'cash' => 'Espèces',
@@ -111,11 +125,11 @@ $page_count = ceil($total_count / 20);
                         'check' => 'Chèque',
                         'transfer' => 'Virement'
                     ];
-                    echo c::FormSelect("method", label: "", options: $method_options, selected: "", class: "");
+                    echo c::FormSelect("method", label: "", options: $method_options, selected: $formData['method'] ?? "", class: "", attributes: ["error" => $formErrors['method'] ?? null]);
                     ?>
-                    <?= c::FormInput("reference", "Référence", "text", "", false) ?>
+                    <?= c::FormInput("reference", "Référence", "text", $formData['reference'] ?? "", false) ?>
                     <div class="col-span-2">
-                        <?= c::Textarea("notes", "Notes", "", false, "", ["rows" => "2", "container-class" => ""]) ?>
+                        <?= c::Textarea("notes", "Notes", $formData['notes'] ?? "", false, "", ["rows" => "2", "container-class" => ""]) ?>
                     </div>
                     <div class="col-span-2">
                         <?= c::Button("Ajouter la cotisation", "fage", "submit") ?>
@@ -125,9 +139,9 @@ $page_count = ceil($total_count / 20);
         </div>
 
 
-        <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
+        <div class="shadow-lg bg-white p-10 container-padding rounded-2xl">
             <div>
-                <?= c::Heading2("Historique des cotisations") ?>
+                <?= c::Heading2("Historique des cotisations", id: "contributions-history") ?>
 
 
                 <div class="mb-4">
@@ -152,46 +166,50 @@ $page_count = ceil($total_count / 20);
                 </div>
 
 
-                <div class="scroll-container">
-                    <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="border-2 px-4 py-2 text-left">Adhérent</th>
-                                <th class="border-2 px-4 py-2 text-left">Montant</th>
-                                <th class="border-2 px-4 py-2 text-left">Méthode</th>
-                                <th class="border-2 px-4 py-2 text-left">Référence</th>
-                                <th class="border-2 px-4 py-2 text-left">Notes</th>
-                                <th class="border-2 px-4 py-2 text-left">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $idx = 0;
-                            foreach ($contributions as $contribution): ?>
-                                <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
-                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($contribution['first_name']) ?> <?= htmlspecialchars($contribution['last_name']) ?></td>
-                                    <td class="border-2 px-4 py-2"><?= number_format($contribution['amount_cents'] / 100, 2) ?> €</td>
-                                    <td class="border-2 px-4 py-2">
-                                        <?php
-                                        $method_labels = [
-                                            'cash' => 'Espèces',
-                                            'card' => 'Carte bancaire',
-                                            'check' => 'Chèque',
-                                            'transfer' => 'Virement'
-                                        ];
-                                        echo $method_labels[$contribution['method']] ?? htmlspecialchars($contribution['method']);
-                                        ?>
-                                    </td>
-                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($contribution['reference'] ?? '') ?></td>
-                                    <td class="border-2 px-4 py-2"><?= htmlspecialchars($contribution['notes'] ?? '') ?></td>
-                                    <td class="border-2 px-4 py-2"><?= date('d/m/Y H:i', strtotime($contribution['paid_at'])) ?></td>
+                <?php if (count($contributions) > 0): ?>
+                    <div class="scroll-container">
+                        <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="border-2 px-4 py-2 text-left">Adhérent</th>
+                                    <th class="border-2 px-4 py-2 text-left">Montant</th>
+                                    <th class="border-2 px-4 py-2 text-left">Méthode</th>
+                                    <th class="border-2 px-4 py-2 text-left">Référence</th>
+                                    <th class="border-2 px-4 py-2 text-left">Notes</th>
+                                    <th class="border-2 px-4 py-2 text-left">Date</th>
                                 </tr>
-                            <?php
-                                $idx++;
-                            endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $idx = 0;
+                                foreach ($contributions as $contribution): ?>
+                                    <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                        <td class="border-2 px-4 py-2"><?= htmlspecialchars($contribution['first_name']) ?> <?= htmlspecialchars($contribution['last_name']) ?></td>
+                                        <td class="border-2 px-4 py-2"><?= number_format($contribution['amount_cents'] / 100, 2) ?> €</td>
+                                        <td class="border-2 px-4 py-2">
+                                            <?php
+                                            $method_labels = [
+                                                'cash' => 'Espèces',
+                                                'card' => 'Carte bancaire',
+                                                'check' => 'Chèque',
+                                                'transfer' => 'Virement'
+                                            ];
+                                            echo $method_labels[$contribution['method']] ?? htmlspecialchars($contribution['method']);
+                                            ?>
+                                        </td>
+                                        <td class="border-2 px-4 py-2"><?= htmlspecialchars($contribution['reference'] ?? '') ?></td>
+                                        <td class="border-2 px-4 py-2"><?= htmlspecialchars($contribution['notes'] ?? '') ?></td>
+                                        <td class="border-2 px-4 py-2"><?= date('d/m/Y H:i', strtotime($contribution['paid_at'])) ?></td>
+                                    </tr>
+                                <?php
+                                    $idx++;
+                                endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class="text-gray-500 italic">Aucune cotisation trouvée</p>
+                <?php endif; ?>
 
 
                 <div class="flex justify-center gap-4 items-center mt-4">

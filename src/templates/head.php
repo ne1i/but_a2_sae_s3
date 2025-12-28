@@ -5,4 +5,5 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Association FAGE</title>
     <link href="/style.css" rel="stylesheet">
+    <script src="/core.js"></script>
 </head>

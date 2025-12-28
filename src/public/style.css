@@ -27,7 +27,6 @@
     --color-yellow-400: oklch(85.2% 0.199 91.936);
     --color-yellow-500: oklch(79.5% 0.184 86.047);
     --color-yellow-600: oklch(68.1% 0.162 75.834);
-    --color-yellow-800: oklch(47.6% 0.114 61.907);
     --color-lime-400: oklch(84.1% 0.238 128.85);
     --color-lime-800: oklch(45.3% 0.124 130.933);
     --color-green-100: oklch(96.2% 0.044 156.743);
@@ -468,8 +467,14 @@
   .hidden {
     display: none;
   }
+  .inline {
+    display: inline;
+  }
   .inline-block {
     display: inline-block;
+  }
+  .inline-flex {
+    display: inline-flex;
   }
   .table {
     display: table;
@@ -836,6 +841,9 @@
   .border-red-300 {
     border-color: var(--color-red-300);
   }
+  .border-red-500 {
+    border-color: var(--color-red-500);
+  }
   .border-red-600 {
     border-color: var(--color-red-600);
   }
@@ -863,6 +871,9 @@
   .bg-blue-600 {
     background-color: var(--color-blue-600);
   }
+  .bg-blue-700 {
+    background-color: var(--color-blue-700);
+  }
   .bg-fage-50 {
     background-color: var(--color-fage-50);
   }
@@ -884,6 +895,9 @@
   .bg-fage-700 {
     background-color: var(--color-fage-700);
   }
+  .bg-fage-800 {
+    background-color: var(--color-fage-800);
+  }
   .bg-gray-50 {
     background-color: var(--color-gray-50);
   }
@@ -899,6 +913,9 @@
   .bg-gray-500 {
     background-color: var(--color-gray-500);
   }
+  .bg-gray-700 {
+    background-color: var(--color-gray-700);
+  }
   .bg-green-100 {
     background-color: var(--color-green-100);
   }
@@ -908,6 +925,9 @@
   .bg-green-600 {
     background-color: var(--color-green-600);
   }
+  .bg-green-700 {
+    background-color: var(--color-green-700);
+  }
   .bg-purple-100 {
     background-color: var(--color-purple-100);
   }
@@ -916,6 +936,9 @@
   }
   .bg-red-600 {
     background-color: var(--color-red-600);
+  }
+  .bg-red-700 {
+    background-color: var(--color-red-700);
   }
   .bg-red-800 {
     background-color: var(--color-red-800);
@@ -934,6 +957,9 @@
   }
   .bg-yellow-500 {
     background-color: var(--color-yellow-500);
+  }
+  .bg-yellow-600 {
+    background-color: var(--color-yellow-600);
   }
   .bg-linear-to-r {
     --tw-gradient-position: to right;
@@ -1139,9 +1165,6 @@
   .px-6 {
     padding-inline: calc(var(--spacing) * 6);
   }
-  .px-14 {
-    padding-inline: calc(var(--spacing) * 14);
-  }
   .py-0 {
     padding-block: calc(var(--spacing) * 0);
   }
@@ -1177,9 +1200,6 @@
   }
   .pt-\[56\.25\%\] {
     padding-top: 56.25%;
-  }
-  .pr-2 {
-    padding-right: calc(var(--spacing) * 2);
   }
   .pr-8 {
     padding-right: calc(var(--spacing) * 8);
@@ -1289,9 +1309,6 @@
   .text-blue-600 {
     color: var(--color-blue-600);
   }
-  .text-blue-800 {
-    color: var(--color-blue-800);
-  }
   .text-fage-300 {
     color: var(--color-fage-300);
   }
@@ -1322,9 +1339,6 @@
   .text-gray-700 {
     color: var(--color-gray-700);
   }
-  .text-gray-800 {
-    color: var(--color-gray-800);
-  }
   .text-gray-900 {
     color: var(--color-gray-900);
   }
@@ -1336,9 +1350,6 @@
   }
   .text-green-700 {
     color: var(--color-green-700);
-  }
-  .text-green-800 {
-    color: var(--color-green-800);
   }
   .text-purple-600 {
     color: var(--color-purple-600);
@@ -1360,9 +1371,6 @@
   }
   .text-yellow-600 {
     color: var(--color-yellow-600);
-  }
-  .text-yellow-800 {
-    color: var(--color-yellow-800);
   }
   .italic {
     font-style: italic;
@@ -1693,6 +1701,13 @@
       }
     }
   }
+  .hover\:text-green-800 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-green-800);
+      }
+    }
+  }
   .hover\:text-red-700 {
     &:hover {
       @media (hover: hover) {
@@ -1755,6 +1770,11 @@
   .focus\:ring-fage-300 {
     &:focus {
       --tw-ring-color: var(--color-fage-300);
+    }
+  }
+  .focus\:ring-red-300 {
+    &:focus {
+      --tw-ring-color: var(--color-red-300);
     }
   }
   .focus\:outline-none {
@@ -2047,6 +2067,14 @@ html, body {
 }
 .scroll-container::-webkit-scrollbar-thumb:hover {
   background-color: rgb(113 113 122);
+}
+.container-padding {
+  padding-inline: 2rem;
+}
+@media (width < 768px) {
+  .container-padding {
+    padding-inline: 1rem;
+  }
 }
 @property --tw-translate-x {
   syntax: "*";

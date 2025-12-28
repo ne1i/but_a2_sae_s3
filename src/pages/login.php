@@ -29,8 +29,8 @@ if (isset($username) && isset($password)) {
 require_once __DIR__ .  "/../templates/head.php";
 ?>
 
-<body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen flex items-center justify-center">
-    <div class="px-4">
+<body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen flex justify-center">
+    <div class="px-4 mt-8">
 
         <div class="bg-white p-10 shadow-lg rounded-2xl">
             <a href="/" class="flex gap-4 items-center text-fage-700 hover:text-fage-800 ">

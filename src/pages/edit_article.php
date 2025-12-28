@@ -1,13 +1,20 @@
 <?php
 
 use ButA2SaeS3\FageDB;
+use ButA2SaeS3\repositories\ArticleMediaRepository;
+use ButA2SaeS3\repositories\ArticleRepository;
+use ButA2SaeS3\repositories\DocumentRepository;
+use ButA2SaeS3\services\ArticleValidationService;
+use ButA2SaeS3\services\FormService;
 use ButA2SaeS3\utils\HttpUtils;
 use ButA2SaeS3\Components as c;
 
 $db = new FageDB();
+$articleRepository = new ArticleRepository($db->getConnection());
+$documentRepository = new DocumentRepository($db->getConnection());
+$articleMediaRepository = new ArticleMediaRepository($db->getConnection());
 
 HttpUtils::ensure_valid_session($db);
-require_once __DIR__ . "/../templates/admin_head.php";
 
 $article_id = $_GET['id'] ?? null;
 
@@ -16,33 +23,48 @@ if (!$article_id) {
     exit;
 }
 
-$article = $db->get_article_by_id($article_id);
+$article = $articleRepository->findById((int)$article_id);
 
 if (!$article) {
     header('Location: /articles');
     exit;
 }
 
+$action = $_POST['action'] ?? null;
 
-if (HttpUtils::isPost()) {
-    if (isset($_POST['action'])) {
-        if ($_POST['action'] === 'update_article' && isset($_POST['title']) && isset($_POST['content'])) {
-            $status = isset($_POST['status']) ? $_POST['status'] : null;
+if (HttpUtils::isPost() && $action === 'remove_media' && isset($_POST['document_id'])) {
+    $docId = (int)$_POST['document_id'];
+    if ($articleMediaRepository->detach((int)$article_id, $docId)) {
+        FormService::setSuccessMessage("Le média a bien été retiré de l'article", "article_media_remove");
+    } else {
+        FormService::setErrorMessage("Erreur lors du retrait du média", "article_media_remove");
+    }
+    header("Location: /edit_article?id=" . urlencode((string)$article_id) . "&success=1&success_form=article_media_remove");
+    exit;
+}
 
-            if ($db->update_article(
-                $article_id,
-                $_POST['title'],
-                $_POST['content'],
-                $status
-            )) {
-                $success = "L'article \"{$_POST['title']}\" a bien été mis à jour";
+if (HttpUtils::isPost() && $action === 'update_article') {
+    FormService::handleFormSubmission(
+        function (array $data) use ($article_id) {
+            return ArticleValidationService::validateUpdateArticle($data, (int)$article_id);
+        },
+        function ($dto) use ($articleRepository) {
+            $articleRepository->update($dto);
+        },
+        "L'article a bien été mis à jour",
+        "/edit_article?id=" . urlencode((string)$article_id),
+        "article_update"
+    );
+}
 
-
-                $article = $db->get_article_by_id($article_id);
-            } else {
-                $error = "Une erreur est survenue lors de la mise à jour de l'article";
+if (HttpUtils::isPost() && $action === 'upload_media') {
+    FormService::handleFormSubmission(
+        [\ButA2SaeS3\services\DocumentValidationService::class, 'validateUpload'],
+        function ($dto) use ($db, $documentRepository, $articleMediaRepository, $article_id) {
+            if (!isset($_FILES['media_file'])) {
+                throw new \Exception("Fichier manquant");
             }
-        } elseif ($_POST['action'] === 'upload_media' && isset($_FILES['media_file'])) {
+
             $upload_dir = __DIR__ . "/../public/assets/uploads/";
             if (!is_dir($upload_dir)) {
                 mkdir($upload_dir, 0755, true);
@@ -52,44 +74,60 @@ if (HttpUtils::isPost()) {
             $filename = time() . '_' . basename($file['name']);
             $target_path = $upload_dir . $filename;
 
-            if (move_uploaded_file($file['tmp_name'], $target_path)) {
-                $user_id = HttpUtils::get_current_user_id($db);
-
-                if ($db->upload_document(
-                    $filename,
-                    $file['name'],
-                    $file['type'],
-                    $file['size'],
-                    $user_id,
-                    $target_path,
-                    $_POST['description'] ?? null
-                )) {
-                    $document_id = $db->get_last_insert_id();
-
-                    if ($db->attach_media_to_article($article_id, $document_id)) {
-                        $success = "Le média a bien été ajouté à l'article";
-                    } else {
-                        $error = "Erreur lors de l'attachement du média à l'article";
-                    }
-                } else {
-                    $error = "Erreur lors de l'enregistrement du média";
-                }
-            } else {
-                $error = "Erreur lors du téléchargement du fichier";
+            if (!move_uploaded_file($file['tmp_name'], $target_path)) {
+                throw new \Exception("Erreur lors du téléchargement du fichier");
             }
-        } elseif ($_POST['action'] === 'remove_media' && isset($_POST['document_id'])) {
-            if ($db->detach_media_from_article($article_id, $_POST['document_id'])) {
-                $success = "Le média a bien été retiré de l'article";
-            } else {
-                $error = "Erreur lors du retrait du média";
+
+            $user_id = HttpUtils::get_current_user_id($db);
+            if (!$user_id) {
+                throw new \Exception("Utilisateur introuvable");
             }
-        }
-    }
+
+            $ok = $documentRepository->upload(
+                $filename,
+                $file['name'],
+                $file['type'],
+                (int)$file['size'],
+                $user_id,
+                $target_path,
+                $dto->description !== '' ? $dto->description : null
+            );
+
+            if (!$ok) {
+                throw new \Exception("Erreur lors de l'enregistrement du média");
+            }
+
+            $document_id = $documentRepository->lastInsertId();
+            if (!$articleMediaRepository->attach((int)$article_id, $document_id)) {
+                throw new \Exception("Erreur lors de l'attachement du média à l'article");
+            }
+        },
+        "Le média a bien été ajouté à l'article",
+        "/edit_article?id=" . urlencode((string)$article_id),
+        "article_media_upload"
+    );
 }
 
+$articleUpdateState = FormService::restoreFormData("article_update");
+$articleUpdateData = $articleUpdateState['data'] ?? [];
+$articleUpdateErrors = $articleUpdateState['errors'] ?? [];
+$articleUpdateSuccess = FormService::getSuccessMessage("article_update");
+$articleUpdateError = FormService::getErrorMessage("article_update");
 
-$article_media = $db->get_article_media($article_id);
+$mediaUploadState = FormService::restoreFormData("article_media_upload");
+$mediaUploadData = $mediaUploadState['data'] ?? [];
+$mediaUploadErrors = $mediaUploadState['errors'] ?? [];
+$mediaUploadSuccess = FormService::getSuccessMessage("article_media_upload");
+$mediaUploadError = FormService::getErrorMessage("article_media_upload");
+
+$mediaRemoveSuccess = FormService::getSuccessMessage("article_media_remove");
+$mediaRemoveError = FormService::getErrorMessage("article_media_remove");
+
+$article = $articleRepository->findById((int)$article_id);
+$article_media = $articleMediaRepository->listForArticle((int)$article_id);
 ?>
+
+<?php require_once __DIR__ . "/../templates/admin_head.php"; ?>
 
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
 
@@ -97,7 +135,7 @@ $article_media = $db->get_article_media($article_id);
 
 
 
-        <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
+        <div class="shadow-lg bg-white p-10 container-padding rounded-2xl">
             <div>
                 <div class="mb-4">
                     <?= c::BackToLink("Retour aux articles", "/articles"); ?>
@@ -107,30 +145,31 @@ $article_media = $db->get_article_media($article_id);
                 <form action="/edit_article?id=<?= $article_id ?>" method="post" class="space-y-4">
                     <input type="hidden" name="action" value="update_article">
 
-                    <?= c::FormInput("title", "Titre de l'article", "text", htmlspecialchars($article['title']), true) ?>
+                    <?= c::FormInput("title", "Titre de l'article", "text", $articleUpdateData['title'] ?? $article['title'], true, "", ["error" => $articleUpdateErrors['title'] ?? null]) ?>
 
                     <div>
-                        <?= c::Textarea("content", "Contenu de l'article", htmlspecialchars($article['content']), true, "", ["rows" => "12"]) ?>
+                        <?= c::Textarea("content", "Contenu de l'article", $articleUpdateData['content'] ?? $article['content'], true, "", ["rows" => "12", "error" => $articleUpdateErrors['content'] ?? null]) ?>
                     </div>
 
                     <div class="flex items-center gap-4">
                         <label class="flex items-center gap-2">
-                            <input type="radio" name="status" value="draft" <?= $article['status'] === 'draft' ? 'checked' : '' ?> class="text-fage-600">
+                            <input type="radio" name="status" value="draft" <?= ($articleUpdateData['status'] ?? $article['status']) === 'draft' ? 'checked' : '' ?> class="text-fage-600">
                             <span>Brouillon</span>
                         </label>
                         <label class="flex items-center gap-2">
-                            <input type="radio" name="status" value="published" <?= $article['status'] === 'published' ? 'checked' : '' ?> class="text-fage-600">
+                            <input type="radio" name="status" value="published" <?= ($articleUpdateData['status'] ?? $article['status']) === 'published' ? 'checked' : '' ?> class="text-fage-600">
                             <span>Publié</span>
                         </label>
                     </div>
-                    <?php
-                    if (isset($error)) {
-                        echo c::Message($error, 'error');
-                    }
-                    if (isset($success)) {
-                        echo c::Message($success, 'success');
-                    }
-                    ?>
+                    <?php if ($articleUpdateSuccess): ?>
+                        <?= c::Message($articleUpdateSuccess, 'success') ?>
+                    <?php endif; ?>
+                    <?php if ($articleUpdateError): ?>
+                        <?= c::Message($articleUpdateError, 'error') ?>
+                    <?php endif; ?>
+                    <?php if (!empty($articleUpdateErrors['_form'] ?? null)): ?>
+                        <?= c::Message($articleUpdateErrors['_form'], 'error') ?>
+                    <?php endif; ?>
                     <div class="flex mt-2 gap-4">
                         <?= c::Button("Enregistrer les modifications", "fage", "submit") ?>
                         <?= c::Button("Retour à la liste", "gray", "link", "", ["href" => "/articles"]) ?>
@@ -142,7 +181,7 @@ $article_media = $db->get_article_media($article_id);
         </div>
 
 
-        <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
+        <div class="shadow-lg bg-white p-10 container-padding rounded-2xl">
             <div>
                 <?= c::Heading2("Médias associés") ?>
 
@@ -159,7 +198,17 @@ $article_media = $db->get_article_media($article_id);
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md">
                         </div>
 
-                        <?= c::FormInput("description", "Description du média", "text", "", false) ?>
+                        <?= c::FormInput("description", "Description du média", "text", $mediaUploadData['description'] ?? "", false) ?>
+
+                        <?php if ($mediaUploadSuccess): ?>
+                            <?= c::Message($mediaUploadSuccess, 'success') ?>
+                        <?php endif; ?>
+                        <?php if ($mediaUploadError): ?>
+                            <?= c::Message($mediaUploadError, 'error') ?>
+                        <?php endif; ?>
+                        <?php if (!empty($mediaUploadErrors['_form'] ?? null)): ?>
+                            <?= c::Message($mediaUploadErrors['_form'], 'error') ?>
+                        <?php endif; ?>
 
                         <?= c::Button("Télécharger le média", "fage", "submit") ?>
                     </form>
@@ -192,7 +241,11 @@ $article_media = $db->get_article_media($article_id);
                                         <p class="text-gray-700 text-sm mb-2"><?= htmlspecialchars($media['description']) ?></p>
                                     <?php endif; ?>
 
-                                    <a href="/edit_article?id=<?= $article_id ?>&action=remove_media&document_id=<?= $media['id'] ?>" class="text-red-600 underline" onclick="return confirm('Retirer ce média ?')">Retirer</a>
+                                    <form method="post" action="/edit_article?id=<?= $article_id ?>" style="display: inline;" onsubmit="return confirm('Retirer ce média ?')">
+                                        <input type="hidden" name="action" value="remove_media">
+                                        <input type="hidden" name="document_id" value="<?= $media['id'] ?>">
+                                        <button type="submit" class="bg-transparent border-0 underline cursor-pointer p-0 font-inherit text-red-600 hover:text-red-800">Retirer</button>
+                                    </form>
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -200,6 +253,14 @@ $article_media = $db->get_article_media($article_id);
                 <?php else: ?>
                     <p class="text-gray-500 italic">Aucun média associé à cet article</p>
                 <?php endif; ?>
+                <div>
+                    <?php if ($mediaRemoveSuccess): ?>
+                        <?= c::Message($mediaRemoveSuccess, 'success') ?>
+                    <?php endif; ?>
+                    <?php if ($mediaRemoveError): ?>
+                        <?= c::Message($mediaRemoveError, 'error') ?>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
 

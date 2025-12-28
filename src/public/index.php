@@ -5,6 +5,10 @@
 # Summary: allows the autoloading of classes/functions using `use <Namespace\To\Load\Classname>`
 require __DIR__ . '/../../vendor/autoload.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 use Uri\Rfc3986\Uri;
 
 $uri = new Uri($_SERVER['REQUEST_URI']);

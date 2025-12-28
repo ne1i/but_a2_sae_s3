@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - /tmp/data:/data
+      - ./src/public:/app/src/public
+      - ./src:/app/src
+    environment:
+      - DB_PATH=/data/fage.db
+      - DEBUG=false

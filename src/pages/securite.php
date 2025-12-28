@@ -2,91 +2,113 @@
 
 use ButA2SaeS3\Constants;
 use ButA2SaeS3\FageDB;
+use ButA2SaeS3\repositories\UserRepository;
+use ButA2SaeS3\services\FormService;
+use ButA2SaeS3\services\UserValidationService;
 use ButA2SaeS3\utils\HttpUtils;
 use ButA2SaeS3\Components as c;
 
 $db = new FageDB();
+$userRepository = new UserRepository($db->getConnection());
 
 HttpUtils::ensure_valid_session($db);
 
-
-if (!$db->has_permission(HttpUtils::get_current_user_id($db), 'all')) {
+$currentUserId = HttpUtils::get_current_user_id($db);
+if (!$currentUserId || !$userRepository->hasPermission($currentUserId, 'all')) {
     header('Location: /admin');
     exit;
 }
-require_once __DIR__ . "/../templates/admin_head.php";
 
+$action = $_POST['action'] ?? null;
 
-if (HttpUtils::isPost()) {
-    if (isset($_POST['action'])) {
-        if ($_POST['action'] === 'update_user_roles' && isset($_POST['user_id']) && isset($_POST['roles'])) {
-            $user_id = $_POST['user_id'];
-            $role_ids = $_POST['roles'];
+if (HttpUtils::isPost() && $action === 'update_user_roles' && isset($_POST['user_id']) && isset($_POST['roles'])) {
+    $user_id = (int)$_POST['user_id'];
+    $role_ids = array_map('intval', $_POST['roles']);
 
-            if ($db->update_user_roles($user_id, $role_ids)) {
-                $role_update_success = "Rôles de l'utilisateur mis à jour avec succès";
-                $db->log_audit('user', $user_id, 'update_roles', HttpUtils::get_current_user_id($db), 'Roles updated: ' . implode(', ', $role_ids));
-            } else {
-                $role_update_error = "Erreur lors de la mise à jour des rôles";
-            }
-        } elseif ($_POST['action'] === 'delete_user' && isset($_POST['delete_user_id'])) {
-            $user_id = $_POST['delete_user_id'];
+    if ($userRepository->updateUserRoles($user_id, $role_ids)) {
+        FormService::setSuccessMessage("Rôles de l'utilisateur mis à jour avec succès", "user_roles_update");
+        $userRepository->logAudit('user', $user_id, 'update_roles', $currentUserId, 'Roles updated: ' . implode(', ', $role_ids));
+        header('Location: /securite?success=1&success_form=user_roles_update#users');
+    } else {
+        FormService::setErrorMessage("Erreur lors de la mise à jour des rôles", "user_roles_update");
+        header('Location: /securite#users');
+    }
+    exit;
+}
 
-            if ($user_id == HttpUtils::get_current_user_id($db)) {
-                $delete_user_error = "Vous ne pouvez pas supprimer votre propre compte";
-            } else {
-                $user = $db->get_user_by_id($user_id);
-                if ($user && $db->delete_user($user_id)) {
-                    $delete_user_success = "L'utilisateur \"{$user['username']}\" a bien été supprimé";
-                    $db->log_audit('user', $user_id, 'delete', HttpUtils::get_current_user_id($db), "User deleted: {$user['username']}");
-                } else {
-                    $delete_user_error = "Erreur lors de la suppression de l'utilisateur";
-                }
-            }
+if (HttpUtils::isPost() && $action === 'delete_user' && isset($_POST['delete_user_id'])) {
+    $user_id = (int)$_POST['delete_user_id'];
+
+    if ($user_id == $currentUserId) {
+        FormService::setErrorMessage("Vous ne pouvez pas supprimer votre propre compte", "user_delete");
+        header('Location: /securite#users');
+    } else {
+        $user = $userRepository->getUserById($user_id);
+        if ($user && $userRepository->deleteUser($user_id)) {
+            FormService::setSuccessMessage("L'utilisateur \"{$user['username']}\" a bien été supprimé", "user_delete");
+            $userRepository->logAudit('user', $user_id, 'delete', $currentUserId, "User deleted: {$user['username']}");
+            header('Location: /securite?success=1&success_form=user_delete#users');
+        } else {
+            FormService::setErrorMessage("Erreur lors de la suppression de l'utilisateur", "user_delete");
+            header('Location: /securite#users');
         }
     }
+    exit;
 }
 
-
-$username = $_POST["username"] ?? null;
-$password = $_POST["password"] ?? null;
-$password_confirm = $_POST["password-confirm"] ?? null;
-$role = $_POST["role"] ?? null;
-$poles_array = $_POST["poles"] ?? [];
-
-if (isset($username) && isset($password) && isset($role)) {
-    if ($username === "" || $password === "" || $password_confirm === "" || $role === "" || ($role === "responsable-pole" && $poles_array === [])) {
-        $create_user_error = "Identifiants incorrects (champ(s) vide(s))";
-    } elseif ($db->exists($username, "users", "username")) {
-        $create_user_error = "Un compte avec cet identifiant existe déjà";
-    } elseif ($password !== $password_confirm) {
-        $create_user_error = "Les mots de passe ne correspondent pas";
-    } else {
-        $db->add_user($username, $password, $role, $poles_array);
-        $create_user_success = "Le compte {$username} a été créé avec succès";
-    }
+if ($action === null || $action === 'create_user') {
+    FormService::handleFormSubmission(
+        [UserValidationService::class, 'validateCreateUser'],
+        function ($dto) use ($userRepository, $currentUserId) {
+            if ($userRepository->existsUsername($dto->username)) {
+                throw new \Exception("Un compte avec cet identifiant existe déjà");
+            }
+            $userRepository->addUser($dto->username, $dto->password, $dto->role, $dto->poles);
+            $newUserId = $userRepository->getUserIdByUsername($dto->username);
+            if ($newUserId !== null) {
+                $userRepository->logAudit('user', $newUserId, 'create', $currentUserId, "User created: {$dto->username}");
+            }
+        },
+        "Le compte a été créé avec succès",
+        "/securite#create-user",
+        "user_create"
+    );
 }
 
+$createState = FormService::restoreFormData("user_create");
+$formData = $createState['data'] ?? [];
+$formErrors = $createState['errors'] ?? [];
+$createSuccessMessage = FormService::getSuccessMessage("user_create");
+$createErrorMessage = FormService::getErrorMessage("user_create");
 
-$users = $db->get_users();
-$audit_logs = $db->get_audit_logs(50, 1);
-$roles = $db->get_all_roles();
+$rolesUpdateSuccessMessage = FormService::getSuccessMessage("user_roles_update");
+$rolesUpdateErrorMessage = FormService::getErrorMessage("user_roles_update");
+
+$deleteUserSuccessMessage = FormService::getSuccessMessage("user_delete");
+$deleteUserErrorMessage = FormService::getErrorMessage("user_delete");
+
+$users = $userRepository->getUsers();
+$audit_logs = $userRepository->getAuditLogs(50, 1);
+$roles = $userRepository->getAllRoles();
 ?>
+
+<?php require_once __DIR__ . "/../templates/admin_head.php"; ?>
 
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
 
     <main class="p-2 space-y-8">
 
-        <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
+        <div class="shadow-lg bg-white p-10 container-padding rounded-2xl">
             <div class="mb-4">
                 <?= c::BackToLink(); ?>
             </div>
-            <?= c::Heading2("Créer un nouvel utilisateur") ?>
+            <?= c::Heading2("Créer un nouvel utilisateur", id: "create-user") ?>
             <div>
                 <form action="/securite" method="post" class="flex flex-col">
-                    <?= c::FormInput("username", "Nom d'utilisateur", "text", "", true, "mb-4") ?>
-                    <?= c::FormInput("password", "Mot de passe", "password", "", true, "mb-4") ?>
-                    <?= c::FormInput("password-confirm", "Confirmer le mot de passe", "password", "", true, "mb-4") ?>
+                    <input type="hidden" name="action" value="create_user">
+                    <?= c::FormInput("username", "Nom d'utilisateur", "text", $formData['username'] ?? "", true, "mb-4", ["error" => $formErrors['username'] ?? null]) ?>
+                    <?= c::FormInput("password", "Mot de passe", "password", "", true, "mb-4", ["error" => $formErrors['password'] ?? null]) ?>
+                    <?= c::FormInput("password-confirm", "Confirmer le mot de passe", "password", "", true, "mb-4", ["error" => $formErrors['password-confirm'] ?? null]) ?>
 
                     <label for="role" class="text-lg">Rôle de l'utilisateur (droits)</label>
                     <?php
@@ -94,32 +116,32 @@ $roles = $db->get_all_roles();
                         'admin' => 'Administrateur (tout les droits)',
                         'responsable-pole' => 'Responsable de pôle'
                     ];
-                    echo c::FormSelect("role", label: "", options: $role_options, selected: "", class: "mb-4", attributes: ["id" => "role"]);
+                    echo c::FormSelect("role", label: "", options: $role_options, selected: $formData['role'] ?? "", class: "mb-4", attributes: ["id" => "role", "error" => $formErrors['role'] ?? null]);
                     ?>
 
                     <div id="choix-poles" class="hidden flex-col justify-start gap-2">
                         <label>
-                            <input type="checkbox" name="poles[]" value="responsable-benevoles">
+                            <input type="checkbox" name="poles[]" value="responsable-benevoles" <?= in_array('responsable-benevoles', $formData['poles'] ?? []) ? 'checked' : '' ?>>
                             Pôle Bénévoles
                         </label>
 
                         <label>
-                            <input type="checkbox" name="poles[]" value="responsable-communication">
+                            <input type="checkbox" name="poles[]" value="responsable-communication" <?= in_array('responsable-communication', $formData['poles'] ?? []) ? 'checked' : '' ?>>
                             Pôle Communication
                         </label>
 
                         <label>
-                            <input type="checkbox" name="poles[]" value="responsable-partenariats">
+                            <input type="checkbox" name="poles[]" value="responsable-partenariats" <?= in_array('responsable-partenariats', $formData['poles'] ?? []) ? 'checked' : '' ?>>
                             Pôle Partenariats
                         </label>
 
                         <label>
-                            <input type="checkbox" name="poles[]" value="responsable-tresorerie">
+                            <input type="checkbox" name="poles[]" value="responsable-tresorerie" <?= in_array('responsable-tresorerie', $formData['poles'] ?? []) ? 'checked' : '' ?>>
                             Pôle Trésorerie
                         </label>
 
                         <label>
-                            <input type="checkbox" name="poles[]" value="responsable-direction">
+                            <input type="checkbox" name="poles[]" value="responsable-direction" <?= in_array('responsable-direction', $formData['poles'] ?? []) ? 'checked' : '' ?>>
                             Pôle Direction
                         </label>
                     </div>
@@ -137,14 +159,17 @@ $roles = $db->get_all_roles();
                     </script>
 
 
-                    <?php
-                    if (isset($create_user_error)) {
-                        echo c::Message($create_user_error, 'error');
-                    }
-                    if (isset($create_user_success)) {
-                        echo c::Message($create_user_success, 'success');
-                    }
-                    ?>
+                    <div>
+                        <?php if ($createSuccessMessage): ?>
+                            <?= c::Message($createSuccessMessage, 'success') ?>
+                        <?php endif; ?>
+                        <?php if ($createErrorMessage): ?>
+                            <?= c::Message($createErrorMessage, 'error') ?>
+                        <?php endif; ?>
+                        <?php if (!empty($formErrors['_form'] ?? null)): ?>
+                            <?= c::Message($formErrors['_form'], 'error') ?>
+                        <?php endif; ?>
+                    </div>
 
                     <?= c::Button("Créer le compte", "fage", "submit", "my-4") ?>
 
@@ -154,16 +179,6 @@ $roles = $db->get_all_roles();
                         <?= c::Button("Autofill (debug)", "fage", "button", "", ["id" => "autofill"]) ?>
 
                         <script>
-                            function makeid(length) {
-                                var result = '';
-                                var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                                var charactersLength = characters.length;
-                                for (var i = 0; i < length; i++) {
-                                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                                }
-                                return result;
-                            }
-
                             autofill.addEventListener("click", () => {
                                 document.querySelector("[name='username']").value = makeid(6);
                                 const pwd = makeid(6)
@@ -180,141 +195,139 @@ $roles = $db->get_all_roles();
         </div>
 
 
-        <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
+        <div class="shadow-lg bg-white p-10 container-padding rounded-2xl">
             <div>
-                <?= c::Heading2("Gestion des Utilisateurs") ?>
-
-
-                <?php
-                if (isset($role_update_error)) {
-                    echo c::Message($role_update_error, 'error');
-                }
-                if (isset($role_update_success)) {
-                    echo c::Message($role_update_success, 'success');
-                }
-                ?>
-
-
-                <?php
-                if (isset($delete_user_error)) {
-                    echo c::Message($delete_user_error, 'error');
-                }
-                if (isset($delete_user_success)) {
-                    echo c::Message($delete_user_success, 'success');
-                }
-                ?>
-
-                <div class="scroll-container">
-                    <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="border-2 px-4 py-2 text-left">Nom d'utilisateur</th>
-                                <th class="border-2 px-4 py-2 text-left">Adhérent associé</th>
-                                <th class="border-2 px-4 py-2 text-left">Rôles actuels</th>
-                                <th class="border-2 px-4 py-2 text-left">Date de création</th>
-                                <th class="border-2 px-4 py-2 text-left">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $idx = 0;
-                            foreach ($users as $user): ?>
-                                <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
-                                    <td class="border-2 px-4 py-2 font-medium"><?= htmlspecialchars($user['username']) ?></td>
-                                    <td class="border-2 px-4 py-2">
-                                        <?php
-                                        if ($user['first_name'] && $user['last_name']) {
-                                            echo htmlspecialchars($user['first_name']) . ' ' . htmlspecialchars($user['last_name']);
-                                        } else {
-                                            echo '<span class="text-gray-500">Non associé</span>';
-                                        }
-                                        ?>
-                                    </td>
-                                    <td class="border-2 px-4 py-2">
-                                        <div class="flex flex-wrap gap-1">
-                                            <?php
-                                            $user_roles = $user['roles'] ? explode(',', $user['roles']) : [];
-                                            foreach ($user_roles as $role): ?>
-                                                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">
-                                                    <?= htmlspecialchars(trim($role)) ?>
-                                                </span>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    </td>
-                                    <td class="border-2 px-4 py-2">
-                                        <?= date('d/m/Y H:i', strtotime($user['created_at'])) ?>
-                                    </td>
-                                    <td class="border-2 px-4 py-2 space-x-2">
-                                        <a href="#" class="text-blue-600 underline" onclick="showRoleModal(
-                                        <?php echo $user['id']; ?>, 
-                                        '<?php echo htmlspecialchars($user['username']); ?>', 
-                                        '<?php echo htmlspecialchars($user['roles'] ?? ''); ?>'); 
-                                        return false;">
-                                            Modifier rôles
-                                        </a>
-                                        <?php if ($user['id'] != HttpUtils::get_current_user_id($db)): ?>
-                                            <form method="post" style="display: inline;" onsubmit="return confirm('Supprimer cet utilisateur ?')">
-                                                <input type="hidden" name="action" value="delete_user">
-                                                <input type="hidden" name="delete_user_id" value="<?= $user['id'] ?>">
-                                                <button type="submit" class="bg-transparent hover:bg-transparent text-red-600 hover:text-red-700 underline px-0 py-0 border-0 focus:outline-none">Supprimer</button>
-                                            </form>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                            <?php
-                                $idx++;
-                            endforeach; ?>
-                        </tbody>
-                    </table>
+                <?= c::Heading2("Gestion des Utilisateurs", id: "users") ?>
+                <div>
+                    <?php if ($rolesUpdateSuccessMessage): ?>
+                        <?= c::Message($rolesUpdateSuccessMessage, 'success') ?>
+                    <?php endif; ?>
+                    <?php if ($rolesUpdateErrorMessage): ?>
+                        <?= c::Message($rolesUpdateErrorMessage, 'error') ?>
+                    <?php endif; ?>
+                    <?php if ($deleteUserSuccessMessage): ?>
+                        <?= c::Message($deleteUserSuccessMessage, 'success') ?>
+                    <?php endif; ?>
+                    <?php if ($deleteUserErrorMessage): ?>
+                        <?= c::Message($deleteUserErrorMessage, 'error') ?>
+                    <?php endif; ?>
                 </div>
+
+                <?php if (!empty($users)): ?>
+                    <div class="scroll-container">
+                        <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="border-2 px-4 py-2 text-left">Nom d'utilisateur</th>
+                                    <th class="border-2 px-4 py-2 text-left">Adhérent associé</th>
+                                    <th class="border-2 px-4 py-2 text-left">Rôles actuels</th>
+                                    <th class="border-2 px-4 py-2 text-left">Date de création</th>
+                                    <th class="border-2 px-4 py-2 text-left">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $idx = 0;
+                                foreach ($users as $user): ?>
+                                    <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                        <td class="border-2 px-4 py-2 font-medium"><?= htmlspecialchars($user['username']) ?></td>
+                                        <td class="border-2 px-4 py-2">
+                                            <?php
+                                            if ($user['first_name'] && $user['last_name']) {
+                                                echo htmlspecialchars($user['first_name']) . ' ' . htmlspecialchars($user['last_name']);
+                                            } else {
+                                                echo '<span class="text-gray-500">Non associé</span>';
+                                            }
+                                            ?>
+                                        </td>
+                                        <td class="border-2 px-4 py-2">
+                                            <div class="flex flex-wrap gap-1">
+                                                <?php
+                                                $user_roles = $user['roles'] ? explode(',', $user['roles']) : [];
+                                                foreach ($user_roles as $role): ?>
+                                                    <?= c::Badge(trim($role), 'fage') ?>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </td>
+                                        <td class="border-2 px-4 py-2">
+                                            <?= date('d/m/Y H:i', strtotime($user['created_at'])) ?>
+                                        </td>
+                                        <td class="border-2 px-4 py-2 space-x-2">
+                                            <a href="#" class="text-blue-600 underline" onclick="showRoleModal(
+                                            <?php echo $user['id']; ?>, 
+                                            '<?php echo htmlspecialchars($user['username']); ?>', 
+                                            '<?php echo htmlspecialchars($user['roles'] ?? ''); ?>'); 
+                                            return false;">
+                                                Modifier rôles
+                                            </a>
+                                            <?php if ($user['id'] != HttpUtils::get_current_user_id($db)): ?>
+                                                <form method="post" style="display: inline;" onsubmit="return confirm('Supprimer cet utilisateur ?')">
+                                                    <input type="hidden" name="action" value="delete_user">
+                                                    <input type="hidden" name="delete_user_id" value="<?= $user['id'] ?>">
+                                                    <button type="submit" class="bg-transparent hover:bg-transparent text-red-600 hover:text-red-700 underline px-0 py-0 border-0 focus:outline-none">Supprimer</button>
+                                                </form>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php
+                                    $idx++;
+                                endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class="text-gray-500 italic">Aucun utilisateur trouvé</p>
+                <?php endif; ?>
             </div>
         </div>
 
 
-        <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
+        <div class="shadow-lg bg-white p-10 container-padding rounded-2xl">
             <div>
                 <?= c::Heading2("Journal d'Audit") ?>
 
-                <div class="scroll-container">
-                    <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="border-2 px-4 py-2 text-left">Date</th>
-                                <th class="border-2 px-4 py-2 text-left">Utilisateur</th>
-                                <th class="border-2 px-4 py-2 text-left">Entité</th>
-                                <th class="border-2 px-4 py-2 text-left">Action</th>
-                                <th class="border-2 px-4 py-2 text-left">Détails</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $idx = 0;
-                            foreach ($audit_logs as $log): ?>
-                                <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
-                                    <td class="border-2 px-4 py-2">
-                                        <?= date('d/m/Y H:i:s', strtotime($log['created_at'])) ?>
-                                    </td>
-                                    <td class="border-2 px-4 py-2">
-                                        <?= htmlspecialchars($log['username'] ?? 'Système') ?>
-                                    </td>
-                                    <td class="border-2 px-4 py-2">
-                                        <?= htmlspecialchars($log['entity']) ?>
-                                    </td>
-                                    <td class="border-2 px-4 py-2">
-                                        <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm">
-                                            <?= htmlspecialchars($log['action']) ?>
-                                        </span>
-                                    </td>
-                                    <td class="border-2 px-4 py-2">
-                                        <?= htmlspecialchars($log['details'] ?? '') ?>
-                                    </td>
+                <?php if (!empty($audit_logs)): ?>
+                    <div class="scroll-container">
+                        <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="border-2 px-4 py-2 text-left">Date</th>
+                                    <th class="border-2 px-4 py-2 text-left">Utilisateur</th>
+                                    <th class="border-2 px-4 py-2 text-left">Entité</th>
+                                    <th class="border-2 px-4 py-2 text-left">Action</th>
+                                    <th class="border-2 px-4 py-2 text-left">Détails</th>
                                 </tr>
-                            <?php
-                                $idx++;
-                            endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $idx = 0;
+                                foreach ($audit_logs as $log): ?>
+                                    <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                        <td class="border-2 px-4 py-2">
+                                            <?= date('d/m/Y H:i:s', strtotime($log['created_at'])) ?>
+                                        </td>
+                                        <td class="border-2 px-4 py-2">
+                                            <?= htmlspecialchars($log['username'] ?? 'Système') ?>
+                                        </td>
+                                        <td class="border-2 px-4 py-2">
+                                            <?= htmlspecialchars($log['entity']) ?>
+                                        </td>
+                                        <td class="border-2 px-4 py-2">
+                                            <?= c::Badge($log['action'], 'muted', 'text-sm') ?>
+                                        </td>
+                                        <td class="border-2 px-4 py-2">
+                                            <?= htmlspecialchars($log['details'] ?? '') ?>
+                                        </td>
+                                    </tr>
+                                <?php
+                                    $idx++;
+                                endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class="text-gray-500 italic">Aucun événement d'audit</p>
+                <?php endif; ?>
             </div>
         </div>
 

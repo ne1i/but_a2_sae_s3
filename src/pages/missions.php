@@ -1,104 +1,104 @@
 <?php
 
 use ButA2SaeS3\Constants;
-use ButA2SaeS3\dto\AddMissionDto;
 use ButA2SaeS3\FageDB;
+use ButA2SaeS3\repositories\MissionRepository;
+use ButA2SaeS3\services\FormService;
+use ButA2SaeS3\services\MissionValidationService;
 use ButA2SaeS3\utils\HttpUtils;
-use ButA2SaeS3\validation\Validators;
 use ButA2SaeS3\Components as c;
 
 $db = new FageDB();
+$missionRepository = new MissionRepository($db->getConnection());
 
 HttpUtils::ensure_valid_session($db);
-require_once __DIR__ . "/../templates/admin_head.php";
 
-if (HttpUtils::isPost()) {
-    $result = Validators::validate_add_mission($_POST);
 
-    if ($result->isValid()) {
-        /** @var AddMissionDto $new_mission */
-        $new_mission = $result->value();
-        $user_id = HttpUtils::get_current_user_id($db);
+if (HttpUtils::isPost() && isset($_POST['delete_id'])) {
+    $delete_id = (int)$_POST['delete_id'];
+    $mission = $missionRepository->findById($delete_id);
 
-        if ($db->add_mission(
-            $new_mission->title,
-            $new_mission->description,
-            $new_mission->location,
-            $new_mission->start_at,
-            $new_mission->end_at,
-            $new_mission->capacity,
-            $new_mission->budget_cents,
-            $user_id
-        )) {
-            $success = "La mission \"{$new_mission->title}\" a bien été ajoutée";
-        } else {
-            $error = "Une erreur est survenue lors de l'ajout";
-        }
+    if ($mission && $missionRepository->delete($delete_id)) {
+        FormService::setSuccessMessage("La mission \"{$mission['title']}\" a bien été supprimée", "mission_delete");
+        header("Location: /missions?success=1&success_form=mission_delete#missions-table");
+    } else {
+        FormService::setErrorMessage($mission ? "Une erreur est survenue lors de la suppression" : "Mission introuvable", "mission_delete");
+        header("Location: /missions#missions-table");
     }
-} elseif (HttpUtils::isGet()) {
-    if (isset($_GET['delete_id'])) {
-        $delete_id = $_GET['delete_id'];
-        $mission = $db->get_mission_by_id($delete_id);
-
-        if ($mission) {
-            if ($db->delete_mission($delete_id)) {
-                $delete_success = "La mission \"{$mission['title']}\" a bien été supprimée";
-            } else {
-                $delete_error = "Une erreur est survenue lors de la suppression";
-            }
-        } else {
-            $delete_error = "Mission introuvable";
-        }
-    }
+    exit();
 }
+
+FormService::handleFormSubmission(
+    [MissionValidationService::class, 'validateAddMission'],
+    function ($dto) use ($missionRepository, $db) {
+        $user_id = HttpUtils::get_current_user_id($db);
+        $missionRepository->add($dto, $user_id);
+    },
+    "La mission a bien été ajoutée",
+    "/missions#mission-add-form",
+    "mission_add"
+);
+
+$addState = FormService::restoreFormData("mission_add");
+$formData = $addState['data'] ?? [];
+$formErrors = $addState['errors'] ?? [];
+$addSuccessMessage = FormService::getSuccessMessage("mission_add");
+$addErrorMessage = FormService::getErrorMessage("mission_add");
+
+$deleteSuccessMessage = FormService::getSuccessMessage("mission_delete");
+$deleteErrorMessage = FormService::getErrorMessage("mission_delete");
 ?>
+
+<?php require_once __DIR__ . "/../templates/admin_head.php"; ?>
 
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
 
     <main class="p-2 space-y-8">
-        <div class="shadow-lg bg-white p-10 px-14 rounded-2xl">
+        <div class="shadow-lg bg-white p-10 container-padding rounded-2xl">
             <div>
                 <div class="mb-4">
                     <?= c::BackToLink(); ?>
                 </div>
-                <?= c::Heading2("Ajouter une mission") ?>
-                <form action="/missions" method="post" class="flex flex-col bg-white">
-                    <?= c::FormInput("title", "Titre de la mission", "text", "", true, "mb-4") ?>
+                <?= c::Heading2("Ajouter une mission", id: "mission-add-form") ?>
+                <form id="missionAddForm" action="/missions" method="post" class="flex flex-col bg-white">
+                    <?= c::FormInput("title", "Titre de la mission", "text", $formData['title'] ?? "", true, "mb-4", ["error" => $formErrors['title'] ?? null]) ?>
 
                     <div class="mb-4">
-                        <?= c::Textarea("description", "Description", "", true, "", ["rows" => "4"]) ?>
+                        <?= c::Textarea("description", "Description", $formData['description'] ?? "", true, "", ["rows" => "4", "error" => $formErrors['description'] ?? null]) ?>
                     </div>
 
-                    <?= c::FormInput("location", "Lieu", "text", "", true, "mb-4") ?>
+                    <?= c::FormInput("location", "Lieu", "text", $formData['location'] ?? "", true, "mb-4", ["error" => $formErrors['location'] ?? null]) ?>
 
                     <div class="grid grid-cols-2 gap-4 mb-4">
-                        <?= c::FormDateTime("start_date", "Date de début", "date", "", true, "", []) ?>
-                        <?= c::FormDateTime("start_time", "Heure de début", "time", "", true, "", []) ?>
+                        <?= c::FormDateTime("start_date", "Date de début", "date", $formData['start_date'] ?? "", true, "", []) ?>
+                        <?= c::FormDateTime("start_time", "Heure de début", "time", $formData['start_time'] ?? "", true, "", []) ?>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 mb-4">
-                        <?= c::FormDateTime("end_date", "Date de fin", "date", "", true, "", []) ?>
-                        <?= c::FormDateTime("end_time", "Heure de fin", "time", "", true, "", []) ?>
+                        <?= c::FormDateTime("end_date", "Date de fin", "date", $formData['end_date'] ?? "", true, "", []) ?>
+                        <?= c::FormDateTime("end_time", "Heure de fin", "time", $formData['end_time'] ?? "", true, "", []) ?>
                     </div>
 
                     <div class="flex gap-4 mb-4">
                         <div class="w-1/2">
-                            <?= c::FormInput("capacity", "Capacité (participants)", "number", "", false, "", ["min" => "1"]) ?>
+                            <?= c::FormInput("capacity", "Capacité (participants)", "number", $formData['capacity'] ?? "", false, "", ["min" => "1", "error" => $formErrors['capacity'] ?? null]) ?>
                         </div>
                         <div class="w-1/2">
-                            <?= c::FormInput("budget_cents", "Budget (en euros)", "number", "", false, "", ["min" => "0", "step" => "0.01"]) ?>
+                            <?= c::FormInput("budget_cents", "Budget (en euros)", "number", $formData['budget_cents'] ?? "", false, "", ["min" => "0", "step" => "0.01", "error" => $formErrors['budget_cents'] ?? null]) ?>
                         </div>
                     </div>
 
-                    <?php
-                    if (isset($error)) {
-                        echo c::Message($error, 'error');
-                    }
-
-                    if (isset($success)) {
-                        echo c::Message($success, 'success');
-                    }
-                    ?>
+                    <div>
+                        <?php if ($addSuccessMessage): ?>
+                            <?= c::Message($addSuccessMessage, 'success') ?>
+                        <?php endif; ?>
+                        <?php if ($addErrorMessage): ?>
+                            <?= c::Message($addErrorMessage, 'error') ?>
+                        <?php endif; ?>
+                        <?php if (!empty($formErrors['_form'] ?? null)): ?>
+                            <?= c::Message($formErrors['_form'], 'error') ?>
+                        <?php endif; ?>
+                    </div>
 
                     <?= c::Button("Ajouter la mission", "fage", "submit", "my-4") ?>
 
@@ -108,32 +108,32 @@ if (HttpUtils::isPost()) {
                         <?= c::Button("Autofill (debug)", "fage", "button", "", ["id" => "autofill"]) ?>
 
                         <script>
-                            function makeid(length) {
-                                var result = '';
-                                var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                                var charactersLength = characters.length;
-                                for (var i = 0; i < length; i++) {
-                                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                                }
-                                return result;
-                            }
-
                             autofill.addEventListener("click", () => {
-                                document.querySelector("[name='title']").value = "Mission " + makeid(6);
-                                document.querySelector("[name='description']").value = "Description de la mission";
-                                document.querySelector("[name='location']").value = "Paris";
+                                const form = document.getElementById("missionAddForm");
+                                const title = form?.querySelector("[name='title']");
+                                if (title) title.value = randomMissionTitle();
+                                const description = form?.querySelector("[name='description']");
+                                if (description) description.value = randomMissionDescription();
+                                const location = form?.querySelector("[name='location']");
+                                if (location) location.value = randomCity();
 
                                 const today = new Date();
                                 const tomorrow = new Date(today);
                                 tomorrow.setDate(tomorrow.getDate() + 1);
 
-                                document.querySelector("[name='start_date']").value = today.toISOString().split('T')[0];
-                                document.querySelector("[name='start_time']").value = "09:00";
-                                document.querySelector("[name='end_date']").value = tomorrow.toISOString().split('T')[0];
-                                document.querySelector("[name='end_time']").value = "17:00";
+                                const startDate = form?.querySelector("[name='start_date']");
+                                if (startDate) startDate.value = today.toISOString().split('T')[0];
+                                const startTime = form?.querySelector("[name='start_time']");
+                                if (startTime) startTime.value = "09:00";
+                                const endDate = form?.querySelector("[name='end_date']");
+                                if (endDate) endDate.value = tomorrow.toISOString().split('T')[0];
+                                const endTime = form?.querySelector("[name='end_time']");
+                                if (endTime) endTime.value = "17:00";
 
-                                document.querySelector("[name='capacity']").value = "20";
-                                document.querySelector("[name='budget_cents']").value = "500.50";
+                                const capacity = form?.querySelector("[name='capacity']");
+                                if (capacity) capacity.value = String(between(1, 100));
+                                const budget = form?.querySelector("[name='budget_cents']");
+                                if (budget) budget.value = String(between(100, 10000));
                             });
                         </script>
                     <?php
@@ -143,17 +143,10 @@ if (HttpUtils::isPost()) {
             </div>
         </div>
 
-        <div class="shadow-lg bg-white p-10 px-14 rounded-2xl space-y-8">
+        <div class="shadow-lg bg-white p-10 container-padding rounded-2xl space-y-8">
             <div>
                 <?= c::Heading2("Missions", id: "missions-table") ?>
-                <?php
-                if (isset($delete_error)) {
-                    echo c::Message($delete_error, 'error');
-                }
-                if (isset($delete_success)) {
-                    echo c::Message($delete_success, 'success');
-                }
-                ?>
+
                 <div class="space-y-4">
                     <?php
                     $page = max($_GET["page"] ?? 1, 1);
@@ -162,7 +155,7 @@ if (HttpUtils::isPost()) {
                     $filter_title = $_GET["filter-title"] ?? "";
                     $filter_location = $_GET["filter-location"] ?? "";
 
-                    $total_count = $db->get_missions_count($filter_title, $filter_location);
+                    $total_count = $missionRepository->count($filter_title, $filter_location);
                     $page_count = ceil($total_count / $count);
                     ?>
 
@@ -198,56 +191,70 @@ if (HttpUtils::isPost()) {
                         </form>
                     </fieldset>
 
-
-
-                    <div class="scroll-container">
-                        <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
-                            <thead class="bg-gray-100">
-                                <tr>
-                                    <th class="border-2 px-4 py-2 text-left">Titre</th>
-                                    <th class="border-2 px-4 py-2 text-left">Lieu</th>
-                                    <th class="border-2 px-4 py-2 text-left">Date début</th>
-                                    <th class="border-2 px-4 py-2 text-left">Date fin</th>
-                                    <th class="border-2 px-4 py-2 text-left">Capacité</th>
-                                    <th class="border-2 px-4 py-2 text-left">Budget</th>
-                                    <th class="border-2 px-4 py-2 text-left">Créé par</th>
-                                    <th class="border-2 px-4 py-2 text-left">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $idx = 0;
-
-                                foreach ($db->get_missions($count, $page, $filter_title, $filter_location) as $mission) {
-                                    $start_date = date('d/m/Y H:i', $mission['start_at']);
-                                    $end_date = date('d/m/Y H:i', $mission['end_at']);
-                                    $budget = number_format($mission['budget_cents'] / 100, 2) . ' €';
-                                    $capacity = $mission['capacity'] ?? 'Illimitée';
-                                    $created_by = $mission['created_by_username'] ?? 'Inconnu';
-                                ?>
-                                    <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
-                                        <td class="border-2 px-4 py-2"><?= htmlspecialchars($mission['title']) ?></td>
-                                        <td class="border-2 px-4 py-2"><?= htmlspecialchars($mission['location']) ?></td>
-                                        <td class="border-2 px-4 py-2"><?= $start_date ?></td>
-                                        <td class="border-2 px-4 py-2"><?= $end_date ?></td>
-                                        <td class="border-2 px-4 py-2"><?= $capacity ?></td>
-                                        <td class="border-2 px-4 py-2"><?= $budget ?></td>
-                                        <td class="border-2 px-4 py-2"><?= $created_by ?></td>
-                                        <td class="border-2 px-4 py-2">
-                                            <a href="/edit_mission?id=<?= $mission['id'] ?>" class="text-blue-600 underline">Modifier</a>
-                                            <span class="ml-2">
-                                                <a href="/missions?delete_id=<?= $mission['id'] ?>" class="text-red-600 underline" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette mission ?')">Supprimer</a>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                <?php
-                                    $idx++;
-                                }
-                                ?>
-
-                            </tbody>
-                        </table>
+                    <div>
+                        <?php if ($deleteSuccessMessage): ?>
+                            <?= c::Message($deleteSuccessMessage, 'success') ?>
+                        <?php endif; ?>
+                        <?php if ($deleteErrorMessage): ?>
+                            <?= c::Message($deleteErrorMessage, 'error') ?>
+                        <?php endif; ?>
                     </div>
+
+                    <?php
+                    $missionsList = $missionRepository->findAll($count, $page, $filter_title, $filter_location);
+                    if (count($missionsList) > 0): ?>
+                        <div class="scroll-container">
+                            <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="border-2 px-4 py-2 text-left">Titre</th>
+                                        <th class="border-2 px-4 py-2 text-left">Lieu</th>
+                                        <th class="border-2 px-4 py-2 text-left">Date début</th>
+                                        <th class="border-2 px-4 py-2 text-left">Date fin</th>
+                                        <th class="border-2 px-4 py-2 text-left">Capacité</th>
+                                        <th class="border-2 px-4 py-2 text-left">Budget</th>
+                                        <th class="border-2 px-4 py-2 text-left">Créé par</th>
+                                        <th class="border-2 px-4 py-2 text-left">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $idx = 0;
+
+                                    foreach ($missionsList as $mission) {
+                                        $start_date = date('d/m/Y H:i', $mission['start_at']);
+                                        $end_date = date('d/m/Y H:i', $mission['end_at']);
+                                        $budget = number_format($mission['budget_cents'] / 100, 2) . ' €';
+                                        $capacity = $mission['capacity'] ?? 'Illimitée';
+                                        $created_by = $mission['created_by_username'] ?? 'Inconnu';
+                                    ?>
+                                        <tr class="<?= $idx % 2 == 0 ? 'bg-gray-200' : 'bg-gray-50' ?> hover:bg-gray-300">
+                                            <td class="border-2 px-4 py-2"><?= htmlspecialchars($mission['title']) ?></td>
+                                            <td class="border-2 px-4 py-2"><?= htmlspecialchars($mission['location']) ?></td>
+                                            <td class="border-2 px-4 py-2"><?= $start_date ?></td>
+                                            <td class="border-2 px-4 py-2"><?= $end_date ?></td>
+                                            <td class="border-2 px-4 py-2"><?= $capacity ?></td>
+                                            <td class="border-2 px-4 py-2"><?= $budget ?></td>
+                                            <td class="border-2 px-4 py-2"><?= $created_by ?></td>
+                                            <td class="border-2 px-4 py-2">
+                                                <a href="/edit_mission?id=<?= $mission['id'] ?>" class="text-blue-600 underline">Modifier</a>
+                                                <form method="POST" action="/missions#missions-table" style="display: inline;">
+                                                    <input type="hidden" name="delete_id" value="<?= $mission['id'] ?>">
+                                                    <button type="submit" class="bg-transparent border-0 underline cursor-pointer p-0 font-inherit text-red-600 hover:text-red-800" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette mission ?')">Supprimer</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                        $idx++;
+                                    }
+                                    ?>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php else: ?>
+                        <?= c::Message("Aucune mission trouvée", "warning") ?>
+                    <?php endif; ?>
                     <div class="flex justify-center gap-4 items-center">
                         <?php
                         $previous = $page > 1;

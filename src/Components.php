@@ -3,6 +3,7 @@
 namespace ButA2SaeS3;
 
 use ButA2SaeS3\dto\AdherentDto;
+use ButA2SaeS3\entities\Adherent;
 
 class Components
 {
@@ -135,20 +136,36 @@ class Components
 
     public static function FormInput($name, $label, $type = 'text', $value = '', $required = false, $class = '', $attributes = [])
     {
-        $required_attr = $required ? 'required' : '';
-        $attr_string = '';
+        $error = $attributes['error'] ?? null;
+        $containerClass = $attributes['container-class'] ?? '';
+        unset($attributes['container-class'], $attributes['error']);
+
+        $requiredAttr = $required ? 'required' : '';
+        $attrString = '';
         foreach ($attributes as $attr => $attr_value) {
             if ($attr !== 'value') {
-                $attr_string .= ' ' . $attr . '="' . htmlspecialchars($attr_value) . '"';
+                $attrString .= ' ' . $attr . '="' . htmlspecialchars($attr_value) . '"';
             }
         }
 
-        $classes = 'border-2 shadow-sm rounded-full pl-2 py-1 bg-[#fafafa] focus:outline-none focus:ring-2 focus:ring-fage-300 ' . $class;
+        $inputClasses = 'border-2 shadow-sm rounded-full px-4 py-1 bg-[#fafafa] focus:outline-none focus:ring-2 focus:ring-fage-300 ' . $class;
+        if ($error) {
+            $inputClasses .= ' border-red-500 focus:ring-red-300';
+        }
 
-        return '<div class="flex flex-col ' . ($attributes['container-class'] ?? '') . '">
-                    <label for="' . $name . '" class="text-lg">' . $label . '</label>
-                    <input type="' . $type . '" name="' . $name . '" class="' . $classes . '" value="' . htmlspecialchars($value) . '" ' . $required_attr . $attr_string . '>
-                </div>';
+        $html = '<div class="flex flex-col ' . htmlspecialchars($containerClass) . '">';
+        $html .= '<label for="' . htmlspecialchars($name) . '" class="text-lg">' . htmlspecialchars($label);
+        if ($required) {
+            $html .= ' <span class="text-red-500">*</span>';
+        }
+        $html .= '</label>';
+        $html .= '<input type="' . htmlspecialchars($type) . '" name="' . htmlspecialchars($name) . '" class="' . $inputClasses . '" value="' . htmlspecialchars($value) . '" ' . $requiredAttr . $attrString . '>';
+        if ($error) {
+            $html .= '<span class="error text-red-500 text-sm mt-1">' . htmlspecialchars($error) . '</span>';
+        }
+        $html .= '</div>';
+
+        return $html;
     }
 
     public static function FormSelect($name, $label = "", $options = [], $selected = '', $class = '', $attributes = [])
@@ -157,7 +174,7 @@ class Components
         $required_attr = '';
         foreach ($attributes as $attr => $value) {
             if ($attr !== 'required') {
-                $attr_string .= ' ' . $attr . '="' . htmlspecialchars($value) . '"';
+                $attr_string .= ' ' . $attr . '="' . htmlspecialchars($value ?? "") . '"';
             } elseif ($value) {
                 $required_attr = 'required';
             }
@@ -193,6 +210,23 @@ class Components
         return '<span class="' . $color . ' text-center">' . $text . '</span>';
     }
 
+    public static function Badge(string $text, string $variant = 'fage', string $class = ''): string
+    {
+        $variants = [
+            'fage' => 'bg-fage-800 text-white',
+            'success' => 'bg-green-700 text-white',
+            'warning' => 'bg-yellow-600 text-white',
+            'danger' => 'bg-red-700 text-white',
+            'muted' => 'bg-gray-700 text-white',
+            'info' => 'bg-blue-700 text-white'
+        ];
+
+        $colors = $variants[$variant] ?? $variants['fage'];
+        $classes = trim("inline-flex items-center px-2 py-1 rounded-xl shadow-sm text-xs {$colors} {$class}");
+
+        return '<span class="' . htmlspecialchars($classes) . '">' . htmlspecialchars($text) . '</span>';
+    }
+
     public static function Link($text, $url, $variant = 'default', $class = '')
     {
         $variants = [
@@ -207,26 +241,54 @@ class Components
         return '<a href="' . $url . '" class="' . $classes . '">' . $text . '</a>';
     }
 
-    public static function AdherantTableRow(AdherentDto $adherant, bool $alternate)
+    public static function AdherantTableRow(AdherentDto|Adherent $adherant, bool $alternate)
     {
         $bg_colors = $alternate ? "bg-gray-200 " : "bg-gray-50";
+        $editUrl = '/edit_adherent?id=' . urlencode((string)$adherant->id) . '#adherents-table';
+        $deleteForm = self::ActionButton('Supprimer', 'delete_id', $adherant->id, 'danger', true);
+
         $tr = '<tr class="hover:bg-gray-300 ' . $bg_colors . '">
-                    <td class="border-2 px-4 py-2">' . $adherant->nom . '</td>
-                    <td class="border-2 px-4 py-2">' . $adherant->prenom . '</td>
-                    <td class="border-2 px-4 py-2">' . $adherant->adresse . '</td>
-                    <td class="border-2 px-4 py-2">' . $adherant->profession . '</td>
-                    <td class="border-2 px-4 py-2">' . $adherant->age . '</td>
-                    <td class="border-2 px-4 py-2">' . $adherant->ville . '</td>
-                    {
+                    <td class="border-2 px-4 py-2">' . htmlspecialchars($adherant->nom) . '</td>
+                    <td class="border-2 px-4 py-2">' . htmlspecialchars($adherant->prenom) . '</td>
+                    <td class="border-2 px-4 py-2">' . htmlspecialchars($adherant->adresse) . '</td>
+                    <td class="border-2 px-4 py-2">' . htmlspecialchars($adherant->profession) . '</td>
+                    <td class="border-2 px-4 py-2">' . htmlspecialchars($adherant->age) . '</td>
+                    <td class="border-2 px-4 py-2">' . htmlspecialchars($adherant->ville) . '</td>
                     <td class="border-2 px-4 py-2">
-                        <a href="/edit_adherent?id=' . $adherant->id . '#adherents-table" class="text-blue-600 underline">Modifier</a>
-                        <form method="post" style="display: inline;" onsubmit="return confirm(\'Êtes-vous sûr de vouloir supprimer cet adhérent ?\')">
-                            <input type="hidden" name="delete_id" value="' . $adherant->id . '">
-                            <button type="submit" class="bg-transparent hover:bg-transparent text-red-600 hover:text-red-700 underline ml-2 px-0 py-0 border-0 focus:outline-none">Supprimer</button>
-                        </form>
+                        <a href="' . htmlspecialchars($editUrl) . '" class="text-blue-600 underline">Modifier</a>
+                        ' . $deleteForm . '
                     </td>
                 </tr>';
         return $tr;
+    }
+
+    public static function ActionButton(string $text, string $action, int $id, string $style = 'primary', bool $confirm = false): string
+    {
+        $confirmAttr = $confirm ? 'onclick="return confirm(\'Êtes-vous sûr ?\')"' : '';
+        $colorClasses = [
+            'primary' => 'text-blue-600 hover:text-blue-800',
+            'danger' => 'text-red-600 hover:text-red-800',
+            'secondary' => 'text-gray-600 hover:text-gray-800'
+        ];
+
+        $class = $colorClasses[$style] ?? $colorClasses['primary'];
+        $buttonClasses = 'bg-transparent border-0 underline cursor-pointer p-0 font-inherit ' . $class;
+
+        $location = strtok($_SERVER['REQUEST_URI'], '?');
+
+        return sprintf(
+            '
+        <form method="POST" action="%s" style="display: inline;">
+            <input type="hidden" name="%s" value="%d">
+            <button type="submit" class="%s" %s>%s</button>
+        </form>',
+            htmlspecialchars($location),
+            htmlspecialchars($action),
+            $id,
+            $buttonClasses,
+            $confirmAttr,
+            htmlspecialchars($text)
+        );
     }
 
 
@@ -250,21 +312,34 @@ class Components
 
     public static function Textarea($name, $label = "", $value = "", $required = false, $class = "", $attributes = [])
     {
+        $error = $attributes['error'] ?? null;
+        unset($attributes['error']);
+
         $required_attr = $required ? 'required' : '';
         $attr_string = '';
         foreach ($attributes as $attr => $attr_value) {
             if ($attr !== 'value') {
-                $attr_string .= ' ' . $attr . '="' . htmlspecialchars($attr_value) . '"';
+                $attr_string .= ' ' . $attr . '="' . htmlspecialchars($attr_value ?? "") . '"';
             }
         }
 
         $classes = 'border-2 shadow-sm rounded-2xl pl-2 py-1 bg-[#fafafa] focus:outline-none focus:ring-2 focus:ring-fage-300 w-full ' . $class;
+        if ($error) {
+            $classes .= ' border-red-500 focus:ring-red-300';
+        }
 
         $label_html = !empty($label) ? '<label for="' . $name . '" class="text-lg">' . $label . '</label>' : '';
 
-        return '<div class="flex flex-col ' . ($attributes['container-class'] ?? '') . '">
+        $html = '<div class="flex flex-col ' . ($attributes['container-class'] ?? '') . '">
                     ' . $label_html . '
                     <textarea name="' . $name . '" id="' . $name . '" class="' . $classes . '" ' . $required_attr . $attr_string . '>' . htmlspecialchars($value) . '</textarea>
-                </div>';
+                ';
+
+        if ($error) {
+            $html .= '<span class="error text-red-500 text-sm mt-1">' . htmlspecialchars($error) . '</span>';
+        }
+
+        $html .= '</div>';
+        return $html;
     }
 }

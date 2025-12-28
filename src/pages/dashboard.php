@@ -7,7 +7,6 @@ use ButA2SaeS3\Components as c;
 $db = new FageDB();
 
 HttpUtils::ensure_valid_session($db);
-require_once __DIR__ . "/../templates/admin_head.php";
 
 
 $adherent_stats = $db->get_adherent_statistics();
@@ -15,6 +14,8 @@ $mission_stats = $db->get_mission_statistics();
 $financial_stats = $db->get_financial_statistics();
 $participation_stats = $db->get_participation_statistics();
 ?>
+
+<?php require_once __DIR__ . "/../templates/admin_head.php"; ?>
 
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
 

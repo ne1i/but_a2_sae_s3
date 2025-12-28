@@ -1,92 +1,101 @@
 <?php
 
 use ButA2SaeS3\Constants;
-use ButA2SaeS3\dto\AddAdherentDto;
 use ButA2SaeS3\FageDB;
+use ButA2SaeS3\repositories\AdherentRepository;
+use ButA2SaeS3\services\AdherentValidationService;
+use ButA2SaeS3\services\FormService;
 use ButA2SaeS3\utils\HttpUtils;
-use ButA2SaeS3\validation\Validators;
 use ButA2SaeS3\Components as c;
 
 $db = new FageDB();
+$repository = new AdherentRepository($db);
 
 HttpUtils::ensure_valid_session($db);
-require_once __DIR__ . "/../templates/admin_head.php";
 
+if (HttpUtils::isPost() && isset($_POST['delete_id'])) {
+    $delete_id = (int)$_POST['delete_id'];
+    $adherent = $repository->findById($delete_id);
 
-if (HttpUtils::isPost()) {
-    if (isset($_POST['delete_id'])) {
-        $delete_id = $_POST['delete_id'];
-        $adherent = $db->get_adherent_by_id($delete_id);
-
-        if ($adherent) {
-            if ($db->delete_adherent($delete_id)) {
-                $delete_success = "L'adhérent {$adherent->prenom} {$adherent->nom} a bien été supprimé";
-            } else {
-                $delete_error = "Une erreur est survenue lors de la suppression";
-            }
-        } else {
-            $delete_error = "Adhérent introuvable";
-        }
+    if ($adherent && $repository->delete($delete_id)) {
+        FormService::setSuccessMessage("L'adhérent {$adherent->getFullName()} a bien été supprimé", "adherent_delete");
+        header("Location: /adherents_benevoles?success=1&success_form=adherent_delete#adherents-table");
     } else {
-        $result = Validators::validate_add_adherent($_POST);
-
-        if ($result->isValid()) {
-
-    
-            $new_adherent = $result->value();
-
-            if ($db->adherent_exists($new_adherent->prenom, $new_adherent->nom, $new_adherent->email)) {
-                $error = "Cet adhérant existe déjà";
-            } else {
-                $db->add_adherent($new_adherent);
-                $success = "L'adhérant $new_adherent->prenom $new_adherent->nom a bien été ajouté";
-            }
-        }
+        FormService::setErrorMessage($adherent ? "Une erreur est survenue lors de la suppression" : "Adhérent introuvable", "adherent_delete");
+        header("Location: /adherents_benevoles#adherents-table");
     }
+    exit();
 }
+
+FormService::handleFormSubmission(
+    [AdherentValidationService::class, 'validateAddAdherent'],
+    function ($dto) use ($repository) {
+        if ($repository->exists($dto->prenom, $dto->nom, $dto->email)) {
+            throw new \Exception("Cet adhérent existe déjà");
+        }
+        $repository->save($dto);
+    },
+    "L'adhérent a bien été ajouté",
+    "/adherents_benevoles#adherent-add-form",
+    "adherent_add"
+);
+
+$addState = FormService::restoreFormData("adherent_add");
+$formData = $addState['data'] ?? [];
+$formErrors = $addState['errors'] ?? [];
+$addSuccessMessage = FormService::getSuccessMessage("adherent_add");
+$addErrorMessage = FormService::getErrorMessage("adherent_add");
+
+$deleteSuccessMessage = FormService::getSuccessMessage("adherent_delete");
+$deleteErrorMessage = FormService::getErrorMessage("adherent_delete");
 ?>
+
+<?php require_once __DIR__ . "/../templates/admin_head.php"; ?>
+
 
 <body class="bg-gradient-to-tl from-fage-300 to-fage-500 min-h-screen">
 
 
     <main class="p-2 space-y-8">
-        <div class="shadow-lg bg-white p-10 px-14 rounded-2xl ">
+        <div class="shadow-lg bg-white p-10 container-padding rounded-2xl ">
             <div>
                 <div class="mb-4">
 
                     <?= c::BackToLink(); ?>
                 </div>
-                <?= c::Heading2("Ajouter un adhérent") ?>
+                <?= c::Heading2("Ajouter un adhérent", id: "adherent-add-form") ?>
                 <form action="/adherents_benevoles" method="post" class="flex flex-col bg-white">
                     <div class="flex gap-4 mb-4">
-                        <?= c::FormInput("prenom", "Prénom", "text", "", true, "", ["container-class" => "w-1/2"]) ?>
-                        <?= c::FormInput("nom", "Nom", "text", "", true, "", ["container-class" => "w-1/2"]) ?>
+                        <?= c::FormInput("prenom", "Prénom", "text", $formData['prenom'] ?? "", true, "", ["container-class" => "w-1/2", "error" => $formErrors['prenom'] ?? null]) ?>
+                        <?= c::FormInput("nom", "Nom", "text", $formData['nom'] ?? "", true, "", ["container-class" => "w-1/2", "error" => $formErrors['nom'] ?? null]) ?>
                     </div>
 
-                    <?= c::FormInput("adresse", "Adresse", "text", "", true, "mb-4") ?>
+                    <?= c::FormInput("adresse", "Adresse", "text", $formData['adresse'] ?? "", true, "mb-4", ["error" => $formErrors['adresse'] ?? null]) ?>
 
                     <div class="flex gap-4 mb-4">
-                        <?= c::FormInput("code_postal", "Code postal", "text", "", true, "", ["container-class" => "w-1/2"]) ?>
-                        <?= c::FormInput("ville", "Ville", "text", "", true, "", ["container-class" => "w-1/2"]) ?>
+                        <?= c::FormInput("code_postal", "Code postal", "text", $formData['code_postal'] ?? "", true, "", ["container-class" => "w-1/2", "error" => $formErrors['code_postal'] ?? null]) ?>
+                        <?= c::FormInput("ville", "Ville", "text", $formData['ville'] ?? "", true, "", ["container-class" => "w-1/2", "error" => $formErrors['ville'] ?? null]) ?>
                     </div>
 
                     <div class="flex gap-4 mb-4">
-                        <?= c::FormInput("tel", "Téléphone", "tel", "", true, "", ["container-class" => "w-1/2"]) ?>
-                        <?= c::FormInput("email", "Email", "email", "", true, "", ["container-class" => "w-1/2"]) ?>
+                        <?= c::FormInput("tel", "Téléphone", "tel", $formData['tel'] ?? "", true, "", ["container-class" => "w-1/2", "error" => $formErrors['tel'] ?? null]) ?>
+                        <?= c::FormInput("email", "Email", "email", $formData['email'] ?? "", true, "", ["container-class" => "w-1/2", "error" => $formErrors['email'] ?? null]) ?>
                     </div>
 
-                    <?= c::FormInput("age", "Âge", "number", "", true) ?>
-                    <?= c::FormInput("profession", "Profession", "text", "", true) ?>
+                    <?= c::FormInput("age", "Âge", "number", $formData['age'] ?? "", true, "", ["error" => $formErrors['age'] ?? null]) ?>
+                    <?= c::FormInput("profession", "Profession", "text", $formData['profession'] ?? "", true, "", ["error" => $formErrors['profession'] ?? null]) ?>
 
-                    <?php
-                    if (isset($error)) {
-                        echo c::Message($error, 'error');
-                    }
-
-                    if (isset($success)) {
-                        echo c::Message($success, 'success');
-                    }
-                    ?>
+                    <div>
+                        <?php if ($addSuccessMessage): ?>
+                            <?= c::Message($addSuccessMessage, 'success') ?>
+                        <?php endif; ?>
+                        <?php if ($addErrorMessage): ?>
+                            <?= c::Message($addErrorMessage, 'error') ?>
+                        <?php endif; ?>
+                        <?php if (!empty($formErrors['_form'] ?? null)): ?>
+                            <?= c::Message($formErrors['_form'], 'error') ?>
+                        <?php endif; ?>
+                    </div>
 
                     <?= c::Button("Ajouter l'adhérent", "fage", "submit", "my-4") ?>
 
@@ -96,26 +105,16 @@ if (HttpUtils::isPost()) {
                         <?= c::Button("Autofill (debug)", "fage", "button", "", ["id" => "autofill"]) ?>
 
                         <script>
-                            function makeid(length) {
-                                var result = '';
-                                var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                                var charactersLength = characters.length;
-                                for (var i = 0; i < length; i++) {
-                                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                                }
-                                return result;
-                            }
-
                             autofill.addEventListener("click", () => {
-                                document.querySelector("[name='prenom']").value = makeid(6);
-                                document.querySelector("[name='nom']").value = makeid(6);
-                                document.querySelector("[name='adresse']").value = makeid(6);
-                                document.querySelector("[name='code_postal']").value = makeid(6);
-                                document.querySelector("[name='ville']").value = makeid(6);
-                                document.querySelector("[name='tel']").value = "0102030405";
-                                document.querySelector("[name='email']").value = "test@test.com";
-                                document.querySelector("[name='age']").value = "20";
-                                document.querySelector("[name='profession']").value = "employé";
+                                document.querySelector("[name='prenom']").value = randomPrenom();
+                                document.querySelector("[name='nom']").value = randomNom();
+                                document.querySelector("[name='adresse']").value = randomAddress();
+                                document.querySelector("[name='code_postal']").value = randomCodePostal();
+                                document.querySelector("[name='ville']").value = randomCity();
+                                document.querySelector("[name='tel']").value = randomTel();
+                                document.querySelector("[name='email']").value = randomEmail();
+                                document.querySelector("[name='age']").value = randomAge();
+                                document.querySelector("[name='profession']").value = randomProfession();
 
                             });
                         </script>
@@ -127,25 +126,37 @@ if (HttpUtils::isPost()) {
             </div>
         </div>
 
-        <div class="shadow-lg bg-white p-10 px-14 rounded-2xl space-y-8">
+        <div class="shadow-lg bg-white p-10 container-padding rounded-2xl space-y-8">
 
             <div>
 
                 <?= c::Heading2("Adhérents", id: "adherents-table") ?>
+                <div>
+                    <?php if ($deleteSuccessMessage): ?>
+                        <?= c::Message($deleteSuccessMessage, 'success') ?>
+                    <?php endif; ?>
+                    <?php if ($deleteErrorMessage): ?>
+                        <?= c::Message($deleteErrorMessage, 'error') ?>
+                    <?php endif; ?>
+                </div>
 
                 <div class="space-y-4">
                     <?php
-                    $page = max($_GET["page"] ?? 1, 1);
+                    $page = max((int)($_GET["page"] ?? 1), 1);
                     $count = 3;
 
-                    $filter_ville = $_GET["filter-ville"] ?? "";
-                    $filter_age = $_GET["filter-age"] ?? "";
-                    $filter_profession = $_GET["filter-profession"] ?? "";
+                    $filter_ville = trim($_GET["filter-ville"] ?? "");
+                    $filter_age = trim($_GET["filter-age"] ?? "");
+                    $filter_profession = trim($_GET["filter-profession"] ?? "");
 
-                    $cities = $db->get_distinct_cities();
+                    $cities = $repository->getDistinctCities();
 
-                    $total_count = $db->get_adherents_count($filter_ville, $filter_age, $filter_profession);
-                    $page_count = ceil($total_count / $count);
+                    $total_count = $repository->count([
+                        'ville' => $filter_ville,
+                        'age' => $filter_age,
+                        'profession' => $filter_profession
+                    ]);
+                    $page_count = max(1, (int)ceil($total_count / $count));
                     ?>
 
                     <fieldset>
@@ -180,7 +191,7 @@ if (HttpUtils::isPost()) {
                             <?= c::FormInput("filter-profession", "Profession", "text", $filter_profession, false, "border-2 shadow-sm px-2", ["list" => "professions", "id" => "filter-profession"]) ?>
                             <datalist id="professions">
                                 <?php
-                                $professions = $db->get_distinct_professions();
+                                $professions = $repository->getDistinctProfessions();
                                 foreach ($professions as $profession): ?>
                                     <option value="<?= htmlspecialchars($profession) ?>">
                                     <?php endforeach; ?>
@@ -194,41 +205,42 @@ if (HttpUtils::isPost()) {
                         </form>
                     </fieldset>
 
-                    <?php
-                    if (isset($delete_error)) {
-                        echo c::Message($delete_error, 'error');
-                    }
-                    if (isset($delete_success)) {
-                        echo c::Message($delete_success, 'success');
-                    }
-                    ?>
+                    <?php if ($total_count > 0): ?>
+                        <div class="scroll-container">
+                            <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="border-2 px-4 py-2 text-left">Nom</th>
+                                        <th class="border-2 px-4 py-2 text-left">Prénom</th>
+                                        <th class="border-2 px-4 py-2 text-left">Adresse</th>
+                                        <th class="border-2 px-4 py-2 text-left">Profession</th>
+                                        <th class="border-2 px-4 py-2 text-left">Âge</th>
+                                        <th class="border-2 px-4 py-2 text-left">Ville</th>
+                                        <th class="border-2 px-4 py-2 text-left">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $idx = 0;
 
-                    <div class="scroll-container">
-                        <table class="border-2 shadow-sm table-auto w-full overflow-x-scroll">
-                            <thead class="bg-gray-100">
-                                <tr>
-                                    <th class="border-2 px-4 py-2 text-left">Nom</th>
-                                    <th class="border-2 px-4 py-2 text-left">Prénom</th>
-                                    <th class="border-2 px-4 py-2 text-left">Adresse</th>
-                                    <th class="border-2 px-4 py-2 text-left">Profession</th>
-                                    <th class="border-2 px-4 py-2 text-left">Âge</th>
-                                    <th class="border-2 px-4 py-2 text-left">Ville</th>
-                                    <th class="border-2 px-4 py-2 text-left">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $idx = 0;
+                                    $adherents = $repository->findAll($count, $page, [
+                                        'ville' => $filter_ville,
+                                        'age' => $filter_age,
+                                        'profession' => $filter_profession
+                                    ]);
 
-                                foreach ($db->get_adherents($count, $page, $filter_ville, $filter_age, $filter_profession) as $adherent) {
-                                    echo c::AdherantTableRow($adherent, alternate: $idx % 2 == 0);
-                                    $idx++;
-                                }
-                                ?>
+                                    foreach ($adherents as $adherent) {
+                                        echo c::AdherantTableRow($adherent, alternate: $idx % 2 == 0);
+                                        $idx++;
+                                    }
+                                    ?>
 
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php else: ?>
+                        <?= c::Message("Aucun adhérent trouvé", "error") ?>
+                    <?php endif; ?>
                     <div class="flex justify-center gap-4 items-center">
                         <?php
                         $previous = $page > 1;
