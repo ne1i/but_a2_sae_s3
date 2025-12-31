@@ -97,9 +97,9 @@ class AdherentRepository
         $stmt = $this->pdo->prepare("SELECT 1 FROM adherents WHERE first_name = :prenom AND last_name = :nom AND email = :email");
 
         $stmt->execute([
-            'prenom' => $prenom,
-            'nom' => $nom,
-            'email' => $email,
+            ':prenom' => $prenom,
+            ':nom' => $nom,
+            ':email' => $email,
         ]);
         $result = $stmt->fetchColumn();
         return $result !== false;
@@ -111,15 +111,15 @@ class AdherentRepository
         VALUES(:prenom, :nom, :adresse, :code_postal, :ville, :tel, :email, :age, :profession)");
 
         return $stmt->execute([
-            'prenom' => $dto->prenom,
-            'nom' => $dto->nom,
-            'adresse' => $dto->adresse,
-            'code_postal' => $dto->code_postal,
-            'ville' => $dto->ville,
-            'tel' => $dto->tel,
-            'email' => $dto->email,
-            'age' => $dto->age,
-            'profession' => $dto->profession
+            ':prenom' => $dto->prenom,
+            ':nom' => $dto->nom,
+            ':adresse' => $dto->adresse,
+            ':code_postal' => $dto->code_postal,
+            ':ville' => $dto->ville,
+            ':tel' => $dto->tel,
+            ':email' => $dto->email,
+            ':age' => $dto->age,
+            ':profession' => $dto->profession
         ]);
     }
 
