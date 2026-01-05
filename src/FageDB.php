@@ -17,6 +17,11 @@ class FageDB
             $this->db_path = __DIR__ . "/../data/fage.db";
         }
 
+        $db_dir = dirname($this->db_path);
+        if (!is_dir($db_dir)) {
+            mkdir($db_dir, 0755, true);
+        }
+
         if (file_exists($this->db_path)) {
             $this->db = new PDO("sqlite:" . $this->db_path);
         } else {
@@ -298,4 +303,3 @@ class FageDB
         return $stats;
     }
 }
-
